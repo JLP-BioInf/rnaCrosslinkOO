@@ -27,13 +27,15 @@ After sequencing, short reads are produced where one half of the read correspond
 
 ## Nextflow pipeline 
 \
-Fastq files produced from the comrades experiment can be processed for input into the comradesOO using the Nextflow pre-processing pipeline, to get more information visit here. (URL). The pipeline has a docker image and takes the reads through trimming alignment, QC and the production of the files necessary for input to comradesOO.
+Fastq files produced from the comrades experiment can be processed for input into the comradesOO using the Nextflow pre-processing pipeline, to get more information visit here. https://github.com/JLP-BioInf/comradesnf . The pipeline Takes the reads through trimming alignment, QC and the production of the files necessary for input to comradesOO.
 
 
 
 ## Nextflow pipeline output
 \
 The main output files are the files entitled *X_gapped.txt*. These are the input files for comradesOO. The columns of the output files are as follows:
+
+You can create your own versions of this file if you have data using different library protocol. As long as you have 1 file for each sample with the following columns:
 
 1. Read Name
 2. Read Sequence
@@ -58,7 +60,7 @@ The main output files are the files entitled *X_gapped.txt*. These are the input
 
 # Input for comrades-OO
 \
-The main input files for comrades-OO is a tab delimited text file containing the reads and mapping location on the transcriptome. This can be manually created although the easiest way to obtain these files is to use the nextflow pipeline detailed above. There is test data that ships with the package, this contains data for the 18S rRNA and it's interactions with the 28S rRNA. However, full data-sets already published can be found here: [SARS-CoV-2 Dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154662) (files ending in "txt.gz")  and here: NB URL with an additional data-set available here (URL).
+The main input files for comrades-OO is a tab delimited text file containing the reads and mapping location on the transcriptome. This can be manually created although the easiest way to obtain these files is to use the nextflow pipeline detailed above. There is test data that ships with the package, this contains data for the 18S rRNA and it's interactions with the 28S rRNA. However, full data-sets already published can be found here:  [SARS-CoV-2 Dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154662) (files ending in "txt.gz") 
 
 
 Pre-requisites:
@@ -70,3 +72,9 @@ Pre-requisites:
 5. A fasta sequence of the RNA of interest  (from the transcript reference )
 6. A set of interactions to compare to (optional)
 6. Reactivities (optional)
+
+See the package Vignette for full instructions 
+
+
+
+
