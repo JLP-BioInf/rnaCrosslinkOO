@@ -1,0 +1,32 @@
+Package: comradesOO
+Type: Package
+Title: Analysis of COMRADES (cross-linking of matched RNAs and deep sequencing) data for RNA structure prediction. 
+Version: 0.1.0
+Authors@R: c(person("Jonathan", "Price", email="jlp76@cam.ac.uk", role=c("aut","cre")))
+Maintainer: Jonathan Price <jlp76@cam.ac.uk>
+Description: Analysis of COMRADES (cross-linking of matched RNAs and deep sequencing) data for RNA structure prediction. The package is suitable for the analysis of RNA structure cross-linking data and chemical probing data.
+License: GPL-3 
+Encoding: UTF-8
+BugReports: https://github.com/JLP-BioInf/
+Depends: seqinr, GenomicRanges, stats
+Imports: ggplot2, reshape2, MASS, mixtools, utils, S4Vectors,
+         doParallel, igraph, R4RNA, RColorBrewer, IRanges, foreach,grDevices,
+        heatmap3, TopDom, tidyverse, RRNA, ggrepel, methods
+RoxygenNote: 7.2.1
+Collate: 
+    'comradesOO.R'
+    'comradesDataSet.R'
+    'clusterComrades.R'
+    'clusterComradesMethodsAndHelpers.R'
+    'commonHelpersAndMethods.R'
+    'commonStatsAndPlots.R'
+    'comradesDataSetMethodsAndHelpers.R'
+    'comradesOO-package.R'
+    'foldComrades.R'
+    'foldComradesMethodsAndHelpers.R'
+    'genericMethods.R'
+Suggests: knitr, rmarkdown, testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+NeedsCompilation: no
+Packaged: 2023-08-25 10:24:32 UTC; jp
