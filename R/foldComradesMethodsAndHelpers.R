@@ -557,6 +557,7 @@ findBasePairsRNAfold = function(startPos,
 #' @return The same table with an extra column
 #'
 #'
+#'
 #' @export
 getClusterClusterShortRangeWhole = function(cluster, 
                                             seq) {
