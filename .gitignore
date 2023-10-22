@@ -2,4 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-build/vignette.rds
+comradesOO.Rproj
+/build/vignette.rds
