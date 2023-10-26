@@ -36,7 +36,52 @@ been read with \code{seqinr::read.fasta()}}
 
 \item{shape}{shape reactivities (0 for no constraints)}
 }
+\value{
+a comradesDataSet object
+}
 \description{
 This methods folds an ensebl of structures for the whole RNA or chosen region
 of the RNA. See \code{comradesDataSet} for slot information.
+}
+\examples{
+cds = makeExampleComradesDataSet()
+
+clusteredCds = clusterComrades(cds,
+                cores = 1,
+                stepCount = 1,
+                clusterCutoff = 1)
+                
+trimClusters(clusteredCds = clusteredCds,
+             trimFactor = 1, 
+             clusterCutoff = 1)
+             
+              
+
+fasta = paste(c(rep('A',25),
+                rep('T',25),
+                rep('A',10),
+                rep('T',23)),collapse = "")
+
+header = '>transcript1'
+
+
+fastaFile = tempfile()
+writeLines(paste(header,fasta,sep = "\n"),con = fastaFile)
+
+
+rnaRefs = list()
+rnaRefs[[rnas(cds)]] = read.fasta(fastaFile)
+rnaRefs
+
+
+
+foldedCds = foldComrades(trimmedClusters,
+                         rnaRefs = rnaRefs,
+                         start = 1,
+                         end = 83,
+                         shape = 0,
+                         ensembl = 5,
+                         constraintNumber  = 1,
+                         evCutoff = 1)
+foldedCds
 }

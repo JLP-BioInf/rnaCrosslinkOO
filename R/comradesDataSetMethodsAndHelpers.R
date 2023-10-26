@@ -24,7 +24,7 @@ NULL
 #' @return A list - Feature level and transcript level counts for each sample
 #' @examples 
 #' cds = makeExampleComradesDataSet()
-#' sampleTable(cds)
+#' featureInfo(cds)
 #'
 #' @export
 setGeneric("featureInfo",
@@ -559,15 +559,6 @@ setMethod("getReverseInteractions",
             table
           })
 
-
-
-
-
-
-
-################################################################################
-# Swapping and subsetting
-################################################################################
 
 
 

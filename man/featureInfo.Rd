@@ -20,6 +20,6 @@ Each element contains a table with the counts for each RNA in each sample.
 }
 \examples{
 cds = makeExampleComradesDataSet()
-sampleTable(cds)
+featureInfo(cds)
 
 }

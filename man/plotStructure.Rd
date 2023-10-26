@@ -17,7 +17,52 @@ plotStructure(foldedCds, rnaRefs, s = "s1", n = 1)
 
 \item{n}{number of structure}
 }
+\value{
+a diagram of the predicted structure
+}
 \description{
 This method plots a structures chosen from the
 plotEnsemblePCA method
+}
+\examples{
+cds = makeExampleComradesDataSet()
+clusteredCds = clusterComrades(cds = cds,
+                               cores = 3,
+                               stepCount = 2,
+                               clusterCutoff = 1)
+
+
+trimmedClusters = trimClusters(clusteredCds = clusteredCds,trimFactor = 1, clusterCutoff = 1)
+
+
+
+fasta = paste(c(rep('A',25),
+                rep('T',25),
+                rep('A',10),
+                rep('T',23)),collapse = "")
+
+header = '>transcript1'
+
+
+fastaFile = tempfile()
+writeLines(paste(header,fasta,sep = "\n"),con = fastaFile)
+
+
+rnaRefs = list()
+rnaRefs[[rnas(cds)]] = read.fasta(fastaFile)
+rnaRefs
+
+
+
+foldedCds = foldComrades(trimmedClusters,
+                         rnaRefs = rnaRefs,
+                         start = 1,
+                         end = 83,
+                         shape = 0,
+                         ensembl = 5,
+                         constraintNumber  = 1,
+                         evCutoff = 1)
+
+
+plotStructure(foldedCds,rnaRefs,"s1",3)
 }

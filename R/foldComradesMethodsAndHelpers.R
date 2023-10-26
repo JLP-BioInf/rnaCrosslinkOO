@@ -20,7 +20,6 @@ NULL
 #' @docType methods
 #' @rdname findBasePairsRNAcoFold2
 #'
-#' @export
 findBasePairsRNAcoFold2 = function(startPos1,
                                    endPos1,
                                    seq1,
@@ -264,7 +263,6 @@ findBasePairsRNAcoFold2 = function(startPos1,
 #' @docType methods
 #' @rdname findBasePairsRNAfold
 #'
-#' @export
 findBasePairsRNAfold = function(startPos, 
                                 endPos, 
                                 seqs, 
@@ -415,9 +413,6 @@ findBasePairsRNAfold = function(startPos,
 #' @rdname getClusterClusterShortRangeWhole
 #' @return The same table with an extra column
 #'
-#'
-#'
-#' @export
 getClusterClusterShortRangeWhole = function(cluster, 
                                             seq) {
   fasta = seq
@@ -460,7 +455,6 @@ getClusterClusterShortRangeWhole = function(cluster,
 #' @rdname findBasePairsRNAfold2
 #' @return A table of clusters and coordinates with folds
 #'
-#' @export
 findBasePairsRNAfold2 = function(startPos, 
                                  endPos, 
                                  seqs, 
@@ -518,7 +512,8 @@ findBasePairsRNAfold2 = function(startPos,
 
 #' compareKnownStructures
 #'
-#' this method prints some feature level statistics
+#' This method compares the predicted structures to a set of known interactions
+#' 
 #'
 #' @param foldedCds a \code{comradesDataSet} object
 #'
@@ -532,7 +527,51 @@ findBasePairsRNAfold2 = function(startPos,
 #' @docType methods
 #' @rdname compareKnownStructures
 #' @aliases compareKnownStructures,comradesDataSet-method
-#'
+#' @return a tables showing the number of predicted interactions and their agreement
+#' @examples
+#' cds = makeExampleComradesDataSet()
+#' clusteredCds = clusterComrades(cds = cds,
+#'                                cores = 3,
+#'                                stepCount = 2,
+#'                                clusterCutoff = 1)
+#' 
+#' 
+#' trimmedClusters = trimClusters(clusteredCds = clusteredCds,trimFactor = 1, clusterCutoff = 1)
+#' 
+#' 
+#' 
+#' fasta = paste(c(rep('A',25),
+#'                 rep('T',25),
+#'                 rep('A',10),
+#'                 rep('T',23)),collapse = "")
+#' 
+#' header = '>transcript1'
+#' 
+#' 
+#' fastaFile = tempfile()
+#' writeLines(paste(header,fasta,sep = "\n"),con = fastaFile)
+#' 
+#' 
+#' rnaRefs = list()
+#' rnaRefs[[rnas(cds)]] = read.fasta(fastaFile)
+#' rnaRefs
+#' 
+#' 
+#' 
+#' foldedCds = foldComrades(trimmedClusters,
+#'                          rnaRefs = rnaRefs,
+#'                          start = 1,
+#'                          end = 83,
+#'                          shape = 0,
+#'                          ensembl = 5,
+#'                          constraintNumber  = 1,
+#'                          evCutoff = 1)
+#' 
+#' 
+#' # make an example table of "know" interactions
+#' file = data.frame(V1 = c(6), 
+#'                   V2 = c(80))
+#' compareKnownStructures(foldedCds,file)
 #' @export
 #'
 setGeneric("compareKnownStructures",
@@ -572,9 +611,7 @@ setMethod("compareKnownStructures",
                                   known18S$V1 < end &
                                   known18S$V2 > start &
                                   known18S$V2 < end, ]
-            
-            #known18S$V1 = known18S$V1 - start
-            #known18S$V2 = known18S$V2 - start
+
             known18SID = paste(known18S$V1, known18S$V2, sep = "-")
             viennaScores = data.frame(stringsAsFactors = F)
             for (i in 1:length(viennas)) {
@@ -620,20 +657,61 @@ setMethod("compareKnownStructures",
 #' @docType methods
 #' @rdname plotEnsemblePCA
 #' @aliases plotEnsemblePCA,comradesDataSet-method
-#'
+#' @return a PCA plot of the ensembl
+#' @examples
+#' cds = makeExampleComradesDataSet()
+#' clusteredCds = clusterComrades(cds = cds,
+#'                                cores = 3,
+#'                                stepCount = 2,
+#'                                clusterCutoff = 1)
+#' 
+#' 
+#' trimmedClusters = trimClusters(clusteredCds = clusteredCds,trimFactor = 1, clusterCutoff = 1)
+#' 
+#' 
+#' 
+#' fasta = paste(c(rep('A',25),
+#'                 rep('T',25),
+#'                 rep('A',10),
+#'                 rep('T',23)),collapse = "")
+#' 
+#' header = '>transcript1'
+#' 
+#' 
+#' fastaFile = tempfile()
+#' writeLines(paste(header,fasta,sep = "\n"),con = fastaFile)
+#' 
+#' 
+#' rnaRefs = list()
+#' rnaRefs[[rnas(cds)]] = read.fasta(fastaFile)
+#' rnaRefs
+#' 
+#' 
+#' 
+#' foldedCds = foldComrades(trimmedClusters,
+#'                          rnaRefs = rnaRefs,
+#'                          start = 1,
+#'                          end = 83,
+#'                          shape = 0,
+#'                          ensembl = 5,
+#'                          constraintNumber  = 1,
+#'                          evCutoff = 1)
+#' 
+#' 
+#' plotEnsemblePCA(foldedCds)
 #' @export
 
 
 setGeneric("plotEnsemblePCA",
            function(foldedCds,
-                    labels = F,
+                    labels = TRUE,
                     split = TRUE)
              standardGeneric("plotEnsemblePCA"))
 
 setMethod("plotEnsemblePCA",
           "comradesDataSet",
           function(foldedCds,
-                   labels = F,
+                   labels = TRUE,
                    split = TRUE)  {
             discordMat = matrix(0, ncol = length(unlist(foldedCds@viennaStructures[[1]])), nrow = length(unlist(foldedCds@viennaStructures[[1]])))
             
@@ -673,7 +751,7 @@ setMethod("plotEnsemblePCA",
               geom_point(mapping = aes(size = dgs), alpha = 0.2) +
               xlab(paste0("PC", 1, ": ", round(percentVar[1] * 100), "% variance")) +
               ylab(paste0("PC", 2, ": ", round(percentVar[2] * 100), "% variance")) +
-              theme_classic() +
+              theme_classic() 
               
               if (split == T) {
                 p1 = p1 +   facet_grid(sample ~ .)
@@ -684,13 +762,13 @@ setMethod("plotEnsemblePCA",
                 aes(label = row.names(d)),
                 color = "gray20",
                 data = d,
-                force = 10
+                force = 10,max.overlaps = 400
               )
               
             }
             plot(p1)
             
-          })
+})
 
 
 
@@ -712,9 +790,49 @@ setMethod("plotEnsemblePCA",
 #' @docType methods
 #' @rdname plotComparisonArc
 #' @aliases plotComparisonArc,comradesDataSet-method
+#' @return an ark diagram of the two strcutures
+#' @examples
+#' cds = makeExampleComradesDataSet()
+#' clusteredCds = clusterComrades(cds = cds,
+#'                                cores = 3,
+#'                                stepCount = 2,
+#'                                clusterCutoff = 1)
+#' 
+#' 
+#' trimmedClusters = trimClusters(clusteredCds = clusteredCds,trimFactor = 1, clusterCutoff = 1)
+#' 
+#' 
+#' 
+#' fasta = paste(c(rep('A',25),
+#'                 rep('T',25),
+#'                 rep('A',10),
+#'                 rep('T',23)),collapse = "")
+#' 
+#' header = '>transcript1'
+#' 
+#' 
+#' fastaFile = tempfile()
+#' writeLines(paste(header,fasta,sep = "\n"),con = fastaFile)
+#' 
+#' 
+#' rnaRefs = list()
+#' rnaRefs[[rnas(cds)]] = read.fasta(fastaFile)
+#' rnaRefs
+#' 
+#' 
+#' 
+#' foldedCds = foldComrades(trimmedClusters,
+#'                          rnaRefs = rnaRefs,
+#'                          start = 1,
+#'                          end = 83,
+#'                          shape = 0,
+#'                          ensembl = 5,
+#'                          constraintNumber  = 1,
+#'                          evCutoff = 1)
+#' 
+#' 
+#' plotComparisonArc(foldedCds,"s1","s1",1,3)
 #' @export
-
-
 setGeneric("plotComparisonArc",
            function(foldedCds,
                     s1 = "s1",
@@ -769,6 +887,48 @@ setMethod("plotComparisonArc",
 #' @docType methods
 #' @rdname plotStructure
 #' @aliases plotStructure,comradesDataSet-method
+#' @return a diagram of the predicted structure
+#' @examples
+#' cds = makeExampleComradesDataSet()
+#' clusteredCds = clusterComrades(cds = cds,
+#'                                cores = 3,
+#'                                stepCount = 2,
+#'                                clusterCutoff = 1)
+#' 
+#' 
+#' trimmedClusters = trimClusters(clusteredCds = clusteredCds,trimFactor = 1, clusterCutoff = 1)
+#' 
+#' 
+#' 
+#' fasta = paste(c(rep('A',25),
+#'                 rep('T',25),
+#'                 rep('A',10),
+#'                 rep('T',23)),collapse = "")
+#' 
+#' header = '>transcript1'
+#' 
+#' 
+#' fastaFile = tempfile()
+#' writeLines(paste(header,fasta,sep = "\n"),con = fastaFile)
+#' 
+#' 
+#' rnaRefs = list()
+#' rnaRefs[[rnas(cds)]] = read.fasta(fastaFile)
+#' rnaRefs
+#' 
+#' 
+#' 
+#' foldedCds = foldComrades(trimmedClusters,
+#'                          rnaRefs = rnaRefs,
+#'                          start = 1,
+#'                          end = 83,
+#'                          shape = 0,
+#'                          ensembl = 5,
+#'                          constraintNumber  = 1,
+#'                          evCutoff = 1)
+#' 
+#' 
+#' plotStructure(foldedCds,rnaRefs,"s1",3)
 #' @export
 
 

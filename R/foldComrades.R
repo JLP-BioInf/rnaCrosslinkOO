@@ -23,6 +23,48 @@ NULL
 #' @docType methods
 #' @rdname foldComrades
 #' @aliases foldComrades,comradesDataSet-method
+#' @return a comradesDataSet object
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' clusteredCds = clusterComrades(cds,
+#'                 cores = 1,
+#'                 stepCount = 1,
+#'                 clusterCutoff = 1)
+#'                 
+#' trimClusters(clusteredCds = clusteredCds,
+#'              trimFactor = 1, 
+#'              clusterCutoff = 1)
+#'              
+#'               
+#' 
+#' fasta = paste(c(rep('A',25),
+#'                 rep('T',25),
+#'                 rep('A',10),
+#'                 rep('T',23)),collapse = "")
+#' 
+#' header = '>transcript1'
+#' 
+#' 
+#' fastaFile = tempfile()
+#' writeLines(paste(header,fasta,sep = "\n"),con = fastaFile)
+#' 
+#' 
+#' rnaRefs = list()
+#' rnaRefs[[rnas(cds)]] = read.fasta(fastaFile)
+#' rnaRefs
+#' 
+#' 
+#' 
+#' foldedCds = foldComrades(trimmedClusters,
+#'                          rnaRefs = rnaRefs,
+#'                          start = 1,
+#'                          end = 83,
+#'                          shape = 0,
+#'                          ensembl = 5,
+#'                          constraintNumber  = 1,
+#'                          evCutoff = 1)
+#' foldedCds
 #' @export
 setGeneric("foldComrades",
            function(cdsObject,
@@ -59,7 +101,7 @@ setMethod("foldComrades",
             ##############################
             #make combined tables for the samples
             clusterPositionsListTrimmedSarsCombined = list()
-            for (j in group(cdsObject)[["s"]]) {
+            for (j in c(group(cdsObject)[["s"]],group(cdsObject)[["c"]])) {
               clusterPositionsListTrimmed[[j]]$sample = sampleTable(cdsObject)[j, "sampleName"]
               clusterPositionsListTrimmedSarsCombined = rbind.data.frame(
                 clusterPositionsListTrimmedSarsCombined,
@@ -77,7 +119,8 @@ setMethod("foldComrades",
             clusterPositionsListTrimmedSarsCombined$seq2 = ""
             # add the sequences tot he table
             for (i in 1:nrow(clusterPositionsListTrimmedSarsCombined)) {
-              x = getClusterClusterShortRangeWhole(clusterPositionsListTrimmedSarsCombined[i, ], rnaRefs[[rna]])
+              x = getClusterClusterShortRangeWhole(clusterPositionsListTrimmedSarsCombined[i, ],
+                                                   rnaRefs[[rna]])
               clusterPositionsListTrimmedSarsCombined$type[i] = x[[1]]
               clusterPositionsListTrimmedSarsCombined$seq2[i] = x[[3]]
               clusterPositionsListTrimmedSarsCombined$seq1[i] = x[[2]]
@@ -289,7 +332,7 @@ setMethod("foldComrades",
             normalized_evidence = interactionTable3_sub$evidence / sum(interactionTable3_sub$evidence)
             
             
-            samples = sampleTable(cdsObject)[sampleTable(cdsObject)$group == "s", ]$sampleName
+            samples = sampleTable(cdsObject)$sampleName
             
             # run the structures
             
