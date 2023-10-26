@@ -365,8 +365,7 @@ Get data is more generic method for retrieving data from the object and returns 
 
 
 ```{r}
-data = getData(cds,       # The object
-        rna,              # The rna of interest
+data = getData(cds,       # The object      
         "hybFiles",       # The Type of data to return     
         "original")[[1]]  # The stage of the analysis for the return data
 head(data)
