@@ -398,11 +398,21 @@ setMethod("topInteracters",
             y = y[names(x[1:ntop])]
             x = x[1:ntop]
             
+            if(ntop == 1){
+              x2 = data.frame(
+                t = names(x), 
+                s = x,
+                c = y)
+              colnames(x2) = c("RNA", "Samples", "Control")
+              x2$enrichment = x2$Samples /  x2$Control
+              
+            }else{
+            
             x2 = as.data.frame(x)
             x2$control = y
             colnames(x2) = c("RNA", "Samples", "Control")
             x2$enrichment = x2$Samples /  x2$Control
-            
+            }
             
             for (i in names(hybFiles(cds)[[rnas(cds)]][["host"]])) {
               t =   hybFiles(cds)[[rnas(cds)]][["host"]][[i]]$V10

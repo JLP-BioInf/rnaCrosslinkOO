@@ -103,8 +103,9 @@ comradesDataSet <- function(rnas,
   message(" *****-------*******************-------****** ")
   message(" *****       Reading SampleTable       ****** ")
   
+  
   # Read in sample table
-  sampleTable = sampleTable
+
   #check for more than two samples
   # if( nrow(sampleTable) < 2 ){
   #        stop( "The sample Table must contain at least 1
@@ -203,7 +204,21 @@ comradesDataSet <- function(rnas,
   # read in the tables
   inputs <- lapply(as.character(sampleTable$file),
                    function(file)
-                     read.table(file))
+                     read.table(file,colClasses = c("character",
+                                                    "character",
+                                                    "character",
+                                                    "character",
+                                                    "integer",
+                                                    "integer",
+                                                    "integer",
+                                                    "integer",
+                                                    "character",
+                                                    "character",
+                                                    "integer",
+                                                    "integer",
+                                                    "integer",
+                                                    "integer",
+                                                    "character")))
   
   #check column names
   if (all(sapply(inputs, function(file)
