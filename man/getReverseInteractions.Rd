@@ -13,7 +13,15 @@ getReverseInteractions(cds, interactor)
 
 \item{interactor}{The rna to show interactions with}
 }
+\value{
+A long format table shoing the read coverage of chosen RNA
+}
 \description{
 This method prints interactions of the RNA of interest on another RNA
 transcript.
+}
+\examples{
+cds = makeExampleComradesDataSet()
+getReverseInteractions(cds, 'transcript2')
+
 }

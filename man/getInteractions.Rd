@@ -13,6 +13,15 @@ getInteractions(cds, interactor)
 
 \item{interactor}{The rna to show interactions with}
 }
+\value{
+A table showign the read coverage of the interacting RNA
+}
 \description{
-This method prints interactions of an RNA on the RNA of interest.
+This method returns a table interactions of an RNA (interactor) on the RNA of
+interest use topInteracters.
+}
+\examples{
+cds = makeExampleComradesDataSet()
+getInteractions(cds, 'transcript2')
+
 }

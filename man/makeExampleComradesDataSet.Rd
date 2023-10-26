@@ -12,3 +12,6 @@ An example comradesDataSet objext
 \description{
 Creat a minimal example comradesdataSetObject
 }
+\examples{
+cds = makeExampleComradesDataSet()
+}

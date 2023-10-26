@@ -13,7 +13,15 @@ topInteractions(cds, ntop = 10)
 
 \item{ntop}{the number of entries to display}
 }
+\value{
+A table, the number of counts per sample per interaction
+}
 \description{
-This method prints the top transcripts that have the most duplexes
+This method prints the top transcript interactions that have the most duplexes
 assigned
+}
+\examples{
+cds = makeExampleComradesDataSet()
+topInteractions(cds)
+
 }

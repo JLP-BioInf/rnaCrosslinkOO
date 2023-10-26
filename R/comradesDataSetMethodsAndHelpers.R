@@ -76,7 +76,7 @@ setMethod("featureInfo",
             aggList = list()
             totalNames = c()
             for (hyb in 1:length(alteredHybList[[TE]])) {
-   
+              
               
               sampleHyb = alteredHybList[[TE]][[hyb]]
               sData = sampleHyb[sampleHyb$V1 == TE, ]
@@ -111,69 +111,68 @@ setMethod("featureInfo",
             statsList[[TE]]$ID = sapply(row.names(statsList[[TE]]), function(x)
               tail(strsplit(x, "_")[[1]],n=1), USE.NAMES = FALSE)
             statsList[[TE]]
-
+            
             
             # Now get the stats from aggregate
             aggList = list()
             aggList2 = list()
             
-
-              aggList[[TE]] =   aggregate(. ~ ID , statsList[[TE]], sum)
+            
+            aggList[[TE]] =   aggregate(. ~ ID , statsList[[TE]], sum)
+            
+            
+            #get sample Table
+            st = sampleTable(cds)
+            
+            #find out which samples have controls
+            samples = st[which(duplicated(st$sample)), "sample"]
+            
+            
+            
+            for (i in samples) {
+              # now get the control and sample index
+              control =  as.numeric(which(st$sample == i &
+                                            st$group == "c")) + 1
+              sample = as.numeric(which(st$sample == i &
+                                          st$group == "s")) + 1
               
               
-              #get sample Table
-              st = sampleTable(cds)
+              factor1 = sum(aggList[[TE]][, sample]) / sum(aggList[[TE]][, control])
               
-              #find out which samples have controls
-              print("finding sample with controls")
-              samples = st[which(duplicated(st$sample)), "sample"]
+              aggList[[TE]][, paste("norm", i, sep = "_")] = aggList[[TE]][, sample] / (aggList[[TE]][, control] * factor1)
               
               
-              
-              for (i in samples) {
-                # now get the control and sample index
-                control =  as.numeric(which(st$sample == i &
-                                              st$group == "c")) + 1
-                sample = as.numeric(which(st$sample == i &
-                                            st$group == "s")) + 1
-                
-                
-                factor1 = sum(aggList[[TE]][, sample]) / sum(aggList[[TE]][, control])
-                
-                aggList[[TE]][, paste("norm", i, sep = "_")] = aggList[[TE]][, sample] / (aggList[[TE]][, control] * factor1)
-                
-                
-              }
-              
-              data = melt(aggList[[TE]], id.vars = c("ID"))
-              
-              samples = paste("norm", samples, sep = "_")
-              
-  
-
-                plot(ggplot() +
-                  geom_boxplot(data = data[data$variable %in% samples, ], aes(
-                    x = reorder(data[data$variable %in% samples, ]$ID, 
-                                data[data$variable %in% samples, ]$value, 
-                                FUN = median), y = log2(value)
-                  )) +
-                  geom_point(data = data[data$variable %in% samples, ], aes(
-                    x = reorder(data[data$variable %in% samples, ]$ID, 
-                                data[data$variable %in% samples, ]$value, 
-                                FUN = median),
-                    y = log2(value),
-                    fill = ID
-                  )) +
-                  geom_hline(yintercept = 0, colour = "darkred") +
-                  theme_classic() +
-                  theme(axis.text.x = element_text(angle = 90, hjust = 1)) )
- 
+            }
+            
+            data = melt(aggList[[TE]], id.vars = c("ID"))
+            
+            samples = paste("norm", samples, sep = "_")
+            
+            
+            
+            plot(ggplot() +
+                   geom_boxplot(data = data[data$variable %in% samples, ], aes(
+                     x = reorder(data[data$variable %in% samples, ]$ID, 
+                                 data[data$variable %in% samples, ]$value, 
+                                 FUN = median), y = log2(value)
+                   )) +
+                   geom_point(data = data[data$variable %in% samples, ], aes(
+                     x = reorder(data[data$variable %in% samples, ]$ID, 
+                                 data[data$variable %in% samples, ]$value, 
+                                 FUN = median),
+                     y = log2(value),
+                     fill = ID
+                   )) +
+                   geom_hline(yintercept = 0, colour = "darkred") +
+                   theme_classic() +
+                   theme(axis.text.x = element_text(angle = 90, hjust = 1)) )
+            
             
             featureStats = list()
             featureStats[["transcript"]] = df[[TE]]
             featureStats[["family"]] = aggList[[TE]]
             return(featureStats)
-})
+          })
 
 
 
@@ -191,6 +190,10 @@ setMethod("featureInfo",
 #' @docType methods
 #' @rdname topTranscripts
 #' @aliases topTranscripts,comradesDataSet-method
+#' @return A table, the number of counts per sample per transcript
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' topTranscripts(cds)
 #' @export
 #'
 setGeneric("topTranscripts",
@@ -250,7 +253,7 @@ setMethod("topTranscripts",
 
 #' topInteractions
 #'
-#' This method prints the top transcripts that have the most duplexes
+#' This method prints the top transcript interactions that have the most duplexes
 #' assigned
 #'
 #' @param cds a \code{comradesDataSet} object
@@ -260,6 +263,10 @@ setMethod("topTranscripts",
 #' @docType methods
 #' @rdname topInteractions
 #' @aliases topInteractions,comradesDataSet-method
+#' @return A table, the number of counts per sample per interaction
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' topInteractions(cds)
 #'
 #' @export
 setGeneric("topInteractions",
@@ -320,7 +327,7 @@ setMethod("topInteractions",
 #' topInteracters
 #'
 #' This method prints the top transcripts that have the most duplexes
-#' assigned
+#' assigned that interact with the transcript of interest 
 #'
 #' @param cds a \code{comradesDataSet} object
 #' @param ntop the number of entries to display
@@ -329,6 +336,10 @@ setMethod("topInteractions",
 #' @docType methods
 #' @rdname topInteracters
 #' @aliases topInteracters,comradesDataSet-method
+#' @return A table, the number of counts per sample per interacting transcript
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' topInteracters(cds)
 #'
 #' @export
 setGeneric("topInteracters",
@@ -363,7 +374,7 @@ setMethod("topInteracters",
             y = y[names(x[1:ntop])]
             x = x[1:ntop]
             
-            if(ntop == 1){
+            if(which(complete.cases(x)) == 1){
               x2 = data.frame(
                 t = names(x), 
                 s = x,
@@ -395,7 +406,8 @@ setMethod("topInteracters",
 
 #' getInteractions
 #'
-#' This method prints interactions of an RNA on the RNA of interest.
+#' This method returns a table interactions of an RNA (interactor) on the RNA of
+#' interest use topInteracters. 
 #'
 #' @param cds a \code{comradesDataSet} object
 #' @param interactor The rna to show interactions with
@@ -404,9 +416,13 @@ setMethod("topInteracters",
 #' @name getInteractions
 #' @docType methods
 #' @rdname getInteractions
+#' @return A table showign the read coverage of the interacting RNA 
 #' @aliases getInteractions,comradesDataSet-method
-#' @export
+#' @examples
+#' cds = makeExampleComradesDataSet()
+#' getInteractions(cds, 'transcript2')
 #'
+#' @export
 setGeneric("getInteractions",
            function(cds,
                     interactor)
@@ -468,6 +484,10 @@ setMethod("getInteractions",
 #' @docType methods
 #' @rdname getReverseInteractions
 #' @aliases getReverseInteractions,comradesDataSet-method
+#' @return A long format table shoing the read coverage of chosen RNA
+#' @examples
+#' cds = makeExampleComradesDataSet()
+#' getReverseInteractions(cds, 'transcript2')
 #'
 #' @export
 setGeneric("getReverseInteractions",
@@ -545,7 +565,6 @@ setMethod("getReverseInteractions",
 #' @rdname swapHybs
 #' @return A list of "swapped" hyb datas
 #'
-#' @export
 swapHybs = function(hybList, 
                     rna) {
   hybListSwap = hybList
@@ -581,7 +600,6 @@ swapHybs = function(hybList,
 #' @rdname swapHybs2
 #' @return A list of "swapped" hyb data
 #'
-#' @export
 swapHybs2 = function(hybList, 
                      rna) {
   for (hyb in 1:length(hybList)) {
@@ -630,7 +648,6 @@ swapHybs2 = function(hybList,
 #' @name swapHybs3
 #' @docType methods
 #' @rdname swapHybs3
-#' @export
 swapHybs3 = function(hybList, rna) {
   hybListSwap = hybList
   for (hyb in 1:length(hybList)) {
@@ -677,6 +694,8 @@ swapHybs3 = function(hybList, rna) {
 #' @return An example comradesDataSet objext
 #' @name makeExampleComradesDataSet
 #' @rdname makeExampleComradesDataSet
+#' @examples
+#' cds = makeExampleComradesDataSet()
 #' @export
 makeExampleComradesDataSet = function() {
   
