@@ -64,7 +64,6 @@ setMethod("show", "comradesDataSet", function(object) {
 #' and analysis stage you select.
 #' 
 #' @param x A comradesDataSet object
-#' @param rna The ID of the RNA of interest
 #' @param data The data type to return <hybFiles | matrixList | clusterGrangesList | clusterTableList>
 #' @param type The analysis stage <original | noHost | originalClusters | trimmedClusters> 
 #' @name getData
@@ -72,11 +71,15 @@ setMethod("show", "comradesDataSet", function(object) {
 #' @rdname getData
 #' @aliases getData,comradesDataSet-method
 #' @return A list of the chosen data type - one entry for each sample
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' getData(cds, 'matrixList','original')
 #' 
 #' @export
-setGeneric("getData", function(x, rna,data, type ) standardGeneric("getData"))
-setMethod("getData", "comradesDataSet", function( x, rna,data, type )  
-    slot(x, data)[[rna]][[type]] )
+setGeneric("getData", function(x,data, type ) standardGeneric("getData"))
+setMethod("getData", "comradesDataSet", function( x,data, type )  
+    slot(x, data)[[rnas(x)]][[type]] )
 
 
 ###############  metaData        ###############
@@ -91,6 +94,10 @@ setMethod("getData", "comradesDataSet", function( x, rna,data, type )
 #' @rdname sampleNames
 #' @aliases sampleNames,comradesDataSet-method
 #' @return A character vector - the sample names
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' sampleNames(cds)
 #' @export
 setGeneric("sampleNames", function(x ) standardGeneric("sampleNames"))
 setMethod("sampleNames", "comradesDataSet", function( x)  
@@ -105,6 +112,10 @@ setMethod("sampleNames", "comradesDataSet", function( x)
 #' @aliases sampleTable,comradesDataSet-method
 #' @rdname sampleTable
 #' @return A data frame - The orginal meta-data table 
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' sampleTable(cds)
 #' @export
 setGeneric("sampleTable", function(x) standardGeneric("sampleTable"))
 setMethod("sampleTable", "comradesDataSet", function(x)   x@sampleTable)
@@ -115,7 +126,10 @@ setMethod("sampleTable", "comradesDataSet", function(x)   x@sampleTable)
 #' @param x A comradesDataSet object
 #' @aliases group,comradesDataSet-method
 #' @return A list - The indices of the sample in the control and sample groups
+#' @examples 
+#' cds = makeExampleComradesDataSet()
 #' 
+#' group(cds)
 #' @export
 setGeneric("group", function(x) standardGeneric("group"))
 setMethod("group", "comradesDataSet", function(x)
@@ -137,6 +151,10 @@ setMethod("group", "comradesDataSet", function(x)
 #' @rdname rnas
 #' @aliases rnas,comradesDataSet-method
 #' @return A character - the ID of the RNA
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' rnas(cds)
 #' @export
 setGeneric("rnas", function(x) standardGeneric("rnas"))
 setMethod("rnas", "comradesDataSet", function(x)  x@rnas)
@@ -151,7 +169,11 @@ setMethod("rnas", "comradesDataSet", function(x)  x@rnas)
 #' @docType methods
 #' @rdname rnaSize
 #' @aliases rnaSize,comradesDataSet-method
-#' @return A numeric - the size of the RNA 
+#' @return A numeric - the size of the RNA (nucleotides)
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' rnaSize(cds)
 #' @export
 setGeneric("rnaSize", function(x) standardGeneric("rnaSize"))
 setMethod("rnaSize", "comradesDataSet", function(x)  x@rnaSize)
@@ -165,6 +187,10 @@ setMethod("rnaSize", "comradesDataSet", function(x)  x@rnaSize)
 #' @rdname hybFiles
 #' @aliases hybFiles,comradesDataSet-method
 #' @return A list of tables in the original input format, one entry for each sample
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' hybFiles(cds)
 #' @export
 setGeneric("hybFiles", function(x) standardGeneric("hybFiles"))
 setMethod("hybFiles", "comradesDataSet", function(x)   x@hybFiles)
@@ -179,6 +205,10 @@ setMethod("hybFiles", "comradesDataSet", function(x)   x@hybFiles)
 #' @rdname matrixList
 #' @aliases matrixList,comradesDataSet-method
 #' @return A list of contract matrices, one entry for each sample
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' matrixList(cds)
 #' @export
 setGeneric("matrixList", function(x) standardGeneric("matrixList"))
 setMethod("matrixList", "comradesDataSet", function(x)   x@matrixList)
@@ -197,6 +227,10 @@ setMethod("matrixList", "comradesDataSet", function(x)   x@matrixList)
 #' @rdname clusterGrangesList
 #' @aliases clusterGrangesList,comradesDataSet-method
 #' @return A list of Granges objects showing the positions of each cluster, one entry for each sample
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' clusterGrangesList(cds)
 #' @export
 setGeneric("clusterGrangesList", function(x) standardGeneric("clusterGrangesList"))
 setMethod("clusterGrangesList", "comradesDataSet", function(x)  x@clusterGrangesList)
@@ -212,6 +246,10 @@ setMethod("clusterGrangesList", "comradesDataSet", function(x)  x@clusterGranges
 #' @rdname clusterTableList
 #' @aliases clusterTableList,comradesDataSet-method
 #' @return A list of tables showing the vienna structures of each cluster
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' clusterTableList(cds)
 #' @export
 setGeneric("clusterTableList", function(x) standardGeneric("clusterTableList"))
 setMethod("clusterTableList", "comradesDataSet", function(x)  x@clusterTableList)
@@ -226,6 +264,10 @@ setMethod("clusterTableList", "comradesDataSet", function(x)  x@clusterTableList
 #' @rdname clusterTableFolded
 #' @aliases clusterTableFolded,comradesDataSet-method
 #' @return A table showing the vienna structures of each cluster
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' clusterTableFolded(cds)
 #' @export
 setGeneric("clusterTableFolded", function(x) standardGeneric("clusterTableFolded"))
 setMethod("clusterTableFolded", "comradesDataSet", function(x)  x@clusterTableFolded)
@@ -247,6 +289,11 @@ setMethod("clusterTableFolded", "comradesDataSet", function(x)  x@clusterTableFo
 #' @rdname matrixList_set
 #' @aliases matrixList<-,comradesDataSet-method
 #' @return No return - Sets a new matrixList slot
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' newMatrixList <- matrixList(cds)
+#' matrixList(cds) <- newMatrixList
 #' @export
 setGeneric("matrixList<-", function(x, value) standardGeneric("matrixList<-"))
 setMethod("matrixList<-", "comradesDataSet", function(x, value) {
@@ -263,6 +310,11 @@ setMethod("matrixList<-", "comradesDataSet", function(x, value) {
 #' @rdname clusterGrangesList_set
 #' @aliases clusterGrangesList<-,comradesDataSet-method
 #' @return No return - Sets a new clusterGrangesList slot
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' newclusterGrangesList <- clusterGrangesList(cds)
+#' clusterGrangesList(cds) <- newclusterGrangesList
 #' @export
 setGeneric("clusterGrangesList<-", function(x, value) standardGeneric("clusterGrangesList<-"))
 setMethod("clusterGrangesList<-", "comradesDataSet", function(x, value) {
@@ -280,6 +332,11 @@ setMethod("clusterGrangesList<-", "comradesDataSet", function(x, value) {
 #' @rdname clusterTableList_set
 #' @aliases clusterTableList<-,comradesDataSet-method
 #' @return No return - Sets a new clusterTableList slot
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' newclusterGrangesList <- clusterTableList(cds)
+#' clusterTableList(cds) <- newclusterGrangesList
 #' @export
 setGeneric("clusterTableList<-", function(x, value) standardGeneric("clusterTableList<-"))
 setMethod("clusterTableList<-", "comradesDataSet", function(x, value) {
