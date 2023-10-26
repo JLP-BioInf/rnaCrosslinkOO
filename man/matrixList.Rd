@@ -4,12 +4,15 @@
 \name{matrixList}
 \alias{matrixList}
 \alias{matrixList,comradesDataSet-method}
-\title{hybFiles}
+\title{matrixList}
 \usage{
 matrixList(x)
 }
 \arguments{
 \item{x}{A comradesDataSet object}
+}
+\value{
+A list of contract matrices, one entry for each sample
 }
 \description{
 Extract the contact matrices

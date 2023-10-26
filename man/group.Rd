@@ -10,6 +10,9 @@ group(x)
 \arguments{
 \item{x}{A comradesDataSet object}
 }
+\value{
+A list - The indices of the sample in the control and sample groups
+}
 \description{
 Extract the indeces for each group for the instance
 }

@@ -11,6 +11,9 @@ clusterTableFolded(x)
 \arguments{
 \item{x}{A comradesDataSet object}
 }
+\value{
+A table showing the vienna structures of each cluster
+}
 \description{
 Extract the cluster coordinates with fold prediciton in data frame format
 }

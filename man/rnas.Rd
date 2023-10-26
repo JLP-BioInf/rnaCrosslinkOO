@@ -11,6 +11,9 @@ rnas(x)
 \arguments{
 \item{x}{A comradesDataSet object}
 }
+\value{
+A character - the ID of the RNA
+}
 \description{
 Extract the rna ID for the instance
 }

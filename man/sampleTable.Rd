@@ -11,6 +11,9 @@ sampleTable(x)
 \arguments{
 \item{x}{A comradesDataSet object}
 }
+\value{
+A data frame - The orginal meta-data table
+}
 \description{
 Extract the sample table for the instance
 }

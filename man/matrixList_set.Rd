@@ -13,6 +13,9 @@ matrixList(x) <- value
 
 \item{value}{A replacement}
 }
+\value{
+No return - Sets a new matrixList slot
+}
 \description{
 Set new matrixList slot
 }

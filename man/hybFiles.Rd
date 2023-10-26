@@ -11,6 +11,9 @@ hybFiles(x)
 \arguments{
 \item{x}{A comradesDataSet object}
 }
+\value{
+A list of tables in the original input format, one entry for each sample
+}
 \description{
 Extract the data in original format
 }

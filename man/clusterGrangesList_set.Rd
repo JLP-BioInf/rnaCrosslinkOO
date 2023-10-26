@@ -13,6 +13,9 @@ clusterGrangesList(x) <- value
 
 \item{value}{A replacement}
 }
+\value{
+No return - Sets a new clusterGrangesList slot
+}
 \description{
 Set new clusterGrangesList slot
 }

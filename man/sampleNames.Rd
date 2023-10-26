@@ -11,6 +11,9 @@ sampleNames(x)
 \arguments{
 \item{x}{A comradesDataSet object}
 }
+\value{
+A character vector - the sample names
+}
 \description{
 Extract the sample names for the instance
 }

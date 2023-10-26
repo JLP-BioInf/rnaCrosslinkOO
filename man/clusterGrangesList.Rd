@@ -11,6 +11,9 @@ clusterGrangesList(x)
 \arguments{
 \item{x}{A comradesDataSet object}
 }
+\value{
+A list of Granges objects showing the positions of each cluster, one entry for each sample
+}
 \description{
 Extract the cluster coordinates in granges format
 }

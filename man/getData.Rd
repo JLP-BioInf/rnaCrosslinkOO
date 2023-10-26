@@ -17,6 +17,9 @@ getData(x, rna, data, type)
 
 \item{type}{The analysis stage <original | noHost | originalClusters | trimmedClusters>}
 }
+\value{
+A list of the chosen data type - one entry for each sample
+}
 \description{
 Get data is more generic method for retrieving data from the object
 and returns a list, the number of entries in the list is number of

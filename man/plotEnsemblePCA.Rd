@@ -6,7 +6,7 @@
 \alias{plotEnsemblePCA,comradesDataSet-method}
 \title{plotEnsemblePCA}
 \usage{
-plotEnsemblePCA(foldedCds, labels = F, split = T)
+plotEnsemblePCA(foldedCds, labels = F, split = TRUE)
 }
 \arguments{
 \item{foldedCds}{\code{comradesDataSet} after running foldComrades}

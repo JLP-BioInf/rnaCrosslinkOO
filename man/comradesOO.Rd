@@ -21,14 +21,18 @@ NA
 \seealso{
 Useful links:
 \itemize{
-  \item Report bugs at \url{https://github.com/JLP-BioInf/}
+  \item Report bugs at \url{https://github.com/JLP-BioInf/comradesOO/issues}
 }
 
 
 Useful links:
 \itemize{
-  \item Report bugs at \url{https://github.com/JLP-BioInf/}
+  \item Report bugs at \url{https://github.com/JLP-BioInf/comradesOO/issues}
 }
+
+}
+\author{
+\strong{Maintainer}: Jonathan Price \email{jlp76@cam.ac.uk}
 
 }
 \keyword{internal}

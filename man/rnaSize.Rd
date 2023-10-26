@@ -11,6 +11,9 @@ rnaSize(x)
 \arguments{
 \item{x}{A comradesDataSet object}
 }
+\value{
+A numeric - the size of the RNA
+}
 \description{
 Extract the size of the RNA for the instance
 }

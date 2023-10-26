@@ -13,6 +13,9 @@ clusterTableList(x) <- value
 
 \item{value}{A replacement}
 }
+\value{
+No return - Sets a new clusterTableList slot
+}
 \description{
 Set new clusterTableList slot
 }
