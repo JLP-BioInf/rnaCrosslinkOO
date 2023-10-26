@@ -8,7 +8,6 @@
 \usage{
 foldComrades(
   cdsObject,
-  rna,
   rnaRefs,
   start,
   end,
@@ -20,8 +19,6 @@ foldComrades(
 }
 \arguments{
 \item{cdsObject}{comradesDataSet object created with comradesDataSet}
-
-\item{rna}{string - a single RNA to analyse}
 
 \item{rnaRefs}{named List - a list with named elements that correspond to the
 .RNA of interest. The element of the list must be a fasta file that has

@@ -507,10 +507,6 @@ sampleChimeras = function(chimeraList){
 #' x and nucleotide y 
 #' 
 #' @param rna The ID of the RNA of interest (can use rna(cdsObject))
-#' 
-#' 
-#' @slot rna string - a single RNA to analyse - must be present in \code{rnas(cdsObject)} 
-#' 
 #' @param type string - the Analysis stage of clusters you would like to compare you can find 
 #' available types by just running the objects name
 #' 
@@ -527,16 +523,15 @@ sampleChimeras = function(chimeraList){
 setGeneric("compareKnown", 
            function(trimmedClusters, 
                     knownMat,
-                    rna,  
                     type) standardGeneric("compareKnown"))
 
 setMethod("compareKnown", "comradesDataSet", function(trimmedClusters, 
                                                       knownMat,
-                                                      rna, 
                                                       type)  {
     
     ###################################
     # Inputs
+    rna = rnas(trimmedClusters)
     k18Smat = knownMat
     type = type
     trimmedClusters = trimmedClusters

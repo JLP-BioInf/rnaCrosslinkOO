@@ -6,7 +6,7 @@
 \alias{compareKnown,comradesDataSet-method}
 \title{compareKnown}
 \usage{
-compareKnown(trimmedClusters, knownMat, rna, type)
+compareKnown(trimmedClusters, knownMat, type)
 }
 \arguments{
 \item{trimmedClusters}{a \code{comradesDataSet} object, 
@@ -16,10 +16,10 @@ run \code{trimClusters()} on the  \code{comradesDataSet} first}
 value in matrix[x,y] would indicate a known interation between nucleotide 
 x and nucleotide y}
 
-\item{rna}{The ID of the RNA of interest (can use rna(cdsObject))}
-
 \item{type}{string - the Analysis stage of clusters you would like to compare you can find 
 available types by just running the objects name}
+
+\item{rna}{The ID of the RNA of interest (can use rna(cdsObject))}
 }
 \value{
 Returns a \code{comradesClusteredDataSet} object
@@ -31,9 +31,3 @@ will gain the \code{types} "known" and "novel" and "knownAndNovel"
 This method compares the current object to a know structure.run 
 \code{trimClusters()} on the  \code{comradesDataSet} first
 }
-\section{Slots}{
-
-\describe{
-\item{\code{rna}}{string - a single RNA to analyse - must be present in \code{rnas(cdsObject)}}
-}}
-

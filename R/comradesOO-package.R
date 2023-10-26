@@ -1,5 +1,5 @@
 
-#' comradesOO: A package for analysing a COMNRADES dataset
+#' comradesOO: A package for analysing a COMRADES dataset
 #'
 #' The package consists of 1 Object:
 #'    comradesDataSet

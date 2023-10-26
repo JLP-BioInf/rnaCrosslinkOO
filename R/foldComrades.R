@@ -10,7 +10,6 @@ NULL
 #' of the RNA. See \code{comradesDataSet} for slot information.
 #'
 #' @param cdsObject comradesDataSet object created with comradesDataSet
-#' @param rna string - a single RNA to analyse
 #' @param rnaRefs named List - a list with named elements that correspond to the
 #'     .RNA of interest. The element of the list must be a fasta file that has
 #'     been read with \code{seqinr::read.fasta()}
@@ -27,7 +26,6 @@ NULL
 #' @export
 setGeneric("foldComrades",
            function(cdsObject,
-                    rna,
                     rnaRefs,
                     start,
                     end,
@@ -40,7 +38,6 @@ setGeneric("foldComrades",
 setMethod("foldComrades",
           "comradesDataSet",
           function(cdsObject,
-                   rna,
                    rnaRefs,
                    start,
                    end,
@@ -52,7 +49,7 @@ setMethod("foldComrades",
             # Fold each cluster and add vienna to the table
             ###########################################################
             
-            
+            rna = rnas(cdsObject)
             ##############################
             # get trimmed cluster tables
             

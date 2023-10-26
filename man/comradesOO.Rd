@@ -4,7 +4,7 @@
 \name{comradesOO}
 \alias{comradesOO}
 \alias{comradesOO-package}
-\title{comradesOO: A package for analysing a COMNRADES dataset}
+\title{comradesOO: A package for analysing a COMRADES dataset}
 \description{
 The package consists of 1 Object:
    comradesDataSet
