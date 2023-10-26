@@ -729,24 +729,18 @@ makeExampleComradesDataSet = function() {
   # short distance 50
   c7 = sample(1:5, 50, replace = T)
   c8 = sample(20:25, 50, replace = T)
-  
   c13 = sample(20:25, 50, replace = T)
   c14 = sample(40:45, 50, replace = T)
-  
   # long distance 50
   c7 = c(c7,sample(1:5, 50, replace = T))
   c8 = c(c8,sample(20:25, 50, replace = T))
-  
   c13 = c(c13,sample(60:70, 50, replace = T))
   c14 = c(c14,sample(80:83, 50, replace = T))
-  
   # inter RNA 100
   c7 = c(c7,sample(1:5, 100, replace = T))
   c8 = c(c8,sample(20:25, 100, replace = T))
-  
   c13 = c(c13,sample(1:5, 100, replace = T))
   c14 = c(c14,sample(20:25, 100, replace = T))
-  
   
   exampleInput = data.frame(V1 = c1,
                             V2 = c2,
@@ -778,8 +772,6 @@ makeExampleComradesDataSet = function() {
   
   # add the column names 
   colnames(sampleTable2) = c("file", "group", "sample", "sampleName")
-  
-  
   
   # Choose RNA and set up the object ----
   rna = c("transcript1")
