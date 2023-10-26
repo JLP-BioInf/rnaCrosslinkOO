@@ -6,7 +6,16 @@
 \alias{plotMatrices,comradesDataSet-method}
 \title{Plots a number of contact maps to file of each sample for a stage in the analysis}
 \usage{
-plotMatrices(cds, type, directory = 0, a, b, c, d, h = 3)
+plotMatrices(
+  cds,
+  type = "original",
+  directory = 0,
+  a = 1,
+  b = 50,
+  c = 1,
+  d = 50,
+  h = 3
+)
 }
 \arguments{
 \item{cds}{A comradesDataSet object}
@@ -25,6 +34,16 @@ plotMatrices(cds, type, directory = 0, a, b, c, d, h = 3)
 
 \item{h}{Height of image (inches) ( only useful if plotting)}
 }
+\value{
+A heatmap of the reads in the analysis stage chosen
+}
 \description{
 Plots a number of contact maps to file of each sample for a stage in the analysis
+}
+\examples{
+cds = makeExampleComradesDataSet()
+
+plotMatrices(cds,
+            b = rnaSize(cds),
+            d = rnaSize(cds))
 }

@@ -25,6 +25,17 @@ plotMatricesAverage(cds, type, directory, a, b, c, d, h)
 
 \item{h}{Height of image (inches) ( only useful if plotting)}
 }
+\value{
+A heatmap of the reads in the analysis stage chosen
+}
 \description{
 Plots a contact map to file of all samples for a stage in the analysis
+}
+\examples{
+cds = makeExampleComradesDataSet()
+
+plotMatricesAverage(cds,
+            b = rnaSize(cds),
+            d = rnaSize(cds))
+
 }

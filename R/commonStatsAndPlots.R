@@ -4,7 +4,8 @@ NULL
 
 #' clusterNumbers
 #'
-#' This method prints a table showing the number of clusters in each step of the analysis
+#' This method prints a table showing the number of clusters in each step 
+#' of the analysis
 #'
 #' @param knowClusteredCds A comradesDataSet object after clustering has been performed
 #' @param rna The RNA ID of interest - use rna(cdsObject).
@@ -12,6 +13,15 @@ NULL
 #' @docType methods
 #' @rdname clusterNumbers
 #' @aliases clusterNumbers,comradesDataSet-method
+#' @return A data.frame shoing the number of clusters for each sample
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' clusteredCds = clusterComrades(cds,
+#'                 cores = 1,
+#'                 stepCount = 1,
+#'                 clusterCutoff = 1)
+#' clusterNumbers(clusteredCds)
 #' @export
 setGeneric("clusterNumbers",
            function(knowClusteredCds,
@@ -55,7 +65,8 @@ setMethod("clusterNumbers", "comradesDataSet", function(knowClusteredCds,
 #' readNumbers
 #'
 #'
-#' This method prints a table showing the number of duplexes in the clusters in each step of the analysis
+#' This method prints a table showing the number of duplexes in 
+#' the clusters in each step of the analysis
 #'
 #' @param knowClusteredCds A comradesDataSet object after clustering has been performed
 #' @param rna The RNA ID of interest - use rna(cdsObject).
@@ -64,6 +75,15 @@ setMethod("clusterNumbers", "comradesDataSet", function(knowClusteredCds,
 #' @docType methods
 #' @rdname readNumbers
 #' @aliases readNumbers,comradesDataSet-method
+#' @return A data.frame shoing the number of reads in clusters for each sample
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' clusteredCds = clusterComrades(cds,
+#'                 cores = 1,
+#'                 stepCount = 1,
+#'                 clusterCutoff = 1)
+#' readNumbers(clusteredCds)
 #' @export
 #'
 setGeneric("readNumbers",
@@ -158,24 +178,31 @@ setMethod("readNumbers", "comradesDataSet", function(knowClusteredCds,
 #' @docType methods
 #' @rdname plotMatrices
 #' @aliases plotMatrices,comradesDataSet-method
+#' @return A heatmap of the reads in the analysis stage chosen
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' plotMatrices(cds,
+#'             b = rnaSize(cds),
+#'             d = rnaSize(cds))
 #' @export
 setGeneric("plotMatrices", function(cds,
-                                    type,
+                                    type = 'original', 
                                     directory = 0,
-                                    a,
-                                    b,
-                                    c,
-                                    d,
+                                    a = 1,
+                                    b = 50,
+                                    c = 1,
+                                    d = 50,
                                     h= 3)
   standardGeneric("plotMatrices"))
 
 setMethod("plotMatrices", "comradesDataSet", function(cds, 
-                                                      type, 
+                                                      type = 'original', 
                                                       directory = 0, 
-                                                      a, 
-                                                      b, 
-                                                      c,
-                                                      d, 
+                                                      a = 1,
+                                                      b = 50,
+                                                      c = 1,
+                                                      d = 50,
                                                       h= 3)  {
   hybMatList = matrixList(cds)
   rnaS = rnas(cds)
@@ -265,6 +292,13 @@ setMethod("plotMatrices", "comradesDataSet", function(cds,
 #' @docType methods
 #' @rdname plotMatricesAverage
 #' @aliases plotMatricesAverage,comradesDataSet-method
+#' @return A heatmap of the reads in the analysis stage chosen
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' plotMatricesAverage(cds,
+#'             b = rnaSize(cds),
+#'             d = rnaSize(cds))
 #'
 #' @export
 setGeneric("plotMatricesAverage", function(cds, type, directory, a, b, c, d, h)
@@ -352,4 +386,4 @@ setMethod("plotMatricesAverage", "comradesDataSet", function(cds, type, director
   
 })
 
-#plot
+

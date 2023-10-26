@@ -13,6 +13,19 @@ readNumbers(knowClusteredCds, rna)
 
 \item{rna}{The RNA ID of interest - use rna(cdsObject).}
 }
+\value{
+A data.frame shoing the number of reads in clusters for each sample
+}
 \description{
-This method prints a table showing the number of duplexes in the clusters in each step of the analysis
+This method prints a table showing the number of duplexes in 
+the clusters in each step of the analysis
+}
+\examples{
+cds = makeExampleComradesDataSet()
+
+clusteredCds = clusterComrades(cds,
+                cores = 1,
+                stepCount = 1,
+                clusterCutoff = 1)
+readNumbers(clusteredCds)
 }

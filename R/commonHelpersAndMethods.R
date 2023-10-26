@@ -16,7 +16,6 @@ NULL
 #' @name getMatrices
 #' @docType methods
 #' @rdname getMatrices
-#' @export
 getMatrices = function(hybList, 
                        rna, 
                        size){
@@ -67,7 +66,6 @@ getMatrices = function(hybList,
 #' @name getAdjacancyMat
 #' @docType methods
 #' @rdname getAdjacancyMat
-#' @export
 getAdjacancyMat = function(hybGranges, nucletideOrPerc, cutoff){
     distances = hybGranges
     max = max(width(distances))
