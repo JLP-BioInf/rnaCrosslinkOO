@@ -71,7 +71,7 @@ getAdjacancyMat = function(hybGranges, nucletideOrPerc, cutoff){
     max = max(width(distances))
     
     #get overlapping
-    hits <- findOverlaps(distances, drop.self=T, drop.redundant=F)
+    hits <- findOverlaps(distances, drop.self=TRUE, drop.redundant=F)
     # get the relative overlap for the weights
     x <- distances[queryHits(hits)]
     y <- distances[subjectHits(hits)]

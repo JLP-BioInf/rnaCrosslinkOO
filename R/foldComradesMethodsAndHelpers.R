@@ -956,9 +956,9 @@ setMethod("plotStructure",
             
             RNAPlot(
               coord,
-              nt = T,
-              seqTF = T,
-              labTF = T,
+              nt = TRUE,
+              seqTF = TRUE,
+              labTF = TRUE,
               tsize = 1
             )
             
