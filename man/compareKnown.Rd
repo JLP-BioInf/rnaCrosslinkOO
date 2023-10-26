@@ -18,8 +18,6 @@ x and nucleotide y}
 
 \item{type}{string - the Analysis stage of clusters you would like to compare you can find 
 available types by just running the objects name}
-
-\item{rna}{The ID of the RNA of interest (can use rna(cdsObject))}
 }
 \value{
 Returns a \code{comradesClusteredDataSet} object

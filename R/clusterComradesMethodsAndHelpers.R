@@ -513,8 +513,6 @@ sampleChimeras = function(chimeraList){
 #' @param knownMat Matrix - A marix(ncol = lengthRNA,nrow = lengthRNA) where a
 #' value in matrix[x,y] would indicate a known interation between nucleotide 
 #' x and nucleotide y 
-#' 
-#' @param rna The ID of the RNA of interest (can use rna(cdsObject))
 #' @param type string - the Analysis stage of clusters you would like to compare you can find 
 #' available types by just running the objects name
 #' 
