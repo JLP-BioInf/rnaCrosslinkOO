@@ -229,11 +229,23 @@ setMethod("topTranscripts",
             y = y[names(x[1:ntop])]
             x = x[1:ntop]
             
+            
+            if(length(which(complete.cases(c(x)))) == 1){
+              x2 = data.frame(
+                t = names(x), 
+                s = x,
+                c = y)
+              colnames(x2) = c("RNA", "Samples", "Control")
+              x2$enrichment = x2$Samples /  x2$Control
+              
+            }else{
+            
             x2 = as.data.frame(x)
             x2$control = y
             colnames(x2) = c("RNA", "Samples", "Control")
             x2$enrichment = x2$Samples /  x2$Control
             
+            }
             
             for (i in names(hybFiles(cds)[["all"]][["all"]])) {
               t = c(hybFiles(cds)[["all"]][["all"]][[i]]$V4,
@@ -301,11 +313,22 @@ setMethod("topInteractions",
             y = y[names(x[1:ntop])]
             x = x[1:ntop]
             
+            if(length(which(complete.cases(c(x)))) == 1){
+              x2 = data.frame(
+                t = names(x), 
+                s = x,
+                c = y)
+              colnames(x2) = c("RNA", "Samples", "Control")
+              x2$enrichment = x2$Samples /  x2$Control
+              
+            }else{
+            
             x2 = as.data.frame(x)
             x2$control = y
             colnames(x2) = c("RNA", "Samples", "Control")
             x2$enrichment = x2$Samples /  x2$Control
             
+            }
             
             for (i in names(hybFiles(cds)[["all"]][["all"]])) {
               t =   paste(hybFiles(cds)[["all"]][["all"]][[i]]$V4,
@@ -374,7 +397,7 @@ setMethod("topInteracters",
             y = y[names(x[1:ntop])]
             x = x[1:ntop]
             
-            if(which(complete.cases(x)) == 1){
+            if(length(which(complete.cases(c(x)))) == 1){
               x2 = data.frame(
                 t = names(x), 
                 s = x,

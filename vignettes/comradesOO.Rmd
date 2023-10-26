@@ -394,7 +394,7 @@ topTranscripts(cds, # The comradesDataSet instance
 ```{r}
 # Returns the RNAs that interact with the RNA of interest
 topInteracters(cds, # The comradesDataSet instance
-               2)   # The number of entries to return
+               1)   # The number of entries to return
 ```
 
 
@@ -468,8 +468,7 @@ readNumbers( clusteredCds)
 The cluster tables contain coordinates of the clusters in data.frame format. Each cluster has a unique ID and size.x corrasponds to the number of reads assigned to that cluster or supercluster. ls, le, rs and le give the coordinates of the interaction. 
 
 ```{r}
-getData(clusteredCds,        # The object
-        rna,                 # The rna of interest
+getData(clusteredCds,        # The object             
         "clusterTableList",  # The Type of data to return     
         "original")[[1]]     # The stage of the analysis for the return data
 ```
@@ -580,12 +579,15 @@ plotMatricesAverage(cds = cds, # The comradesDataSet instance
 
 The accuracy of *insilico* prediction decreases with the size of the RNA. To counteract this effect, for large RNAS (?400bp), it can be useful to segment the RNA and fold the segments seaparately. DNA and RNA that form secondary and tertiary structures often have domains where there is more inter-domain interactions that inra-domain interactions. The *TopDom* package was designed to identify these domains for HI-C data. Using this package you can identify domains in the RNA structural data and can be used to inform the folding. 
 
-```{r}
+```{r, eval = FALSE}
 domainDF = data.frame()
 for(j in c(20,30,40,50,60,70)){
     #for(i in which(sampleTable(cds)$group == "s")){
     
-    timeMats = as.matrix(getData(x = cds, rna = rna, data = "matrixList", type = "noHost")[[1]])
+    timeMats = as.matrix(getData(x = cds, 
+                                 data = "matrixList", 
+                                 type = "noHost")[[1]])
+    
     timeMats = timeMats/ (sum(timeMats)/1000000)
     write.table(timeMats, file = "./conmat.txt",quote = F,row.names = F, col.names = F)
     
@@ -748,7 +750,6 @@ Using *compareKnown* you can check which clusters agree with the set of interact
 # use compare known to gett he known and not know clusters
 knowClusteredCds = compareKnown(trimmedClusters, # The comradesDataSet instance 
                                 knownMat, # A contact matrix of know interactions
-                                rna, # The RNA of interest 
                                 "trimmedClusters") # The analysis stage of clustering to compare 
 
 knowClusteredCds
