@@ -187,9 +187,11 @@ findBasePairsRNAcoFold2 = function(startPos1,
     
     #P i 0 k
     row = c("P", start, 0, As)
+    
+    csfile = tempfile()
     write.table(
       t(as.data.frame(row)),
-      file = "constraints.txt",
+      file = csfile,
       quote = F,
       row.names = F,
       col.names = F
@@ -203,7 +205,7 @@ findBasePairsRNAcoFold2 = function(startPos1,
       endPos1,
       "\n",
       seq,
-      "\" | RNAfold  --noPS --constraint=constraints.txt ",
+      "\" | RNAfold  --noPS --constraint=",csfile,
       sep = ""
     )
     
@@ -280,9 +282,10 @@ findBasePairsRNAcoFold2 = function(startPos1,
     shapeTable = shapeTable[complete.cases(shapeTable), ]
     
     print(shapeTable)
+    sfile = tempfile()
     write.table(
       shapeTable,
-      "shapeConstraints.txt",
+      sfile,
       quote = F,
       row.names = F,
       col.names = F
@@ -299,9 +302,10 @@ findBasePairsRNAcoFold2 = function(startPos1,
     
     #P i 0 k
     row = c("P", start, 0, As)
+    csfile = tempfile()
     write.table(
       t(as.data.frame(row)),
-      file = "constraints.txt",
+      file = csfile,
       quote = F,
       row.names = F,
       col.names = F
@@ -315,7 +319,7 @@ findBasePairsRNAcoFold2 = function(startPos1,
       endPos1,
       "\n",
       seq,
-      "\" | RNAfold  --noPS --constraint=constraints.txt --shape=shapeConstraints.txt ",
+      "\" | RNAfold  --noPS --constraint=",csfile," --shape=",sfile,
       sep = ""
     )
     
@@ -475,9 +479,10 @@ findBasePairsRNAfold = function(startPos,
     print(startPos)
     print(endPos)
     print(shapeTable)
+    sfile = tempfile()
     write.table(
       shapeTable,
-      "shapeConstraints.txt",
+      sfile,
       quote = F,
       row.names = F,
       col.names = F
@@ -494,7 +499,7 @@ findBasePairsRNAfold = function(startPos,
       endPos,
       "\n",
       seqs,
-      "\" | RNAfold   --noPS --shape=shapeConstraints.txt " ,
+      "\" | RNAfold   --noPS --shape=",sfile ,
       sep = ""
     )
     x = system(command, intern = T)
