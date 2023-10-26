@@ -30,3 +30,15 @@ trimFactor argument.
 The 3 attributes; matrixList, clusterTableList and clusterGrangesList 
 will gain the \code{types} "superClusters" and "trimmedClusters"
 }
+\examples{
+cds = makeExampleComradesDataSet()
+
+clusteredCds = clusterComrades(cds,
+                cores = 1,
+                stepCount = 1,
+                clusterCutoff = 1)
+                
+trimClusters(clusteredCds = clusteredCds,
+             trimFactor = 1, 
+             clusterCutoff = 1)
+}

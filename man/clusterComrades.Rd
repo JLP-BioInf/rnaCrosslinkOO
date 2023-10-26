@@ -17,6 +17,17 @@ clusterComrades(cds, cores = 3, stepCount = 2, clusterCutoff = 20)
 
 \item{clusterCutoff}{The minimum number of reads a cluster requires}
 }
+\value{
+A \code{comradesDataSet} object
+}
 \description{
 This method clusters the duplexes.
+}
+\examples{
+cds = makeExampleComradesDataSet()
+
+clusterComrades(cds,
+                cores = 1,
+                stepCount = 1,
+                clusterCutoff = 1)
 }

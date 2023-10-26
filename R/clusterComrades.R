@@ -19,6 +19,14 @@ NULL
 #' @aliases clusterComrades,comradesDataSet-method
 #' @docType methods
 #' @rdname clusterComrades
+#' @return A \code{comradesDataSet} object
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' clusterComrades(cds,
+#'                 cores = 1,
+#'                 stepCount = 1,
+#'                 clusterCutoff = 1)
 #' @export
 
 setGeneric("clusterComrades",

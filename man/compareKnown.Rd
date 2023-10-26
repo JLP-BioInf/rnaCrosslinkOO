@@ -31,3 +31,20 @@ will gain the \code{types} "known" and "novel" and "knownAndNovel"
 This method compares the current object to a know structure.run 
 \code{trimClusters()} on the  \code{comradesDataSet} first
 }
+\examples{
+cds = makeExampleComradesDataSet()
+
+clusteredCds = clusterComrades(cds,
+                cores = 1,
+                stepCount = 1,
+                clusterCutoff = 1)
+knownMat = matrix(0, ncol = rnaSize(cds), nrow = rnaSize(cds))
+knownMat[7,27] = 1
+# use compare known to gett he known and not know clusters
+knowClusteredCds = compareKnown(clusteredCds,
+                                knownMat,
+                                "original")
+clusterNumbers(knowClusteredCds)                 
+                
+
+}

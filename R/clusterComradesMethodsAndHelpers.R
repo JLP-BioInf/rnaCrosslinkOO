@@ -22,6 +22,17 @@ NULL
 #' @docType methods
 #' @rdname trimClusters
 #' @aliases trimClusters,comradesDataSet-method
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' clusteredCds = clusterComrades(cds,
+#'                 cores = 1,
+#'                 stepCount = 1,
+#'                 clusterCutoff = 1)
+#'                 
+#' trimClusters(clusteredCds = clusteredCds,
+#'              trimFactor = 1, 
+#'              clusterCutoff = 1)
 #' @export
 #' 
 setGeneric("trimClusters",
@@ -402,8 +413,6 @@ setMethod("trimClusters",
 #' @docType methods
 #' @rdname hybToGRanges
 #'  
-#' @export
-#' 
 hybToGRanges = function(hybList, 
                         rna){
     seqName = rna
@@ -459,7 +468,6 @@ hybToGRanges = function(hybList,
 #' @name sampleChimeras
 #' @aliases sampleChimeras
 #' @rdname sampleChimeras
-#' @export
 sampleChimeras = function(chimeraList){
     
     chimeraListSampled =list()
@@ -519,6 +527,22 @@ sampleChimeras = function(chimeraList){
 #' @docType methods
 #' @rdname compareKnown
 #' @aliases compareKnown,comradesDataSet-method
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' clusteredCds = clusterComrades(cds,
+#'                 cores = 1,
+#'                 stepCount = 1,
+#'                 clusterCutoff = 1)
+#' knownMat = matrix(0, ncol = rnaSize(cds), nrow = rnaSize(cds))
+#' knownMat[7,27] = 1
+#' # use compare known to gett he known and not know clusters
+#' knowClusteredCds = compareKnown(clusteredCds,
+#'                                 knownMat,
+#'                                 "original")
+#' clusterNumbers(knowClusteredCds)                 
+#'                 
+#'
 #' @export
 setGeneric("compareKnown", 
            function(trimmedClusters, 
@@ -671,7 +695,6 @@ setMethod("compareKnown", "comradesDataSet", function(trimmedClusters,
 #' @name printClustersFast
 #' @docType methods
 #' @rdname printClustersFast
-#' @export
 printClustersFast = function(dir, 
                              clustering, 
                              highest_clusters, 
@@ -724,7 +747,6 @@ addCluster = function(granges, indexes, prev, cluster, type){
 #' @name subsetHybList2
 #' @docType methods
 #' @rdname subsetHybList2
-#' @export
 subsetHybList2 = function(hybList, 
                           min, 
                           max, 
