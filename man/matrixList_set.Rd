@@ -19,3 +19,9 @@ No return - Sets a new matrixList slot
 \description{
 Set new matrixList slot
 }
+\examples{
+cds = makeExampleComradesDataSet()
+
+newMatrixList <- matrixList(cds)
+matrixList(cds) <- newMatrixList
+}

@@ -17,3 +17,8 @@ A list of tables in the original input format, one entry for each sample
 \description{
 Extract the data in original format
 }
+\examples{
+cds = makeExampleComradesDataSet()
+
+hybFiles(cds)
+}

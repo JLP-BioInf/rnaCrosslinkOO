@@ -17,3 +17,8 @@ A character vector - the sample names
 \description{
 Extract the sample names for the instance
 }
+\examples{
+cds = makeExampleComradesDataSet()
+
+sampleNames(cds)
+}

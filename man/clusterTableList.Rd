@@ -17,3 +17,8 @@ A list of tables showing the vienna structures of each cluster
 \description{
 Extract the cluster coordinates in data frame format
 }
+\examples{
+cds = makeExampleComradesDataSet()
+
+clusterTableList(cds)
+}

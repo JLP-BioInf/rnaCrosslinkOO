@@ -6,13 +6,20 @@
 \alias{featureInfo,comradesDataSet-method}
 \title{featureInfo}
 \usage{
-featureInfo(cds, file)
+featureInfo(cds)
 }
 \arguments{
 \item{cds}{a \code{comradesDataSet} object}
-
-\item{file}{Directory for output files}
+}
+\value{
+A list - Feature level and transcript level counts for each sample
 }
 \description{
-this method prints some feature level statistics
+Produces a list list of 2 elemnts 'transcript' and 'family'
+Each element contains a table with the counts for each RNA in each sample.
+}
+\examples{
+cds = makeExampleComradesDataSet()
+sampleTable(cds)
+
 }

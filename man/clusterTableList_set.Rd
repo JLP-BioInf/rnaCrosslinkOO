@@ -19,3 +19,9 @@ No return - Sets a new clusterTableList slot
 \description{
 Set new clusterTableList slot
 }
+\examples{
+cds = makeExampleComradesDataSet()
+
+newclusterGrangesList <- clusterTableList(cds)
+clusterTableList(cds) <- newclusterGrangesList
+}

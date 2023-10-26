@@ -16,3 +16,8 @@ A list - The indices of the sample in the control and sample groups
 \description{
 Extract the indeces for each group for the instance
 }
+\examples{
+cds = makeExampleComradesDataSet()
+
+group(cds)
+}

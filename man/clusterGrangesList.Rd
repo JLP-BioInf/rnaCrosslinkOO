@@ -17,3 +17,8 @@ A list of Granges objects showing the positions of each cluster, one entry for e
 \description{
 Extract the cluster coordinates in granges format
 }
+\examples{
+cds = makeExampleComradesDataSet()
+
+clusterGrangesList(cds)
+}

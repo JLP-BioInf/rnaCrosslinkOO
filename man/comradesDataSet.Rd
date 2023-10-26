@@ -115,23 +115,23 @@ file = tempfile()
 write.table(exampleInput,file = file, quote = F, row.names = F, sep = "\t", col.names = F)
 
 
-# Set up the sample table. ----
+# Set up the sample table 
 sampleTabler1 = c(file, "s", "1", "s1")
 sampleTabler2 = c(file, "c", "1", "c1")
-
 # make the sample table 
 sampleTable2 = rbind.data.frame(sampleTabler1, sampleTabler2)
-
 # add the column names 
 colnames(sampleTable2) = c("file", "group", "sample", "sampleName")
 
 # Choose RNA and set up the object ----
 rna = c("transcript1")
+
+
 # load the object
 cds = comradesDataSet(rnas = rna,
                      rnaSize = 0,
                      sampleTable = sampleTable2)
 
-
+cds
 
 }

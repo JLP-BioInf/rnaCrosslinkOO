@@ -12,8 +12,13 @@ rnaSize(x)
 \item{x}{A comradesDataSet object}
 }
 \value{
-A numeric - the size of the RNA
+A numeric - the size of the RNA (nucleotides)
 }
 \description{
 Extract the size of the RNA for the instance
+}
+\examples{
+cds = makeExampleComradesDataSet()
+
+rnaSize(cds)
 }

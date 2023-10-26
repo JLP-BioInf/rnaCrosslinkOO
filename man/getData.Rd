@@ -6,12 +6,10 @@
 \alias{getData,comradesDataSet-method}
 \title{getData}
 \usage{
-getData(x, rna, data, type)
+getData(x, data, type)
 }
 \arguments{
 \item{x}{A comradesDataSet object}
-
-\item{rna}{The ID of the RNA of interest}
 
 \item{data}{The data type to return <hybFiles | matrixList | clusterGrangesList | clusterTableList>}
 
@@ -25,4 +23,10 @@ Get data is more generic method for retrieving data from the object
 and returns a list, the number of entries in the list is number of
 samples in the dataset and the list contain entries of the data type
 and analysis stage you select.
+}
+\examples{
+cds = makeExampleComradesDataSet()
+
+getData(cds, 'matrixList','original')
+
 }

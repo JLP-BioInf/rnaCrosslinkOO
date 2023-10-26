@@ -11,143 +11,113 @@ NULL
 
 #' featureInfo
 #'
-#' this method prints some feature level statistics
+#' Produces a list list of 2 elemnts 'transcript' and 'family'
+#' Each element contains a table with the counts for each RNA in each sample.
 #'
 #' @param cds a \code{comradesDataSet} object
-#' @param file Directory for output files
 #'
+#' 
 #' @name featureInfo
 #' @docType methods
 #' @aliases featureInfo,comradesDataSet-method
 #' @rdname featureInfo
+#' @return A list - Feature level and transcript level counts for each sample
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' sampleTable(cds)
 #'
 #' @export
 setGeneric("featureInfo",
-           function(cds,
-                    file)
+           function(cds)
              standardGeneric("featureInfo"))
 
 setMethod("featureInfo",
           "comradesDataSet",
-          function(cds,
-                   file)  {
+          function(cds)  {
             alteredHybList = list()
+            TE = rnas(cds)
+            hybList = getData(x = cds, 
+                              data = "hybFiles", 
+                              type = "original")
             
-            for (TE in rnas(cds)) {
-              hybList = getData(cds, TE, data = "hybFiles", "original")
+            for (hyb in 1:length(hybList)) {
+              controlHyb = hybList[[hyb]]
+              #get the right columns
+              controlHyb  = as.data.frame(cbind(
+                as.character(controlHyb$V4),
+                as.character(controlHyb$V10)
+              ))
               
-              for (hyb in 1:length(hybList)) {
-                controlHyb = hybList[[hyb]]
-                #get the right columns
-                controlHybO  = as.data.frame(cbind(
-                  as.character(controlHyb$V4),
-                  as.character(controlHyb$V10)
-                ))
-                
-                #get only those lines with the RNA
-                controlHyb = controlHybO[controlHybO$V1 == TE |
-                                           controlHybO$V2 == TE, ]
-                
-                #remove the factor levels
-                controlHyb$V1 = as.character(controlHyb$V1)
-                controlHyb$V2 = as.character(controlHyb$V2)
-                
-                
-                #Swap the columns around that do not have zika in column 2
-                controlHybtmp1 = controlHyb[controlHyb$V1 == TE, ]
-                controlHybtmp2 = controlHyb[!(controlHyb$V1 == TE), ]
-                controlHybtmp2 = rev(controlHybtmp2)
-                colnames(controlHybtmp2) = c("V1", "V2")
-                controlHyb = as.data.frame(rbind(controlHybtmp1, controlHybtmp2))
-                
-                # check to see if the unique stuff has reduced
-                print(unique(sort(controlHyb$V1)))
-                print(length(unique(sort(
-                  controlHyb$V2
-                ))))
-                
-                
-                #add to list
-                alteredHybList[[TE]][[hyb]] = controlHyb
-              }
+              #get only those lines with the RNA
+              controlHyb = controlHyb
+              
+              #remove the factor levels
+              controlHyb$V1 = as.character(controlHyb$V1)
+              controlHyb$V2 = as.character(controlHyb$V2)
+              
+              #Swap the columns around 
+              controlHybtmp1 = controlHyb[controlHyb$V1 == TE, ]
+              controlHybtmp2 = controlHyb[!(controlHyb$V1 == TE), ]
+              controlHybtmp2 = rev(controlHybtmp2)
+              colnames(controlHybtmp2) = c("V1", "V2")
+              controlHyb = as.data.frame(rbind(controlHybtmp1, controlHybtmp2))
+              
+              #add to list
+              alteredHybList[[TE]][[hyb]] = controlHyb
+              
             }
-            
-            
-            
             
             ##############################
             # Now Combine the two
             ##############################
             
-            
-            
             df = list()
-            
-            for (TE in rnas(cds)) {
-              df[[TE]] = data.frame()
-              aggList = list()
-              totalNames = c()
-              for (hyb in 1:length(alteredHybList[[TE]])) {
-                #aggList[[TE]] = list()
-                sampleHyb = alteredHybList[[TE]][[hyb]]
-                sData = sampleHyb[sampleHyb$V1 == TE, ]
-                freqSample2 = aggregate(sData$V1, by = list(sData$V2), FUN = length)
-                freqSample = freqSample2$x
-                names(freqSample) = freqSample2$Group.1
-                aggList[[TE]][[hyb]] = freqSample
-                # Get the total features that exist in the dataset
-                totalNames = unique(sort(c(totalNames, names(freqSample))))
-              }
+            df[[TE]] = data.frame()
+            aggList = list()
+            totalNames = c()
+            for (hyb in 1:length(alteredHybList[[TE]])) {
+   
               
-              tmpMat = matrix(0, nrow = length(totalNames), ncol = length(hybList))
-              row.names(tmpMat) = totalNames
-              colnames(tmpMat) = sampleNames(cds)
-              
-              
-              
-              for (i in 1:nrow(tmpMat)) {
-                for (j in 1:ncol(tmpMat)) {
-                  tmpMat[i, j] = aggList[[TE]][[j]][row.names(tmpMat)[i]]
-                }
-                #print(i)
-              }
-              
-              tmpMat[is.na(tmpMat)] <- 0.00001
-              write.table(
-                tmpMat,
-                file = paste(file, "/", TE, "mRNA_featureStats.txt", sep = ""),
-                quote = F,
-                sep = "\t"
-              )
-              df[[TE]] = as.data.frame(tmpMat)
+              sampleHyb = alteredHybList[[TE]][[hyb]]
+              sData = sampleHyb[sampleHyb$V1 == TE, ]
+              freqSample2 = aggregate(sData$V1, by = list(sData$V2), FUN = length)
+              freqSample = freqSample2$x
+              names(freqSample) = freqSample2$Group.1
+              aggList[[TE]][[hyb]] = freqSample 
+              # Get the total features that exist in the dataset
+              totalNames = unique(sort(c(totalNames, names(freqSample))))
             }
             
             
             
+            # geta. matrix for plotting
+            tmpMat = matrix(0, nrow = length(totalNames), ncol = length(hybList))
+            row.names(tmpMat) = totalNames
+            colnames(tmpMat) = sampleNames(cds)
+            for (i in 1:nrow(tmpMat)) {
+              for (j in 1:ncol(tmpMat)) {
+                tmpMat[i, j] = aggList[[TE]][[j]][row.names(tmpMat)[i]]
+              }
+            }
+            tmpMat[is.na(tmpMat)] <- 0.00001
+            df[[TE]] = as.data.frame(tmpMat)
             
             
             
             
-            
-            
-            
-            
+            # now make a stats list
             statsList = list()
-            
-            for (TE in rnas(cds)) {
-              statsList[[TE]] = df[[TE]]
-              statsList[[TE]]$ID = sapply(row.names(statsList[[TE]]), function(x)
-                strsplit(x, "_")[[1]][4], USE.NAMES = FALSE)
-              statsList[[TE]]
-            }
-            
+            statsList[[TE]] = df[[TE]]
+            statsList[[TE]]$ID = sapply(row.names(statsList[[TE]]), function(x)
+              tail(strsplit(x, "_")[[1]],n=1), USE.NAMES = FALSE)
+            statsList[[TE]]
+
             
             # Now get the stats from aggregate
-            
             aggList = list()
             aggList2 = list()
             
-            for (TE in rnas(cds)) {
+
               aggList[[TE]] =   aggregate(. ~ ID , statsList[[TE]], sum)
               
               
@@ -179,12 +149,9 @@ setMethod("featureInfo",
               
               samples = paste("norm", samples, sep = "_")
               
-              pdf(paste(file, "/stats_", TE, ".pdf", sep = ""),
-                  height = 4,
-                  width = 7)
-              
-              plot(
-                ggplot() +
+  
+
+                plot(ggplot() +
                   geom_boxplot(data = data[data$variable %in% samples, ], aes(
                     x = reorder(data[data$variable %in% samples, ]$ID, 
                                 data[data$variable %in% samples, ]$value, 
@@ -199,16 +166,14 @@ setMethod("featureInfo",
                   )) +
                   geom_hline(yintercept = 0, colour = "darkred") +
                   theme_classic() +
-                  theme(axis.text.x = element_text(angle = 90, hjust = 1))
-              )
-              dev.off()
-              
-            }
+                  theme(axis.text.x = element_text(angle = 90, hjust = 1)) )
+ 
             
-            
-            
-            
-          })
+            featureStats = list()
+            featureStats[["transcript"]] = df[[TE]]
+            featureStats[["family"]] = aggList[[TE]]
+            return(featureStats)
+})
 
 
 
@@ -407,11 +372,11 @@ setMethod("topInteracters",
               x2$enrichment = x2$Samples /  x2$Control
               
             }else{
-            
-            x2 = as.data.frame(x)
-            x2$control = y
-            colnames(x2) = c("RNA", "Samples", "Control")
-            x2$enrichment = x2$Samples /  x2$Control
+              
+              x2 = as.data.frame(x)
+              x2$control = y
+              colnames(x2) = c("RNA", "Samples", "Control")
+              x2$enrichment = x2$Samples /  x2$Control
             }
             
             for (i in names(hybFiles(cds)[[rnas(cds)]][["host"]])) {

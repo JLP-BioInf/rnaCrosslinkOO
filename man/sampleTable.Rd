@@ -17,3 +17,8 @@ A data frame - The orginal meta-data table
 \description{
 Extract the sample table for the instance
 }
+\examples{
+cds = makeExampleComradesDataSet()
+
+sampleTable(cds)
+}

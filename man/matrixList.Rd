@@ -17,3 +17,8 @@ A list of contract matrices, one entry for each sample
 \description{
 Extract the contact matrices
 }
+\examples{
+cds = makeExampleComradesDataSet()
+
+matrixList(cds)
+}
