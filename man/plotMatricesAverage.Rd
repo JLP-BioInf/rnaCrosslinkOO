@@ -6,7 +6,16 @@
 \alias{plotMatricesAverage,comradesDataSet-method}
 \title{plotMatricesAverage}
 \usage{
-plotMatricesAverage(cds, type, directory, a, b, c, d, h)
+plotMatricesAverage(
+  cds,
+  type = "original",
+  directory = 0,
+  a = 1,
+  b = 50,
+  c = 1,
+  d = 50,
+  h = 3
+)
 }
 \arguments{
 \item{cds}{A comradesDataSet object}

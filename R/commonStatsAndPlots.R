@@ -301,10 +301,24 @@ setMethod("plotMatrices", "comradesDataSet", function(cds,
 #'             d = rnaSize(cds))
 #'
 #' @export
-setGeneric("plotMatricesAverage", function(cds, type, directory, a, b, c, d, h)
+setGeneric("plotMatricesAverage", function(cds,
+                                           type = 'original', 
+                                           directory = 0,
+                                           a = 1,
+                                           b = 50,
+                                           c = 1,
+                                           d = 50,
+                                           h= 3)
   standardGeneric("plotMatricesAverage"))
 
-setMethod("plotMatricesAverage", "comradesDataSet", function(cds, type, directory, a, b, c, d, h)  {
+setMethod("plotMatricesAverage", "comradesDataSet", function(cds,
+                                                             type = 'original', 
+                                                             directory = 0,
+                                                             a = 1,
+                                                             b = 50,
+                                                             c = 1,
+                                                             d = 50,
+                                                             h= 3)  {
   for (rna in rnas(cds)) {
     hybMatList = matrixList(cds)
     hybMatList2 = hybMatList
