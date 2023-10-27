@@ -377,7 +377,7 @@ setMethod("topInteracters",
             c = group(cds)[["s"]]
             vect = c()
             for (i in c) {
-              vecto = hybFiles(cds)[["all"]][["all"]][[i]]
+              vecto = hybFiles(cds)[[2]][["host"]][[i]]
               vecto = vecto[vecto$V4 == rnas(cds), ]
               vect = c(vect, vecto$V10)
             }
@@ -387,7 +387,7 @@ setMethod("topInteracters",
             c = group(cds)[["c"]]
             vect = c()
             for (i in c) {
-              vecto = hybFiles(cds)[["all"]][["all"]][[i]]
+              vecto = hybFiles(cds)[[2]][["host"]][[i]]
               vecto = vecto[vecto$V4 == rnas(cds), ]
               vect = c(vect, vecto$V10)
             }
@@ -761,9 +761,60 @@ makeExampleComradesDataSet = function() {
   write.table(exampleInput,file = file, quote = F, row.names = F, sep = "\t", col.names = F)
   
   
+  
+  
+  c4 = c(rep("transcript1",55),rep("transcript2",90) )
+  c10 = c(rep("transcript1",145) )
+  c1 = 1:145
+  c2 = rep(paste(rep("A", 40), collapse = ""),145)
+  c3 = rep(".",145)
+  c9 = rep(".",145)
+  c15 = rep(".",145)
+  c5 = rep(1,145)
+  c11 = rep(21,145)
+  c6 = rep(20,145)
+  c12= rep(40,145)
+  # short distance 55
+  c7 = sample(1:5, 55, replace = T)
+  c8 = sample(20:25, 55, replace = T)
+  c13 = sample(20:25, 55, replace = T)
+  c14 = sample(40:45, 55, replace = T)
+
+  # inter RNA 100
+  c7 = c(c7,sample(1:40, 90, replace = T))
+  c8 = c(c8,sample(20:75, 90, replace = T))
+  c13 = c(c13,sample(1:40, 90, replace = T))
+  c14 = c(c14,sample(20:75, 90, replace = T))
+  
+  exampleInput = data.frame(V1 = c1,
+                            V2 = c2,
+                            V3 = c3,
+                            V4 = c4,
+                            V5 = as.numeric(c5),
+                            V6 = as.numeric(c6),
+                            V7 = as.numeric(c7),
+                            V8 = as.numeric(c8),
+                            V9 = c9,
+                            V10 = c10,
+                            V11 = as.numeric(c11),
+                            V12 = as.numeric(c12),
+                            V13 = as.numeric(c13),
+                            V14 = as.numeric(c14),
+                            V15 = c15)
+  
+  
+  file2 = tempfile()
+  write.table(exampleInput,file = file2, quote = F, row.names = F, sep = "\t", col.names = F)
+  
+  
+  
+  
+  
+  
+  
   # Set up the sample table. ----
   sampleTabler1 = c(file, "s", "1", "s1")
-  sampleTabler2 = c(file, "c", "1", "c1")
+  sampleTabler2 = c(file2, "c", "1", "c1")
   
   # make the sample table 
   sampleTable2 = rbind.data.frame(sampleTabler1, sampleTabler2)

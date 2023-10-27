@@ -49,7 +49,7 @@ setMethod("trimClusters",
               ##############################
               # set up variables
               allChimerasForSuperClustersPlotting = list()
-              goodClusters = c()
+              goodClusters = list()
               for(rna in rnas(clusteredCds)){  ## for each RNA
                   
                   # size of rna
@@ -118,7 +118,7 @@ setMethod("trimClusters",
                           highest_clusters = names(table(membership(clustering)))
                           # printClustersFast function creates a the standard clustering
                           # table from the iGraph output
-                          superclustersPlotting[[z]]  = printClustersFast("../clustering/combined/",clustering, highest_clusters, left, right)
+                          superclustersPlotting[[z]]  = printClustersFast(tempfile(),clustering, highest_clusters, left, right)
                           plottingListFull = superclustersPlotting[[z]]
                           
                           ##############################
@@ -166,8 +166,8 @@ setMethod("trimClusters",
                                                                             clusterPositionsCombined,
                                                                             stringsAsFactors = F)
                           
-                          goodClusters = superclustersPoisitonList[[z]][superclustersPoisitonList[[z]]$size.x > clusterCutoff,]
-                          goodClusters = sub("\\s.*","",row.names(superclustersPoisitonList[[z]]))
+                          goodClusters[[z]] = superclustersPoisitonList[[z]][superclustersPoisitonList[[z]]$size.x > clusterCutoff,]                          
+                          goodClusters[[z]] = sub("\\s.*","",row.names(superclustersPoisitonList[[z]]))
                           #superclustersPoisitonList[[z]] = superclustersPoisitonList[[z]][superclustersPoisitonList[[z]]$size.x > clusterCutoff,]
                           
                           #superclustersPlotting[[z]] = superclustersPlotting[[z]][superclustersPlotting[[z]]$size.Group.1 %in% superclustersPoisitonList[[z]]$size.Group.1, ]
@@ -266,8 +266,10 @@ setMethod("trimClusters",
               for(i in 1:length(sampleNames(clusteredCds))){
                   allChimerasForSuperClustersPlottingTrimmed[[i]] = GRanges()
                   #for each cluster
-                  for(cluster in unique(allChimerasForSuperClustersPlotting[[i]]$superCluster)[unique(allChimerasForSuperClustersPlotting[[i]]$superCluster) %in% goodClusters] ){
-                      cluster2 = sub("\\s.*","" ,cluster)
+                  for(cluster in unique(allChimerasForSuperClustersPlotting[[i]]$superCluster)[unique(allChimerasForSuperClustersPlotting[[i]]$superCluster) %in% 
+                                                                                               c(goodClusters[[i]], paste(goodClusters[[i]],"left"))] ){
+
+                    cluster2 = sub("\\s.*","" ,cluster)
                       lefty = list()
                       
                       #for the left and right sides for each cluster
@@ -419,6 +421,12 @@ hybToGRanges = function(hybList,
     hybOutput2 = hybList
     gList = list()
     for(i in 1:length(hybOutput2)){
+      if(!is.data.frame(hybOutput2[[i]])){
+        gList[[i]] = list()
+        gList[[i]][["left"]] = NA
+        gList[[i]][["right"]] = NA
+        gList[[i]][["gap"]] = NA
+      }else{
         hybOutput = hybOutput2[[i]]
         gList[[i]] = GRangesList()
         #make a Granges from the left
@@ -452,6 +460,7 @@ hybToGRanges = function(hybList,
         gList[[i]][["left"]] = left
         gList[[i]][["right"]] = right
         gList[[i]][["gap"]] = distances
+      }
     }
     return(gList)
 }
@@ -757,6 +766,12 @@ subsetHybList2 = function(hybList,
         rightLength = longDistHyb[[i]]$V12 - longDistHyb[[i]]$V11
         longDistHyb[[i]] = longDistHyb[[i]][leftLength < length & rightLength < length,]
     }
+    for (i in 1:length(hybList)){
+      if(nrow(longDistHyb[[i]]) == 0 ){
+        longDistHyb[[i]] = NA
+      }
+    }
+    
     return(longDistHyb)
 }
 

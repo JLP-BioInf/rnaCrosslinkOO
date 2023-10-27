@@ -92,6 +92,7 @@ getAdjacancyMat = function(hybGranges, nucletideOrPerc, cutoff){
         
         hitsWithOverlap = hits[relative_overlap <= cutoff & relative_overlap >= 0 ]
         relative_overlap = relative_overlap[relative_overlap <= cutoff  & relative_overlap >= 0 ]
+        relative_overlap[relative_overlap >= 7 ] = 15 
     } else if(nucletideOrPerc == "perc"){
         
         relative_overlap = (1- (width(pintersect(x, y)) / max))
@@ -103,7 +104,10 @@ getAdjacancyMat = function(hybGranges, nucletideOrPerc, cutoff){
         
     }
     if(length(hitsWithOverlap) == 0){
-        return(NA)
+        return(matrix(0, 
+                      ncol = length(distances), 
+                      nrow = length(distances),
+                      dimnames = list(1:length(distances),1:length(distances))))
     }else{
         
         
