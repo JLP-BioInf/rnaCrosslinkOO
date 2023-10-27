@@ -36,9 +36,9 @@ cds = makeExampleComradesDataSet()
 clusteredCds = clusterComrades(cds,
                 cores = 1,
                 stepCount = 1,
-                clusterCutoff = 1)
+                clusterCutoff = 0)
                 
 trimClusters(clusteredCds = clusteredCds,
              trimFactor = 1, 
-             clusterCutoff = 1)
+             clusterCutoff = 0)
 }

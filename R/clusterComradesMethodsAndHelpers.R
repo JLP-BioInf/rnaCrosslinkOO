@@ -28,11 +28,11 @@ NULL
 #' clusteredCds = clusterComrades(cds,
 #'                 cores = 1,
 #'                 stepCount = 1,
-#'                 clusterCutoff = 1)
+#'                 clusterCutoff = 0)
 #'                 
 #' trimClusters(clusteredCds = clusteredCds,
 #'              trimFactor = 1, 
-#'              clusterCutoff = 1)
+#'              clusterCutoff = 0)
 #' @export
 #' 
 setGeneric("trimClusters",
@@ -540,7 +540,7 @@ sampleChimeras = function(chimeraList){
 #' clusteredCds = clusterComrades(cds,
 #'                 cores = 1,
 #'                 stepCount = 1,
-#'                 clusterCutoff = 1)
+#'                 clusterCutoff = 0)
 #' knownMat = matrix(0, ncol = rnaSize(cds), nrow = rnaSize(cds))
 #' knownMat[7,27] = 1
 #' # use compare known to gett he known and not know clusters

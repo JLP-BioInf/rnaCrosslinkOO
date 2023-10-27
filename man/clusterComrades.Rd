@@ -29,5 +29,5 @@ cds = makeExampleComradesDataSet()
 clusterComrades(cds,
                 cores = 1,
                 stepCount = 1,
-                clusterCutoff = 1)
+                clusterCutoff = 0)
 }
