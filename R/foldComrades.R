@@ -32,7 +32,7 @@ NULL
 #'                 stepCount = 1,
 #'                 clusterCutoff = 0)
 #'                 
-#' trimClusters(clusteredCds = clusteredCds,
+#' trimmedClusters = trimClusters(clusteredCds = clusteredCds,
 #'              trimFactor = 1, 
 #'              clusterCutoff = 0)
 #'              
