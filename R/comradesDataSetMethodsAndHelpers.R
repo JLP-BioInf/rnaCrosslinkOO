@@ -725,20 +725,20 @@ makeExampleComradesDataSet = function() {
   c6 = rep(20,200)
   c12= rep(40,200)
   # short distance 50
-  c7 = sample(1:5, 50, replace = T)
-  c8 = sample(20:25, 50, replace = T)
-  c13 = sample(20:25, 50, replace = T)
-  c14 = sample(40:45, 50, replace = T)
+  c7 = sample(1:5, 50, replace = TRUE)
+  c8 = sample(20:25, 50, replace = TRUE)
+  c13 = sample(20:25, 50, replace = TRUE)
+  c14 = sample(40:45, 50, replace = TRUE)
   # long distance 50
-  c7 = c(c7,sample(1:5, 50, replace = T))
-  c8 = c(c8,sample(20:25, 50, replace = T))
-  c13 = c(c13,sample(60:70, 50, replace = T))
-  c14 = c(c14,sample(80:83, 50, replace = T))
+  c7 = c(c7,sample(1:5, 50, replace = TRUE))
+  c8 = c(c8,sample(20:25, 50, replace = TRUE))
+  c13 = c(c13,sample(60:70, 50, replace = TRUE))
+  c14 = c(c14,sample(80:83, 50, replace = TRUE))
   # inter RNA 100
-  c7 = c(c7,sample(1:5, 100, replace = T))
-  c8 = c(c8,sample(20:25, 100, replace = T))
-  c13 = c(c13,sample(1:5, 100, replace = T))
-  c14 = c(c14,sample(20:25, 100, replace = T))
+  c7 = c(c7,sample(1:5, 100, replace = TRUE))
+  c8 = c(c8,sample(20:25, 100, replace = TRUE))
+  c13 = c(c13,sample(1:5, 100, replace = TRUE))
+  c14 = c(c14,sample(20:25, 100, replace = TRUE))
   
   exampleInput = data.frame(V1 = c1,
                             V2 = c2,
@@ -775,16 +775,16 @@ makeExampleComradesDataSet = function() {
   c6 = rep(20,145)
   c12= rep(40,145)
   # short distance 55
-  c7 = sample(1:5, 55, replace = T)
-  c8 = sample(20:25, 55, replace = T)
-  c13 = sample(20:25, 55, replace = T)
-  c14 = sample(40:45, 55, replace = T)
+  c7 = sample(1:5, 55, replace = TRUE)
+  c8 = sample(20:25, 55, replace = TRUE)
+  c13 = sample(20:25, 55, replace = TRUE)
+  c14 = sample(40:45, 55, replace = TRUE)
 
   # inter RNA 100
-  c7 = c(c7,sample(1:40, 90, replace = T))
-  c8 = c(c8,sample(20:75, 90, replace = T))
-  c13 = c(c13,sample(1:40, 90, replace = T))
-  c14 = c(c14,sample(20:75, 90, replace = T))
+  c7 = c(c7,sample(1:40, 90, replace = TRUE))
+  c8 = c(c8,sample(20:75, 90, replace = TRUE))
+  c13 = c(c13,sample(1:40, 90, replace = TRUE))
+  c14 = c(c14,sample(20:75, 90, replace = TRUE))
   
   exampleInput = data.frame(V1 = c1,
                             V2 = c2,
