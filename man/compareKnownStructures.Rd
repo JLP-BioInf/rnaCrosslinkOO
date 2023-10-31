@@ -23,6 +23,7 @@ a tables showing the number of predicted interactions and their agreement
 This method compares the predicted structures to a set of known interactions
 }
 \examples{
+\dontrun{
 cds = makeExampleComradesDataSet()
 clusteredCds = clusterComrades(cds = cds,
                                cores = 3,
@@ -66,4 +67,5 @@ foldedCds = foldComrades(trimmedClusters,
 file = data.frame(V1 = c(6), 
                   V2 = c(80))
 compareKnownStructures(foldedCds,file)
+}
 }

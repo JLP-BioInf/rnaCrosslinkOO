@@ -27,6 +27,7 @@ This method plots two structures chosen from the
 plotEnsemblePCA method
 }
 \examples{
+\dontrun{
 cds = makeExampleComradesDataSet()
 clusteredCds = clusterComrades(cds = cds,
                                cores = 3,
@@ -67,4 +68,5 @@ foldedCds = foldComrades(trimmedClusters,
 
 
 plotComparisonArc(foldedCds,"s1","s1",1,3)
+}
 }

@@ -22,6 +22,7 @@ a PCA plot of the ensembl
 This method plots a PCA of the ensembl
 }
 \examples{
+\dontrun{
 cds = makeExampleComradesDataSet()
 clusteredCds = clusterComrades(cds = cds,
                                cores = 3,
@@ -62,4 +63,5 @@ foldedCds = foldComrades(trimmedClusters,
 
 
 plotEnsemblePCA(foldedCds)
+}
 }

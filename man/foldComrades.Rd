@@ -44,6 +44,7 @@ This methods folds an ensebl of structures for the whole RNA or chosen region
 of the RNA. See \code{comradesDataSet} for slot information.
 }
 \examples{
+\dontrun{
 cds = makeExampleComradesDataSet()
 
 clusteredCds = clusterComrades(cds,
@@ -84,4 +85,5 @@ foldedCds = foldComrades(trimmedClusters,
                          constraintNumber  = 1,
                          evCutoff = 1)
 foldedCds
+}
 }

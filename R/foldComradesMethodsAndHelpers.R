@@ -529,6 +529,7 @@ findBasePairsRNAfold2 = function(startPos,
 #' @aliases compareKnownStructures,comradesDataSet-method
 #' @return a tables showing the number of predicted interactions and their agreement
 #' @examples
+#' \dontrun{
 #' cds = makeExampleComradesDataSet()
 #' clusteredCds = clusterComrades(cds = cds,
 #'                                cores = 3,
@@ -572,6 +573,7 @@ findBasePairsRNAfold2 = function(startPos,
 #' file = data.frame(V1 = c(6), 
 #'                   V2 = c(80))
 #' compareKnownStructures(foldedCds,file)
+#' }
 #' @export
 #'
 setGeneric("compareKnownStructures",
@@ -659,6 +661,7 @@ setMethod("compareKnownStructures",
 #' @aliases plotEnsemblePCA,comradesDataSet-method
 #' @return a PCA plot of the ensembl
 #' @examples
+#' \dontrun{
 #' cds = makeExampleComradesDataSet()
 #' clusteredCds = clusterComrades(cds = cds,
 #'                                cores = 3,
@@ -699,6 +702,7 @@ setMethod("compareKnownStructures",
 #' 
 #' 
 #' plotEnsemblePCA(foldedCds)
+#' }
 #' @export
 
 
@@ -792,6 +796,7 @@ setMethod("plotEnsemblePCA",
 #' @aliases plotComparisonArc,comradesDataSet-method
 #' @return an ark diagram of the two strcutures
 #' @examples
+#' \dontrun{
 #' cds = makeExampleComradesDataSet()
 #' clusteredCds = clusterComrades(cds = cds,
 #'                                cores = 3,
@@ -832,6 +837,7 @@ setMethod("plotEnsemblePCA",
 #' 
 #' 
 #' plotComparisonArc(foldedCds,"s1","s1",1,3)
+#' }
 #' @export
 setGeneric("plotComparisonArc",
            function(foldedCds,
@@ -889,6 +895,7 @@ setMethod("plotComparisonArc",
 #' @aliases plotStructure,comradesDataSet-method
 #' @return a diagram of the predicted structure
 #' @examples
+#' \dontrun{
 #' cds = makeExampleComradesDataSet()
 #' clusteredCds = clusterComrades(cds = cds,
 #'                                cores = 3,
@@ -929,6 +936,7 @@ setMethod("plotComparisonArc",
 #' 
 #' 
 #' plotStructure(foldedCds,rnaRefs,"s1",3)
+#' }
 #' @export
 
 

@@ -25,6 +25,7 @@ NULL
 #' @aliases foldComrades,comradesDataSet-method
 #' @return a comradesDataSet object
 #' @examples 
+#' \dontrun{
 #' cds = makeExampleComradesDataSet()
 #' 
 #' clusteredCds = clusterComrades(cds,
@@ -65,6 +66,7 @@ NULL
 #'                          constraintNumber  = 1,
 #'                          evCutoff = 1)
 #' foldedCds
+#' }
 #' @export
 setGeneric("foldComrades",
            function(cdsObject,

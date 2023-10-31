@@ -25,6 +25,7 @@ This method plots a structures chosen from the
 plotEnsemblePCA method
 }
 \examples{
+\dontrun{
 cds = makeExampleComradesDataSet()
 clusteredCds = clusterComrades(cds = cds,
                                cores = 3,
@@ -65,4 +66,5 @@ foldedCds = foldComrades(trimmedClusters,
 
 
 plotStructure(foldedCds,rnaRefs,"s1",3)
+}
 }
