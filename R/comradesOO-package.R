@@ -14,7 +14,7 @@
 
 
 globalVariables(c(    "ID" ,"PCa" ,"PCb" ,"clusteredCds",  "dgs" ,"k", 
-                      "sampleTable2" ,"sd" ,"value"))
+                      "sampleTable2" ,"sd" ,"value","stopCluster"))
 
 #' @importFrom seqinr read.fasta
 #' @importFrom  stats aggregate median complete.cases prcomp reorder
@@ -23,7 +23,8 @@ globalVariables(c(    "ID" ,"PCa" ,"PCb" ,"clusteredCds",  "dgs" ,"k",
 #' @import MASS
 #' @import mixtools
 #' @import utils
-#' @import doParallel
+#' @importFrom doParallel stopImplicitCluster registerDoParallel
+#' @importFrom parallel makeCluster
 #' @importFrom igraph cluster_walktrap graph_from_adjacency_matrix membership
 #' @import R4RNA
 #' @import RColorBrewer

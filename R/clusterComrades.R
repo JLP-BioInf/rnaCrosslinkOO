@@ -65,7 +65,11 @@ setMethod("clusterComrades",
               chimeraListSampled = sampleChimeras(chimeraList)
               
               matrixList = matrixList(cds)
-              registerDoParallel(cores)
+              
+              cl <- makeCluster(cores)
+              registerDoParallel(cl)
+              
+
               plottingList = list()
               for(i in 1:length(sampleNames(cds))){
                 plottingList[[i]] = list()
@@ -233,7 +237,8 @@ setMethod("clusterComrades",
                           viennaStructures = list(),
                           dgs = list()
             )
-            
+            stopCluster(cl)
             return(object)
+            
             
           })
