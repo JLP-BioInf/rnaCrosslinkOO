@@ -1,10 +1,10 @@
 Package: comradesOO
 Type: Package
-Title: Analysis of COMRADES (Cross-Linking of Matched RNAs and Deep Sequencing) Data for RNA Structure Prediction
+Title: Analysis of COMRADES (Cross-Linking of Matched RNA and Deep Sequencing) Data 
 Version: 0.1.0
 Authors@R: c(person("Jonathan", "Price", email="jlp76@cam.ac.uk", role=c("aut","cre")))
 Maintainer: Jonathan Price <jlp76@cam.ac.uk>
-Description: Analysis of COMRADES (cross-linking of matched RNAs and deep sequencing) data for RNA structure prediction. The package is suitable for the analysis of RNA structure cross-linking data and chemical probing data.
+Description: Analysis of RNA crosslinking data for RNA structure prediction. The package is suitable for the analysis of RNA structure cross-linking data and chemical probing data.
 License: GPL-3 
 Encoding: UTF-8
 BugReports: https://github.com/JLP-BioInf/comradesOO/issues

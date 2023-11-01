@@ -91,7 +91,7 @@ The main output files are the files entitled *X_gapped.txt*. These are the input
 
 # Input for comrades-OO
 \
-The main input files for comrades-OO is a tab delimited text file containing the reads and mapping location on the transcriptome. This can be manually created although the easiest way to obtain these files is to use the nextflow pipeline detailed above. There is test data that ships with the package, this contains data for the 18S rRNA and it's interactions with the 28S rRNA. However, full data-sets already published can be found here: [SARS-CoV-2 Dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154662) (files ending in "txt.gz")  and here: NB URL with an additional data-set available here (URL).
+The main input files for comrades-OO is a tab delimited text file containing the reads and mapping location on the transcriptome. This can be manually created although the easiest way to obtain these files is to use the nextflow pipeline detailed above. There is test data that ships with the package, this contains data for the 18S rRNA and it's interactions with the 28S rRNA. However, full data-sets already published can be found here: [SARS-CoV-2 Dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154662) (files ending in "txt.gz")  and a further dataset that has been subsetted to create this vigentte here: (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246412).
 
 
 Pre-requisites:
@@ -589,10 +589,11 @@ for(j in c(20,30,40,50,60,70)){
                                  type = "noHost")[[1]])
     
     timeMats = timeMats/ (sum(timeMats)/1000000)
-    write.table(timeMats, file = "./conmat.txt",quote = F,row.names = F, col.names = F)
+    tmp = tempfile()
+    write.table(timeMats, file = tmp,quote = F,row.names = F, col.names = F)
     
     tdData2 = readHiC(
-        file = "./conmat.txt",
+        file = tmp,
         chr = "rna18s",
         binSize = 10,
         debug = getOption("TopDom.debug", FALSE)
