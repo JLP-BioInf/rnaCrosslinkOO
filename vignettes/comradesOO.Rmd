@@ -91,7 +91,7 @@ The main output files are the files entitled *X_gapped.txt*. These are the input
 
 # Input for comrades-OO
 \
-The main input files for comrades-OO is a tab delimited text file containing the reads and mapping location on the transcriptome. This can be manually created although the easiest way to obtain these files is to use the nextflow pipeline detailed above. There is test data that ships with the package, this contains data for the 18S rRNA and it's interactions with the 28S rRNA. However, full data-sets already published can be found here: [SARS-CoV-2 Dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154662) (files ending in "txt.gz")  and a further dataset that has been subsetted to create this vigentte here: (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246412).
+The main input files for comrades-OO is a tab delimited text file containing the reads and mapping location on the transcriptome. This can be manually created although the easiest way to obtain these files is to use the nextflow pipeline detailed above. There is test data that ships with the package, this contains data for the 18S rRNA and it's interactions with the 28S rRNA. However, full data-sets already published can be found here: [SARS-CoV-2 Dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154662) (files ending in "txt.gz")  and a further dataset that has been subsetted to create this vigentte here: [Un-enriched rRNA dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246412).
 
 
 Pre-requisites:
@@ -108,11 +108,14 @@ Pre-requisites:
 
 ## Load the Library
 
+There is a development version available on github (https://github.com/JLP-BioInf/comradesOO). Issue reporting and collaboration welcome. 
+
 ```{r, echo = T, results = 'hide',message=FALSE}
 # Load the comrades-OO Library 
 library(comradesOO)
 ```
 
+The package relies on functions from these packages:
 
 ```{r, echo = F, results = 'hide',message=FALSE}
 # Here are the other libraries on which comradesOO relies
@@ -219,7 +222,7 @@ known18S = read.table(path18SFata,
 
 ## Reactivities (optional)
 
-NB description
+If you also have reactivities from a chemical probing experiment they can be included here as a 1 column table with one value for each position in the transcript. 
 
 ```{r}
 pathShape <- system.file("extdata",
@@ -231,27 +234,158 @@ shape = read.table(pathShape,
 
 ---
 
+
+
 # Quick start
 \
-There is a wrapper which will perform the three main steps in the analysis with 1 command (Clustering, trimmming and folding). However, for first time users or users with new datasets this is not recommended. Some of the optional arguments for folding and clustering can be informed by the analysis of the previous stages. 
+The package ships with a subsetted version of the unenriched dataset which can be used to follow the vignette, the full dataset can be found here: [Un-enriched rRNA dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246412). There is also a function `makeExampleComradesDataSet()` from the comradesOO package that will create a simple toy example comradesDataSet object, follow this small section to get a feel for the package and it's functionality. 
 
 ```{r}
-# runComradesOO(rna,
-#                     rnaSize =0 ,
-#                     sampleTable,
-#                     cores = 3,
-#                     stepCount = 2,
-#                     clusterCutoff = 20,
-#                     clusteredCds,
-#                     trimFactor = 2.5, 
-#                     clusterCutoff = 1,
-#                     rnaRefs,
-#                     start,
-#                     end,
-#                     evCutoff = 1,
-#                     ensembl = 50,
-#                     constraintNumber = 20,
-#                     shape = 0)
+# make an example dataset
+cds = makeExampleComradesDataSet()
+cds
+```
+
+By plotting the reads on a 2D heatmap you can see structured areas of the transcript and long / short distance inter-RNA interactions. The "type" argument can be changed to plot any analysis stage in the matrixList slot which will become populated as the analysis proceeds.
+
+```{r}
+# Have a look at the reads for each sample 
+plotMatricesAverage(cds = cds,
+                    type = "original",
+                    directory = 0,
+                    a = 1,
+                    b = rnaSize(cds),
+                    c = 1,
+                    d = rnaSize(cds),
+                    h = 5)
+
+```
+
+
+Find the RNAs that interact with the RNA of interest. 
+
+```{r}
+topInteracters(cds,2)
+```
+
+Get some more information about the RNAs in the sample and thier abundance in each sample. With more RNAS and transcripts this becomes very useful as a count matrix. 
+
+```{r}
+featureInfo(cds)
+```
+
+Clustering and cluster trimming.
+
+```{r}
+clusteredCds = clusterComrades(cds = cds,
+                               cores = 3,
+                               stepCount = 2,
+                               clusterCutoff = 0)
+
+
+
+
+
+
+trimmedClusters = trimClusters(clusteredCds = clusteredCds,
+                               trimFactor = 1, 
+                               clusterCutoff = 0)
+```
+
+
+Plot them to check the clustering and trimming is working as expected.
+
+```{r}
+plotMatricesAverage(cds = clusteredCds,
+                    type = "originalClusters",
+                    directory = 0,
+                    a = 1,
+                    b = rnaSize(cds),
+                    c = 1,
+                    d = rnaSize(cds),
+                    h = 5)
+```
+
+```{r}
+plotMatricesAverage(cds = trimmedClusters,
+                    type = "trimmedClusters",
+                    directory = 0,
+                    a = 1,
+                    b = rnaSize(cds),
+                    c = 1,
+                    d = rnaSize(cds),
+                    h = 5)
+
+```
+
+
+
+
+
+
+Folding:
+
+```{r}
+
+fasta = paste(c(rep('A',25),
+                rep('T',25),
+                rep('A',10),
+                rep('T',23)),collapse = "")
+
+header = '>transcript1'
+
+
+fastaFile = tempfile()
+writeLines(paste(header,fasta,sep = "\n"),con = fastaFile)
+
+
+rnaRefs = list()
+rnaRefs[[rnas(cds)]] = read.fasta(fastaFile)
+rnaRefs
+
+
+
+foldedCds = foldComrades(trimmedClusters,
+                         rnaRefs = rnaRefs,
+                         start = 1,
+                         end = 83,
+                         shape = 0,
+                         ensembl = 5,
+                         constraintNumber  = 1,
+                         evCutoff = 1)
+
+```
+
+If you have a set of nucloetide contacts,  you can check to see if they exist in the set of predicted structures after folding. Also see `compareKnown` which is a similar function but tests the set of interactions against the clusters.
+
+```{r}
+# make an example table of "know" interactions
+file = data.frame(V1 = c(6),
+                  V2 = c(80))
+
+compareKnownStructures(foldedCds,file)
+
+```
+
+Plot a PCA of the predicted structures
+
+```{r}
+
+plotEnsemblePCA(foldedCds, labels = T,split = T)
+```
+
+Compare two structures
+
+```{r}
+plotComparisonArc(foldedCds = foldedCds,"s1","c1",2,3)
+```
+
+Plot one structure
+
+
+```{r}
+plotStructure(foldedCds = foldedCds,"c1",1)
+
 
 ```
 
@@ -506,7 +640,7 @@ trimmedClusters
 ## Folding 
 \
 
-The final step is folding NB:  add descriptions
+The final step is folding, this step populates the `viennaStructures`, `dgs` and `interactionTable` slots. 
 
 
 ```{r,error=FALSE,eval = FALSE, results=FALSE,message=FALSE}
@@ -531,9 +665,6 @@ foldedCds
 ---
 
 # Other Plots and Functionality
-
-
-
 
 
 ## Plotting contact matrices 

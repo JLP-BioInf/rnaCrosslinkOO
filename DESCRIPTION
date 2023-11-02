@@ -1,6 +1,6 @@
 Package: comradesOO
 Type: Package
-Title: Analysis of COMRADES (Cross-Linking of Matched RNA and Deep Sequencing) Data 
+Title: Analysis of COMRADES (Cross-Linking Matched RNA and Deep Sequencing) Data 
 Version: 0.1.0
 Authors@R: c(person("Jonathan", "Price", email="jlp76@cam.ac.uk", role=c("aut","cre")))
 Maintainer: Jonathan Price <jlp76@cam.ac.uk>
