@@ -57,11 +57,9 @@ After sequencing, short reads are produced similar to a spliced / chimeric RNA r
 
 ## Nextflow pipeline 
 \
-Fastq files produced from the comrades experiment can be processed for input into the comradesOO using the Nextflow pre-processing pipeline, to get more information visit here. (URL). The pipeline has a docker image and takes the reads through trimming alignment, QC and the production of the files necessary for input to comradesOO.
+Fastq files produced from the comrades experiment can be processed for input into the comradesOO using the Nextflow pre-processing pipeline, to get more information visit here. (URL). The pipeline has a docker image and takes the reads through trimming alignment, QC and the production of the files necessary for input to comradesOO. Crosslinking experiments often have different library preparation protocols therefore it is not necessary to follow the prescribed pre-processing pipeline. The only requirement is that the input files for comradesOO have the correct format detailed below.
 
-<center>
-![](nf_schematic.jpg){width=50%}
-</center>
+
 
 
 ## Nextflow pipeline output
@@ -137,15 +135,7 @@ library(RRNA)
 library(ggrepel)
 ```
 
-```{r, echo = T, results = 'hide',message=FALSE}
-# Load the comrades-OO Library 
-library(comradesOO)
-```
 
-
-# also load other libraries that will be important]\\\\\\\9
-
-\
 
 ## Make the Sample table
 
