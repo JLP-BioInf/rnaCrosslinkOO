@@ -238,7 +238,7 @@ shape = read.table(pathShape,
 
 # Quick start
 \
-The package ships with a subsetted version of the unenriched dataset which can be used to follow the vignette, the full dataset can be found here: [Un-enriched rRNA dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246412). There is also a function `makeExampleComradesDataSet()` from the comradesOO package that will create a simple toy example comradesDataSet object, follow this small section to get a feel for the package and it's functionality. 
+The package ships with a subsetted version of the unenriched dataset which can be used to follow the vignette, the full dataset can be found here: [Un-enriched rRNA dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246412). There is also a function `makeExampleComradesDataSet()` from the comradesOO package that will create a simple toy example comradesDataSet object, follow this small section to get a feel for the package and it's functionality. The dataset has 1 sample consisting of a control and sample.  
 
 ```{r}
 # make an example dataset
@@ -246,7 +246,7 @@ cds = makeExampleComradesDataSet()
 cds
 ```
 
-By plotting the reads on a 2D heatmap you can see structured areas of the transcript and long / short distance inter-RNA interactions. The "type" argument can be changed to plot any analysis stage in the matrixList slot which will become populated as the analysis proceeds.
+By plotting the reads on a 2D heatmap you can see structured areas of the transcript and long / short distance inter-RNA interactions. The "type" argument can be changed to plot any analysis stage in the matrixList slot which will become populated as the analysis proceeds. 
 
 ```{r}
 # Have a look at the reads for each sample 
