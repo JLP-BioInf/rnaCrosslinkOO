@@ -83,11 +83,11 @@ The main output files are the files entitled *X_gapped.txt*. These are the input
 6. Side 1 Coordinate start in transcript
 7. Side 1 Coordinate end in transcript
 8. NA
-9. Side 1 transcript ID
-10. Side 1 Position start in read sequence
-11. Side 1 Position end in read sequence
-12. Side 1 Coordinate start in transcript
-13. Side 1 Coordinate end in transcript
+9. Side 2 transcript ID
+10. Side 2 Position start in read sequence
+11. Side 2 Position end in read sequence
+12. Side 2 Coordinate start in transcript
+13. Side 2 Coordinate end in transcript
 14. NA
 
 
@@ -121,12 +121,13 @@ There is a development version available on github (https://github.com/JLP-BioIn
 
 ```{r, echo = T, results = 'hide',message=FALSE}
 # Load the comrades-OO Library 
+#install.packages("comradesOO")
 library(comradesOO)
 ```
 
 The package relies on functions from these packages:
 
-```{r, echo = F, results = 'hide',message=FALSE}
+```{r, echo = T, results = 'hide',message=FALSE}
 # Here are the other libraries on which comradesOO relies
 library(seqinr)
 library(GenomicRanges)
@@ -151,7 +152,7 @@ library(ggrepel)
 
 The metadata table has 4 columns and the column names are specific and case-sensitive. 
 
-+ **file**              -  The imput file name and location of the sample
++ **file**              -  The input file name and location of the sample
 + **group**             -  "c" or "s" denoting wether the sample is a control or not
 + **sample**            -  Sample number 
 + **sampleName**        -  A unique sample name 
@@ -178,7 +179,7 @@ sampleTable2
 
 ## Choose RNA
 
-The name of the RNA to analyse must be as it appears in the input files and transcriptome reference used for mapping. 
+The name of the RNA to analyse, this must be as it appears in the input files. 
 
 
 ```{r}
@@ -555,7 +556,7 @@ plotMatricesAverage(cds = cds, # The comradesDataSet instance
 
 The accuracy of *insilico* prediction decreases with the size of the RNA. To counteract this effect, for large RNAS (?400bp), it can be useful to segment the RNA and fold the segments seaparately. DNA and RNA that form secondary and tertiary structures often have domains where there is more inter-domain interactions that inra-domain interactions. The *TopDom* package was designed to identify these domains for HI-C data. Using this package you can identify domains in the RNA structural data and can be used to inform the folding. 
 
-```{r, eval = FALSE}
+```{r}
 domainDF = data.frame()
 for(j in c(20,30,40,50,60,70)){
     #for(i in which(sampleTable(cds)$group == "s")){
@@ -611,6 +612,8 @@ ggplot(domainDF) +
 
 ### PCA of ensembl
 \
+
+
 
 ```{r,eval = FALSE,}
 plotEnsemblePCA(foldedCds, 

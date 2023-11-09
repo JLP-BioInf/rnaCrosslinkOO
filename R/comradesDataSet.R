@@ -235,7 +235,7 @@ comradesDataSet <- function(rnas,
   } else{
     sampleNames = as.character(sampleTable$sampleName)
     spaces =  (length(sampleNames) * (3 - length(sampleNames))) * 2 
-    if(spaces <0 ){spaces = 0}
+    if(spaces < 0 ){spaces = 0}
     message(paste(
       " ****  ",
       paste(rep(" ",
