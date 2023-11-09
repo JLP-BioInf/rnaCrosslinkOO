@@ -210,7 +210,7 @@ setMethod("topTranscripts",
             for (i in c) {
               vect = c(vect,
                        hybFiles(cds)[["all"]][["all"]][[i]]$V4,
-                       hybFiles(cds)[["all"]][["all"]][[i]]$V10)
+                       hybFiles(cds)[["all"]][["all"]][[i]][hybFiles(cds)[["all"]][["all"]][[i]]$V10 != hybFiles(cds)[["all"]][["all"]][[i]]$V4,"V10"]        )
             }
             x = table(vect)[order(table(vect), decreasing = T)]
             
@@ -220,8 +220,7 @@ setMethod("topTranscripts",
             for (i in c) {
               vect = c(vect,
                        hybFiles(cds)[["all"]][["all"]][[i]]$V4,
-                       
-                       hybFiles(cds)[["all"]][["all"]][[i]]$V10)
+                       hybFiles(cds)[["all"]][["all"]][[i]][hybFiles(cds)[["all"]][["all"]][[i]]$V10 != hybFiles(cds)[["all"]][["all"]][[i]]$V4,"V10"] )
             }
             y = table(vect)[order(table(vect), decreasing = T)]
             
@@ -249,7 +248,7 @@ setMethod("topTranscripts",
             
             for (i in names(hybFiles(cds)[["all"]][["all"]])) {
               t = c(hybFiles(cds)[["all"]][["all"]][[i]]$V4,
-                    hybFiles(cds)[["all"]][["all"]][[i]]$V10)
+                    hybFiles(cds)[["all"]][["all"]][[i]][hybFiles(cds)[["all"]][["all"]][[i]]$V10 != hybFiles(cds)[["all"]][["all"]][[i]]$V4,"V10"] )
               t = table(t)
               
               t = t[names(x[1:ntop])]

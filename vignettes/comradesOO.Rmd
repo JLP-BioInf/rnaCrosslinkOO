@@ -191,7 +191,7 @@ rna = c("ENSG000000XXXXX_NR003286-2_RN18S1_rRNA")
 
 ## Transript fasta
 
-Fasta sequence(s) of the RNA(s) of interest, ideally taken from the transcriptome reference fasta used for mapping.
+Fasta sequence(s) of the RNA(s) of interest, taken from the transcriptome reference fasta used for mapping. Load in using the read.fasta function from seqinr.
 
 ```{r}
 path18SFata <- system.file("extdata", 
@@ -223,7 +223,7 @@ known18S = read.table(path18SFata,
 
 ## Reactivities (optional)
 
-If you also have reactivities from a chemical probing experiment they can be included here as a 1 column table with one value for each position in the transcript. 
+If you also have reactivities from a chemical probing experiment they can be included here as a 1 column table with one value for each position in the transcript. This feature is not ready.
 
 ```{r}
 pathShape <- system.file("extdata",
@@ -239,9 +239,11 @@ shape = read.table(pathShape,
 
 
 # Slow Start
-\
 
-The package has 3 main processes; clustering, cluster trimming and folding. The next sections take you through the usage of each of these main stages and the optional but recommended analysis.
+
+The package has 3 main processes; clustering, cluster trimming and folding. The next sections take you through the usage of each of these main stages.
+
+\
 
 <center>
 ![](schematic.jpg)
@@ -251,7 +253,7 @@ The package has 3 main processes; clustering, cluster trimming and folding. The 
 ## Make the Object
 \
 
-The instance of the *comradesDataSet* object that is created stores the information from the experiment including raw and processed data for the dataset. The instance is a container that carries different types of data in slots.
+The instance of the *comradesDataSet* object that is created stores the information from the experiment including raw and processed data for the dataset. 
 
 ### Slots / Attributes
 
@@ -301,11 +303,16 @@ You can check on major parts of the object and return slots and other informatio
 
 ### General Acessors 
 \
+#### Check Status of Instance
 
 ```{r}
 # Check status of instance 
 cds
 ```
+
+\
+
+#### Retreive RNA Size
 
 ```{r}
 
@@ -313,30 +320,60 @@ cds
 rnaSize(cds)
 ```
 
+\
+
+#### Retreive Meta-data
+
 ```{r}
 # Returns the sample table 
 sampleTable(cds)
 ```
+
+\
+
+
+#### Retreive Sample Groups
 
 ```{r}
 # Returns indexes of the samples in the control and not control groups
 group(cds)
 ```
 
+\
+
+
+#### Retreive Sample Names
+
 ```{r}
 # Get the sample names of the instance
 sampleNames(cds)
 ```
+
+\
+
+
+#### Retreive Data in original format 
+
+It is more recommended to use getData for this purpose but sometime is is useful to grab all data in the hybFiles slot which contains all raw and processed data in the original input format from each analysis stage that has been performed. 
 
 ```{r, eval=FALSE,echo=FALSE}
 # Return the hybFiles slot
 hybFiles(cds)
 ```
 
+\
+
+
+#### Retreive Contact Matrices
+
+It is more recommended to use getData for this purpose but sometime is is useful to grab all data in the matrixList slot which contains contact matrices from each analysis stage that has been performed. 
+
 ```{r, eval=FALSE, echo=FALSE}
-# Return the matrixList slotmatrixList(cds) 
+# Return the matrixList slot 
+matrixList(cds) 
 ```
 
+\
 
 
 ### Get Data 
@@ -346,16 +383,16 @@ Get data is more generic method for retrieving data from the object and returns 
 
 
 ```{r}
-data = getData(cds,       # The object      
-        "hybFiles",       # The Type of data to return     
-        "original")[[1]]  # The stage of the analysis for the return data
+data = getData(x    = cds,              # The object      
+               type = "hybFiles",       # The Type of data to return     
+               data =  "original")[[1]] # The stage of the analysis for the return data
 head(data)
 ```
 
 ## Check Interactions 
 \
 
-The first step is to assess the species of RNA in the instance, the instance will probably contain inter-RNA interactions and intra-RNA interactions for many different RNAs. A number of tables showing the different RNAs / interactions and the ammount of reads assigned to each can be returned with the following methods:
+The first step is to assess the species of RNA present in the dataset, the instance will probably contain inter-RNA interactions and intra-RNA interactions for many different RNAs. A number of tables showing the different RNAs / interactions and the ammount of reads assigned to each can be returned with the following methods:
 
 ### topTranscripts
 \
