@@ -236,6 +236,7 @@ shape = read.table(pathShape,
 ---
 
 
+\
 
 
 # Slow Start
@@ -249,28 +250,32 @@ The package has 3 main processes; clustering, cluster trimming and folding. The 
 ![](schematic.jpg)
 </center>
 
+\
 
 ## Make the Object
-\
+
 
 The instance of the *comradesDataSet* object that is created stores the information from the experiment including raw and processed data for the dataset. 
 
 ### Slots / Attributes
 
-##### Analysis stage 
 \
+
+##### Analysis stage 
 
 The slots for processed and unprocessed data keep the data from each stage of the analysis, this allows the user to quickly access any part of the results. Checking the status of the object will allow you to see which stages of the analysis are present for each of the attributes.  
+\
 
 ##### Meta-data
-\
 
 +   **rnas**                    -  The RNA ID for this instance
 +   **rnaSize**                 -  The size in nuceloties of the RNA for this instance
 +   **sampleTable**             -  The meta-data for the instance ( detailed above )
 
-##### Raw-data and processed data 
 \
+
+##### Raw-data and processed data 
+
 
 +   **hybFiles**                -  Data in the original input file format (list)
                                 hybFiles - rna ID - Analysis stage - Sample Name
@@ -285,9 +290,10 @@ The slots for processed and unprocessed data keep the data from each stage of th
 +   **viennaStructures**        - A list of predicted structures in vienna format       
 
 
+\
 
 ### comradesDataSet - make object 
-\
+
 
 ```{r}
 # load the object
@@ -295,14 +301,19 @@ cds = comradesDataSet(rnas = rna,
                       sampleTable = sampleTable2)
 ```
 
+\
 
 ## Access the data within the instance
-\
+
 
 You can check on major parts of the object and return slots and other information using the accessor methods
 
-### General Acessors 
 \
+
+### General Acessors 
+
+\
+
 #### Check Status of Instance
 
 ```{r}
@@ -356,7 +367,7 @@ sampleNames(cds)
 
 It is more recommended to use getData for this purpose but sometime is is useful to grab all data in the hybFiles slot which contains all raw and processed data in the original input format from each analysis stage that has been performed. 
 
-```{r, eval=FALSE,echo=FALSE}
+```{r, eval=FALSE,echo=TRUE}
 # Return the hybFiles slot
 hybFiles(cds)
 ```
@@ -368,7 +379,7 @@ hybFiles(cds)
 
 It is more recommended to use getData for this purpose but sometime is is useful to grab all data in the matrixList slot which contains contact matrices from each analysis stage that has been performed. 
 
-```{r, eval=FALSE, echo=FALSE}
+```{r, eval=FALSE, echo=TRUE}
 # Return the matrixList slot 
 matrixList(cds) 
 ```
@@ -377,37 +388,44 @@ matrixList(cds)
 
 
 ### Get Data 
-\
 
 Get data is more generic method for retrieving data from the object and returns a list, the number of entries in the list is number of samples in the dataset and the list contain entries of the data type and analysis stage you select.
 
 
 ```{r}
 data = getData(x    = cds,              # The object      
-               type = "hybFiles",       # The Type of data to return     
-               data =  "original")[[1]] # The stage of the analysis for the return data
+               data =  "hybFiles",       # The Type of data to return     
+               type = "original")[[1]] # The stage of the analysis for the return data
+
 head(data)
 ```
 
-## Check Interactions 
+
 \
+
+## Check Interactions 
 
 The first step is to assess the species of RNA present in the dataset, the instance will probably contain inter-RNA interactions and intra-RNA interactions for many different RNAs. A number of tables showing the different RNAs / interactions and the ammount of reads assigned to each can be returned with the following methods:
 
-### topTranscripts
+
 \
+
+### topTranscripts
+
 
 
 ```{r}
-
 # Returns the RNAs with highest number of assigned reads 
+# regardless of wether it is an Inter or Intra - RNA interaction. 
 topTranscripts(cds, # The comradesDataSet instance
                2)  # The number of entried to return
 
 ```
 
-### topInteractors
 \
+
+### topInteractors
+
 
 ```{r}
 # Returns the RNAs that interact with the RNA of interest
@@ -415,9 +433,10 @@ topInteracters(cds, # The comradesDataSet instance
                1)   # The number of entries to return
 ```
 
+\
 
 ### topInteractions
-\
+
 
 ```{r}
 # Returns the Interacions with the highest number of assigned reads
@@ -427,10 +446,32 @@ topInteractions(cds, # The comradesDataSet instance
 ```
 
 
+\
+
+### featureInfo
+
+
+```{r}
+features = featureInfo(cds) # The comradesDataSet instance
+
+
+# Counts for features at the transcript level
+features$transcript
+
+# Counts for features at the family level (last field with  "_" delimited IDs)
+features$family
+
+```
+
 ---
 
-## Clustering 
+
+
 \
+
+
+## Clustering 
+
 
 In the COMRADES data, crosslinking and fragmentation leads to the production of redundant structural information, where the same in vivo structure from different RNA molecules produces slightly different RNA fragments. Clustering of these duplexes that originate from the same place in the reference transcript reduces computational time and allows trimming of these clusters to improve the folding prediction.
 To allow clustering, gapped alignments can be described by the transcript coordinates of the left (L) and right (R) side of the reads and by the nucleotides between L and R (g). Reads with similar or identical g values are likely to originate from the same structure of different molecules. In COMRADES-OO, an adjacency matrix is created for all chimeric reads based on the nucleotide difference between their g values (Deltagap). This results in Deltagap = 0 for identically overlapping gaps and increasing Deltagap values for gapped reads with less overlap:
@@ -453,7 +494,7 @@ From these weights the network can be defined for short- and long-range interact
 clusteredCds = clusterComrades(cds = cds,         # The comradesDataSet instance 
                                cores = 1,         # The number of cores
                                stepCount = 2,     # The number of steps in the random walk
-                               clusterCutoff = 3) # The minimum number of reads for a cluster to be considered
+                               clusterCutoff = 1) # The minimum number of reads for a cluster to be considered
 ```
 
 
@@ -461,14 +502,14 @@ clusteredCds = clusterComrades(cds = cds,         # The comradesDataSet instance
 # Check status of instance 
 clusteredCds
 ```
-
+\
 
 ### Cluster Numbers
-\
+
 
 ```{r}
 # Returns the number of clusters in each sample
-#clusterNumbers(clusteredCds)
+clusterNumbers(clusteredCds)
 ```
 
 
@@ -494,11 +535,10 @@ getData(clusteredCds,        # The object
 ### Cluster GRanges
 \
 
-You can also ectract a GRanges of the individual reads and their cluster membership:
+You can also extract a GRanges object of the individual reads and their cluster membership:
 
-```{r,  eval=FALSE, echo=FALSE}
-getData(clusteredCds,         # The object
-        rna,                  # The rna of interest
+```{r,  eval=FALSE }
+getData(clusteredCds,         # The object        
         "clusterGrangesList", # The Type of data to return     
         "original")[[1]]      # The stage of the analysis for the return data
 ```
@@ -512,7 +552,7 @@ Given the assumption that the reads within each cluster likely originate from th
 # Trim the Clusters
 trimmedClusters = trimClusters(clusteredCds = clusteredCds, # The comradesDataSet instance 
                                trimFactor = 1,              # The cutoff for cluster trimming (see above)
-                               clusterCutoff = 30)          # The minimum number of reads for a cluster to be considered
+                               clusterCutoff = 0)          # The minimum number of reads for a cluster to be considered
 ```
 
 ```{r}
@@ -520,23 +560,35 @@ trimmedClusters = trimClusters(clusteredCds = clusteredCds, # The comradesDataSe
 trimmedClusters
 ```
 
+```{r}
+# Returns the number of clusters in each sample
+clusterNumbers(trimmedClusters)
+```
+
+```{r}
+# Returns the number reads in clusters
+readNumbers( trimmedClusters)
+```
+
+see [Plotting contact matrices](#plotting-contact-matrices).
+
 
 ## Folding 
 \
 
-The final step is folding, this step populates the `viennaStructures`, `dgs` and `interactionTable` slots. 
+The final step is folding, this step populates the `viennaStructures`, `dgs` and `interactionTable` slots. This step can only be run if you have the Vienna package installed and RNAFold in your PATH. 
 
 
 ```{r,error=FALSE,eval = FALSE, results=FALSE,message=FALSE}
 # Fold the RNA in part of whole
 foldedCds = foldComrades(trimmedClusters,
                          rnaRefs = rnaRefs,
-                         start = 1700,
+                         start = 1600,
                          end = 1869,
                          shape = 0,
-                         ensembl = 40,
-                         constraintNumber  = 5,
-                         evCutoff = 50)
+                         ensembl = 20,
+                         constraintNumber  = 30,
+                         evCutoff = 5)
 ```
 
 
@@ -553,7 +605,7 @@ foldedCds
 ## Plotting contact matrices 
 \
 
-Plots can be made automatically from the *plotMatrices* function. 
+Plots can be made for each sample using the *plotMatrices* function. 
 
 ```{r}
 # Plot heatmaps for each sample
@@ -570,12 +622,14 @@ plotMatrices(cds = cds,         # The comradesDataSet instance
 
 
 
-
+See which contact maps are available by checking the status of the object 
 
 ```{r}
+trimmedClusters
+
 # Plot heatmaps for all samples combined and all controls combined
-plotMatricesAverage(cds = cds, # The comradesDataSet instance 
-             type = "original", # The "analysis stage"
+plotMatricesAverage(cds = trimmedClusters, # The comradesDataSet instance 
+             type = "trimmedClusters", # The "analysis stage"
              directory = 0,     # The directory for output (0 for standard out)
              a = 1,             # Start coord for x-axis
              b = rnaSize(cds),  # End coord for x-axis
@@ -591,7 +645,7 @@ plotMatricesAverage(cds = cds, # The comradesDataSet instance
 ## Identifying domains 
 \
 
-The accuracy of *insilico* prediction decreases with the size of the RNA. To counteract this effect, for large RNAS (?400bp), it can be useful to segment the RNA and fold the segments seaparately. DNA and RNA that form secondary and tertiary structures often have domains where there is more inter-domain interactions that inra-domain interactions. The *TopDom* package was designed to identify these domains for HI-C data. Using this package you can identify domains in the RNA structural data and can be used to inform the folding. 
+With large RNAS (?500bp), it can be useful to segment the RNA and fold the segments seaparately. DNA and RNA that form secondary and tertiary structures often have domains where there is more inter-domain interactions that inra-domain interactions. The *TopDom* package was designed to identify these domains for HI-C data. Using this package you can identify domains in the RNA structural data and can be used to inform the folding. 
 
 ```{r}
 domainDF = data.frame()
@@ -647,32 +701,49 @@ ggplot(domainDF) +
 
 ## Analyse folds
 
-### PCA of ensembl
 \
 
 
+### Ensemble Stats
+
+### HotSpots of difference 
+
+### PCA of ensembl
+
+A PCA of the structural ensembl can be made. 
 
 ```{r,eval = FALSE,}
 plotEnsemblePCA(foldedCds, 
                 labels = T, # plot labels for structures
-                split = F)  # split samples over different facets (T/f)
+                split = T)  # split samples over different facets (T/f)
 
 ```
 
-### Plot to strcutures on an arc diagram
+![](vigentte_pca.jpg)
+
+
+
+
 \
+
+### Plot to strcutures on an arc diagram
+
+Compare two structures from the ensembl
 
 
 ```{r,eval = FALSE,}
 plotComparisonArc(foldedCds = foldedCds,
-                  s1 = "s1",            # The sample of the 1st structure
+                  s1 = "c1",            # The sample of the 1st structure
                   s2 = "s1",            # The sample of the 2nd structure
-                  n1 = 1,               # The number of the 1st structure
-                  n2 = 2)               # The number of the 2nd structure
+                  n1 = 13,               # The number of the 1st structure
+                  n2 = 16)               # The number of the 2nd structure
 ```
+![](vigentte_arc.jpg)
+
+\
+
 
 ### Plot one structure
-\
 
 ```{r eval = F}
 plotStructure(foldedCds = foldedCds, 
@@ -680,20 +751,12 @@ plotStructure(foldedCds = foldedCds,
               s = "s1",          # The sample of the structure
               n = 1)             # The number of the structure
 ```
+\
 
-
-```{r message=FALSE, echo=F,eval = FALSE, results='hide'}
-
-plotStructure(foldedCds = foldedCds,
-              rnaRefs = rnaRefs,
-              s =  "s1",        # The sample of the structure
-              n = 1)            # The number of the structure
-
-```
 
 
 ## Inter RNA interactions- Plot an interacting partner 
-\
+
 
 Along with the RNA of interest the data also contains inter-RNA interactions with other RNAs from the transcriptome reference. After identifying abundant interactions using topInteractions you can find out where on each RNA these inetractions occur using *getInteractions* and *getReverseInteractions*.
 
@@ -733,14 +796,17 @@ getReverseInteractions(cds,
 
 
 
+\
 
 ## Compare to the "Known" structure 
-\
+
 
 The clusters can be compared to set of interactions to see which clusters share coordinates with a this set of interactions. The table should be formatted as a tabale fame of 2 columns (i and j) each colunn containing numerical values giving an interaction between i and j with which the clusters should be compared.
 
-### Make a contact matrix of known / comprative interactions
 \
+
+### Make a contact matrix of known / comprative interactions
+
 
 To compare to set of know interactions you need a contact matrix these interactions, for plotting it is sometimes useful to expand the interactions so they can be seen easily. 
 
@@ -757,9 +823,10 @@ knownMat = knownMat + t(knownMat)
 
 ```
 
+\
 
 ### Compare the Clusters
-\
+
 
 Using *compareKnown* you can check which clusters agree with the set of interactions. This functions adds analysis stages "known", "novel" and "knownAndNovel" to the objects data attributes. 
 
@@ -772,8 +839,10 @@ knowClusteredCds = compareKnown(trimmedClusters, # The comradesDataSet instance
 knowClusteredCds
 ```
 
-### Plot the overlapping clusters
 \
+
+### Plot the overlapping clusters
+
 
 You can plot these using the *plotMatrices* function
 
@@ -790,9 +859,10 @@ plotMatricesAverage(cds = knowClusteredCds, # The comradesDataSet instance
 
 ```
 
+\
 
 ### Cluster Numbers
-\
+
 
 
 ```{r}
@@ -800,9 +870,10 @@ plotMatricesAverage(cds = knowClusteredCds, # The comradesDataSet instance
 clusterNumbers(knowClusteredCds)
 ```
 
+\
 
 ### Read numbers in clusters
-\
+
 
 ```{r}
 # Get the number of reads in each cluster for each analysis stage
@@ -810,9 +881,10 @@ readNumbers(knowClusteredCds)
 ```
 
 
+\
 
 ### Compare structures with known
-\
+
 
 To compare predicted structures with the know stucture use "compareKnownStructures". This will give you the number of base pairs that agree between the ensembl of predicted structures and the structure imputted for comparison. This can be for better viewing. 
 
