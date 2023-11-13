@@ -2,6 +2,8 @@
 
 ```
 devtools::install_github("JLP-BioInf/comradesOO")
+#OR
+install.packages("comradesOO")
 ```
 
 # The COMRADES experiment

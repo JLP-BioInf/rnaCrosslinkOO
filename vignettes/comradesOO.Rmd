@@ -647,7 +647,7 @@ plotMatricesAverage(cds = trimmedClusters, # The comradesDataSet instance
 
 With large RNAS (?500bp), it can be useful to segment the RNA and fold the segments seaparately. DNA and RNA that form secondary and tertiary structures often have domains where there is more inter-domain interactions that inra-domain interactions. The *TopDom* package was designed to identify these domains for HI-C data. Using this package you can identify domains in the RNA structural data and can be used to inform the folding. 
 
-```{r}
+```{r, eval = FALSE}
 domainDF = data.frame()
 for(j in c(20,30,40,50,60,70)){
     #for(i in which(sampleTable(cds)$group == "s")){
@@ -694,7 +694,7 @@ ggplot(domainDF) +
 
 ```
 
-
+![](vignette_domain.jpg)
 ---
 
 
@@ -922,7 +922,7 @@ ggplot(compareKnownStructures(foldedCds, known18S)) +
 \
 The package ships with a subsetted version of the unenriched dataset which can be used to follow the vignette, the full dataset can be found here: [Un-enriched rRNA dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246412). There is also a function `makeExampleComradesDataSet()` from the comradesOO package that will create a simple toy example comradesDataSet object, follow this small section to get a feel for the package and it's functionality. The dataset has 1 sample consisting of a control and sample.  
 
-```{r}
+```{r, eval = FALSE}
 # make an example dataset
 cds = makeExampleComradesDataSet()
 cds
@@ -930,7 +930,7 @@ cds
 
 By plotting the reads on a 2D heatmap you can see structured areas of the transcript and long / short distance inter-RNA interactions. The "type" argument can be changed to plot any analysis stage in the matrixList slot which will become populated as the analysis proceeds. 
 
-```{r}
+```{r, eval = FALSE}
 # Have a look at the reads for each sample 
 plotMatricesAverage(cds = cds,
                     type = "original",
@@ -946,19 +946,19 @@ plotMatricesAverage(cds = cds,
 
 Find the RNAs that interact with the RNA of interest. 
 
-```{r}
+```{r, eval = FALSE}
 topInteracters(cds,2)
 ```
 
 Get some more information about the RNAs in the sample and thier abundance in each sample. With more RNAS and transcripts this becomes very useful as a count matrix. 
 
-```{r}
+```{r, eval = FALSE}
 featureInfo(cds)
 ```
 
 Clustering and cluster trimming.
 
-```{r}
+```{r, eval = FALSE}
 clusteredCds = clusterComrades(cds = cds,
                                cores = 1,
                                stepCount = 2,
@@ -977,7 +977,7 @@ trimmedClusters = trimClusters(clusteredCds = clusteredCds,
 
 Plot them to check the clustering and trimming is working as expected.
 
-```{r}
+```{r, eval = FALSE}
 plotMatricesAverage(cds = clusteredCds,
                     type = "originalClusters",
                     directory = 0,
@@ -988,7 +988,7 @@ plotMatricesAverage(cds = clusteredCds,
                     h = 5)
 ```
 
-```{r}
+```{r, eval = FALSE}
 plotMatricesAverage(cds = trimmedClusters,
                     type = "trimmedClusters",
                     directory = 0,
