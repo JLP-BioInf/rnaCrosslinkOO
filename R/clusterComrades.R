@@ -55,7 +55,7 @@ setMethod("clusterComrades",
               message(paste("**** ", rna, " *****"))
               message(paste("****              ", rnaSize," nt ", "           ****"))
               
-              
+              x
               ##############################
               message(paste("****       Assessing Long Range         ****"))
               longDistHyb = subsetHybList2(hybFiles(cds)[[rna]][[ "noHost" ]],
