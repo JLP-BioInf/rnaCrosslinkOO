@@ -1,4 +1,6 @@
 .Rproj.user
+.gitignore
+.Rbuildignore
 .Rhistory
 .RData
 .DS_Store
