@@ -1,6 +1,6 @@
 # comradesOO
 
-For full details of ho to use comradesOO can be found in the [vignette](https://cran.r-project.org/web/packages/comradesOO/vignettes/comradesOO.html)
+For full details of how to use comradesOO can be found in the [vignette](https://cran.r-project.org/web/packages/comradesOO/vignettes/comradesOO.html)
 
 ```
 install.packages("comradesOO")
@@ -61,7 +61,7 @@ The main output files are the files entitled *X_gapped.txt*. These are the input
 
 ---
 
-# Input for comrades-OO
+# Input for comradesOO
 \
 The main input files for comrades-OO is a tab delimited text file containing the reads and mapping location on the transcriptome. This can be manually created if your library preparation protocol does not suit the pre-processing pipeline although the easiest way to obtain these files is to use the nextflow pipeline detailed above. There is test data that ships with the package, this contains data for the 18S rRNA and it's interactions with the 28S rRNA. However, full data-set already published can be found here:[Un-enriched rRNA dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246412).
 
