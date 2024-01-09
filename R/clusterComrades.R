@@ -196,9 +196,10 @@ setMethod("clusterComrades",
                 
                 
                 
+                
                 matList[[j]] = matrix(0,nrow = rnaSize, ncol = rnaSize)
                 
-                
+                clusterPositionsList[[j]] = clusterPositionsList[[j]][!(is.na(clusterPositionsList[[j]]$size.x)),]
                 for(i in 1:nrow(clusterPositionsList[[j]])){
                   matList[[j]][clusterPositionsList[[j]][i,"ls"]:clusterPositionsList[[j]][i,"le"],
                                clusterPositionsList[[j]][i,"rs"]:clusterPositionsList[[j]][i,"re"]] =
