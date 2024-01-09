@@ -55,7 +55,7 @@ setMethod("clusterComrades",
               message(paste("**** ", rna, " *****"))
               message(paste("****              ", rnaSize," nt ", "           ****"))
               
-              x
+   
               ##############################
               message(paste("****       Assessing Long Range         ****"))
               longDistHyb = subsetHybList2(hybFiles(cds)[[rna]][[ "noHost" ]],
@@ -74,7 +74,7 @@ setMethod("clusterComrades",
               for(i in 1:length(sampleNames(cds))){
                 plottingList[[i]] = list()
                 
-                if(is.na(chimeraListSampled[[i]][["left"]])){
+                if(any(is.na(chimeraListSampled[[i]][["left"]]))){
                   plottingList[[i]][[k]] = GRanges()
                 }else{
                   
