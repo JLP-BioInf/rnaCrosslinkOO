@@ -234,6 +234,7 @@ setMethod("trimClusters",
                   
                   names(superClusterArray) = names
                   combinedPlottingUnlist$superCluster = "X"
+                  combinedPlottingUnlist = combinedPlottingUnlist[which(!(is.na(combinedPlottingUnlist$k ))),]
                   for( z in 1:length(superClusterArray)){
                       supercluster = names(superClusterArray)[z]
                       cluster = unique(sub("\\s.*","",superClusterArray[z]))

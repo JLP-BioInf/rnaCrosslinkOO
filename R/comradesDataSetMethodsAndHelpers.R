@@ -471,6 +471,9 @@ setMethod("getInteractions",
                 starts = x$V7
                 ends = x$V8
                 v = as.data.frame(unlist(seq2(from = starts, to = ends)))
+                if(ncol(v) > 1){
+                  next
+                }
                 v$rna = interactor
                 v$sample = i
                 colnames(v) = c("Position", "rna", "sample")
