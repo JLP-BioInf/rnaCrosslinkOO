@@ -277,10 +277,11 @@ setMethod("plotMatrices", "comradesDataSet", function(cds,
 #'  plotMatricesAverage
 #'
 #'
-#' Plots a contact map to file of all samples for a stage in the analysis
+#' Plots a contact map of all samples for two chosen stages in the analysis, with each chosen stage on separate halves of the contact map
 #'
 #' @param cds A comradesDataSet object 
-#' @param type The analysis stage to plot 
+#' @param type1 The analysis stage to plot on the upper half of the heatmap (use 'blank' for to leave this half blank)
+#' @param type2 The analysis stage to plot on the lower half of the heatmap (use 'blank' for to leave this half blank)
 #' @param directory An output directory for the heatmap (use 0 for no output)
 #' @param a To make a subsetted plot (left value on x)
 #' @param b To make a subsetted plot (right value on x)
@@ -292,7 +293,7 @@ setMethod("plotMatrices", "comradesDataSet", function(cds,
 #' @docType methods
 #' @rdname plotMatricesAverage
 #' @aliases plotMatricesAverage,comradesDataSet-method
-#' @return A heatmap of the reads in the analysis stage chosen
+#' @return A heatmap of the reads in the two analysis stages chosen, with each chosen stage on a separate half of the heatmap
 #' @examples 
 #' cds = makeExampleComradesDataSet()
 #' 
@@ -302,7 +303,8 @@ setMethod("plotMatrices", "comradesDataSet", function(cds,
 #'
 #' @export
 setGeneric("plotMatricesAverage", function(cds,
-                                           type = 'original', 
+                                           type1 = 'original',
+                                           type2 = 'blank',
                                            directory = 0,
                                            a = 1,
                                            b = 50,
@@ -312,59 +314,73 @@ setGeneric("plotMatricesAverage", function(cds,
   standardGeneric("plotMatricesAverage"))
 
 setMethod("plotMatricesAverage", "comradesDataSet", function(cds,
-                                                             type = 'original', 
+                                                             type1 = 'original',
+                                                             type2 = 'blank',
                                                              directory = 0,
                                                              a = 1,
                                                              b = 50,
                                                              c = 1,
                                                              d = 50,
                                                              h= 3)  {
+  if (type2 != 'blank') {
+    typeCombinationName = paste(type1, type2, sep = "-")
+  } else {
+    typeCombinationName = type1
+  }
   for (rna in rnas(cds)) {
     hybMatList = matrixList(cds)
     hybMatList2 = hybMatList
     for (i in c("c", "s")) {
-      c = 1
-      for (j in group(cds)[[i]]) {
-        if (length(group(cds)[[i]]) < 2 | c == 1) {
-          sum(hybMatList[[rna]][[type]][[j]])
-          hybMatList2[[rna]][[type]][[i]] =   hybMatList[[rna]][[type]][[j]]
-          
-          
-          # hybMatList2[[rna]][[type]][["s"]] =   hybMatList[[rna]][[type]][[ j ]]
+      for (matrixhalfNumber in 1:2){
+        if (matrixhalfNumber == 1){
+          type = type1
         } else{
-          hybMatList2[[rna]][[type]][[i]] =  hybMatList2[[rna]][[type]][[i]] +
-            hybMatList[[rna]][[type]][[j]]
-          
-          
-          # hybMatList2[[rna]][[type]][["s"]] =  Reduce('+', hybMatList[[rna]][[type]][[ j ]] )
+          type = type2
         }
-        c = c + 1
+        if (type != "blank"){
+          c = 1
+          for (j in group(cds)[[i]]) {
+            if (length(group(cds)[[i]]) < 2 | c == 1) {
+              sum(hybMatList[[rna]][[type]][[j]])
+              hybMatList2[[rna]][[type]][[i]] = hybMatList[[rna]][[type]][[j]]
+            } else{
+              hybMatList2[[rna]][[type]][[i]] = hybMatList2[[rna]][[type]][[i]] + hybMatList[[rna]][[type]][[j]]
+            }
+            c = c + 1
+          }
+        } else {
+          hybMatList2[[rna]][[type]][[i]] = matrix(data = NA , nrow = 1, ncol = 1)
+        }
       }
-      
+      if (type2 == 'blank'){
+        hybMatList2[[rna]][[typeCombinationName]][[i]] = hybMatList2[[rna]][[type1]][[i]]
+      } else{
+        if (type1 == 'blank') {
+          hybMatList2[[rna]][[typeCombinationName]][[i]] = t(hybMatList2[[rna]][[type2]][[i]])
+        } else{
+          hybMatList2[[rna]][[typeCombinationName]][[i]] = hybMatList2[[rna]][[type1]][[i]] + t(hybMatList2[[rna]][[type2]][[i]])
+        }
+      }
     }
-    
     sampleNames = c("s", "c")
-    #c = 1
     for (sample in  sampleNames) {
-      cols = log2(max(hybMatList2[[rna]][[type]][[sample]][a:b, c:d] + 1))
+      matrixToPlot = hybMatList2[[rna]][[typeCombinationName]][[sample]][a:b, c:d]
+      cols = log2(max(matrixToPlot + 1))
       
       myCol = c("black", colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols -
                                                                         1))
       
       if (cols > 14) {
-        cols = log2(max(hybMatList2[[rna]][[type]][[sample]][a:b, c:d][hybMatList2[[rna]][[type]][[sample]][a:b, c:d] < 30000] +
+        cols = log2(max(matrixToPlot[matrixToPlot < 30000] +
                           1))
         myCol = c("black",
                   colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols - 1),
                   rep("white", (15 - cols) + 2))
       }
       
-      # myCol = myCol[1:cols]
-      
-      
       if (directory == 0) {
         heatmap3((log2(t(
-          hybMatList2[[rna]][[type]][[sample]][a:b, c:d] + 1
+          matrixToPlot + 1
         ))),
         col = myCol,
         scale = "none" ,
@@ -375,12 +391,12 @@ setMethod("plotMatricesAverage", "comradesDataSet", function(cds,
         
       } else{
         pdf(
-          paste(directory, "/", rna , "_", sample , "-", type , ".pdf", sep = ""),
+          paste(directory, "/", rna , "_", sample , "-", typeCombinationName , ".pdf", sep = ""),
           height = h,
           width = h
         )
         heatmap3((log2(t(
-          hybMatList2[[rna]][[type]][[sample]][a:b, c:d] + 1
+          matrixToPlot + 1
         ))),
         col = myCol,
         scale = "none" ,
@@ -390,14 +406,111 @@ setMethod("plotMatricesAverage", "comradesDataSet", function(cds,
         )
         dev.off()
       }
-      
-      
-      
-      #  c = c + 1
     }
   }
-  
-  
 })
 
+#  plotCombinedMatrix
+#'
+#'
+#' Plots a contact map of two chosen samples for chosen stages in the analysis, with each chosen sample on separate halves of the contact map 
+#'
+#' @param cds A comradesDataSet object 
+#' @param type1 The analysis stage to plot on the upper half of the heatmap
+#' @param type2 The analysis stage to plot on the lower half of the heatmap
+#' @param sample1 The sample number to plot on the upper half of the heatmap
+#' @param sample2 The sample number to plot on the upper half of the heatmap
+#' @param directory An output directory for the heatmap (use 0 for no output)
+#' @param a To make a subsetted plot (left value on x)
+#' @param b To make a subsetted plot (right value on x)
+#' @param c To make a subsetted plot (left value on y)
+#' @param d To make a subsetted plot (right value on y)
+#' @param h Height of image (inches) (only useful if plotting)
+#' @name plotCombinedMatrix
+#' @docType methods
+#' @rdname plotCombinedMatrix
+#' @aliases plotCombinedMatrix,comradesDataSet-method
+#' @return A heatmap of the reads of the chosen sample numbers, in the analysis stages chosen, with each chosen sample on a separate half of the heatmap 
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' plotCombinedMatrix(cds,
+#'             type1 = "original",
+#'             type2 = "noHost",
+#'             b = rnaSize(cds),
+#'             d = rnaSize(cds))
+#' @export
+setGeneric("plotCombinedMatrix", function(cds,
+                                          type1 = 'original',
+                                          type2 = 'original',
+                                          sample1 = 1,
+                                          sample2 = 1,
+                                          directory = 0,
+                                          a = 1,
+                                          b = 50,
+                                          c = 1,
+                                          d = 50,
+                                          h= 3)
+  standardGeneric("plotCombinedMatrix"))
 
+setMethod("plotCombinedMatrix", "comradesDataSet", function(cds, 
+                                                            type1 = 'original',
+                                                            type2 = 'original',
+                                                            sample1 = 1,
+                                                            sample2 = 1,
+                                                            directory = 0, 
+                                                            a = 1,
+                                                            b = 50,
+                                                            c = 1,
+                                                            d = 50,
+                                                            h= 3)  {
+  hybMatList = matrixList(cds)
+  rnaS = rnas(cds)
+  sampleNames = names(hybMatList[[1]][[type1]])
+  if (is.null(sampleNames)) {
+    sampleNames = 1:length(hybMatList[[1]][[type1]])
+  }
+  for (rna in c(rnaS)) {
+    sumOfUpper = getData(cds, data = "matrixList", type = type1)[[sample1]]
+    sumOfLower = getData(cds, data = "matrixList", type = type2)[[sample2]]
+    matrixToPlot = sumOfUpper + t(sumOfLower)
+    matrixToPlot = matrixToPlot[a:b, c:d]
+    
+    # choose colour pallet
+    cols = log2(max(matrixToPlot + 1))
+    myCol = c("black", colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols - 1))
+    if (cols > 14) {
+      cols = log2(max(matrixToPlot[matrixToPlot < 30000] + 1))
+      myCol = c("black", colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols - 1),  rep("white", (14 - cols) + 1))
+    }
+    
+    # plot the heatmap
+    if (directory == 0) {
+      heatmap3((log2(t(
+        matrixToPlot + 1
+      ))),
+      col = myCol,
+      scale = "none" ,
+      Rowv = NA,
+      Colv = NA,
+      useRaster = T
+      )
+    } else{
+      pdf(
+        paste(directory, "/", rna, "_", sampleNames[sample1], "-", type1 , "-", sampleNames[sample2], "-", type2 , ".pdf", sep = ""),
+        height = h,
+        width = h
+      )
+      heatmap3((log2(t(
+        matrixToPlot + 1
+      ))),
+      col = myCol,
+      scale = "none" ,
+      Rowv = NA,
+      Colv = NA,
+      useRaster = T
+      )
+      dev.off()
+    }
+  }
+})

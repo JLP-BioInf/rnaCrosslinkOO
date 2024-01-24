@@ -8,7 +8,8 @@
 \usage{
 plotMatricesAverage(
   cds,
-  type = "original",
+  type1 = "original",
+  type2 = "blank",
   directory = 0,
   a = 1,
   b = 50,
@@ -20,7 +21,9 @@ plotMatricesAverage(
 \arguments{
 \item{cds}{A comradesDataSet object}
 
-\item{type}{The analysis stage to plot}
+\item{type1}{The analysis stage to plot on the upper half of the heatmap (use 'blank' for to leave this half blank)}
+
+\item{type2}{The analysis stage to plot on the lower half of the heatmap (use 'blank' for to leave this half blank)}
 
 \item{directory}{An output directory for the heatmap (use 0 for no output)}
 
@@ -35,10 +38,10 @@ plotMatricesAverage(
 \item{h}{Height of image (inches) ( only useful if plotting)}
 }
 \value{
-A heatmap of the reads in the analysis stage chosen
+A heatmap of the reads in the two analysis stages chosen, with each chosen stage on a separate half of the heatmap
 }
 \description{
-Plots a contact map to file of all samples for a stage in the analysis
+Plots a contact map of all samples for two chosen stages in the analysis, with each chosen stage on separate halves of the contact map
 }
 \examples{
 cds = makeExampleComradesDataSet()
