@@ -1,17 +1,39 @@
 # comradesOO
 
-A vignette is available at: [vignette](https://cran.r-project.org/package=comradesOO).
+
+The comradesOO R package is designed to analyse data from RNA crosslinking and high-throughput sequencing experiments. The package has 3 main steps, clustering, cluster trimming and folding. Raw and processed data is stored at each stage in the analysis and plot and metrics can be obtained through the use of the packages other functions. 
+
+
+A vignette is available at: [vignette](https://cran.r-project.org/package=comradesOO). It is recommended to install the package through CRAN. 
 
 
 ```
-devtools::install_github("JLP-BioInf/comradesOO")
-#OR
+# CRAN
 install.packages("comradesOO")
+# GITHUB
+devtools::install_github("JLP-BioInf/comradesOO")
 ```
+
+
+# Input for comrades-OO
+\
+The main input files for comrades-OO is a tab delimited text file containing the reads and mapping location on the transcriptome. This can be manually created if your library preparation protocol does not suit the pre-processing pipeline. Although, the easiest way to obtain these files is to use the Nextflow pipeline   [here](https://github.com/JLP-BioInf/comradesNF), there are also details in the  [vignette](https://cran.r-project.org/web/packages/comradesOO/vignettes/comradesOO.html). There is test data that ships with the package, this contains data for the 18S rRNA and it's interactions with the 28S rRNA. However, full data-set already published can be found here:[Un-enriched rRNA dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246412), the [SARS-CoV-2 dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154662).
+
+Pre-requisites:
+
+1. Install the comradesOO package
+2. Input files (nexflow, custom or downloaded)
+3. Meta-data table
+4. ID of the RNA of interest (from the transcript reference )
+5. A fasta sequence of the RNA of interest  (from the transcript reference )
+6. Locally install [The vienna package](https://www.tbi.univie.ac.at/RNA/)
+7. A set of interactions to compare to (optional)
+8. Reactivities (optional)
+
 
 # The COMRADES experiment
 \
-The COMRADES (crosslinking of Matched RNA and Deep Sequencing) experimental protocol for the prediction of RNA structure in vivo was first published in 2018 (Ziv et al., 2019). The protocol has subsequently been use to analyse the structure of SARS-CoV-2 (Ziv et al., 2020):
+The COMRADES (crosslinking of Matched RNA and Deep Sequencing) experimental protocol for the prediction of RNA structure in vivo was first published in 2018 (Ziv et al., 2019). The protocol has subsequently been use to analyse the structure of SARS-CoV-2 (Ziv et al., 2020) and NORAD:
 
 * COMRADES determines in vivo RNA structures and interactions. (2018). Omer Ziv, Marta Gabryelska, Aaron Lun, Luca Gebert. Jessica Sheu-Gruttadauria and Luke Meredith, Zhong-Yu Liu,  Chun Kit Kwok, Cheng-Feng Qin, Ian MacRae, Ian Goodfellow , John Marioni, Grzegorz Kudla, Eric Miska.  Nature Methods. Volume 15. https://doi.org/10.1038/s41592-018-0121-0   
 
@@ -56,17 +78,3 @@ The main output files are the files entitled *X_gapped.txt*. These are the input
 
 
 ---
-
-# Input for comrades-OO
-\
-The main input files for comrades-OO is a tab delimited text file containing the reads and mapping location on the transcriptome. This can be manually created if your library preparation protocol does not suit the pre-processing pipeline although the easiest way to obtain these files is to use the nextflow pipeline detailed above. There is test data that ships with the package, this contains data for the 18S rRNA and it's interactions with the 28S rRNA. However, full data-set already published can be found here:[Un-enriched rRNA dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246412).
-
-Pre-requisites:
-
-1. Install the comradesOO package
-2. Input files (nexflow, custom or downloaded)
-3. Meta-data table
-4. ID of the RNA of interest (from the transcript reference )
-5. A fasta sequence of the RNA of interest  (from the transcript reference )
-6. A set of interactions to compare to (optional)
-6. Reactivities (optional)
