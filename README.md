@@ -1,5 +1,8 @@
 # comradesOO
 
+A vignette is available at: [vignette](https://cran.r-project.org/package=comradesOO).
+
+
 ```
 devtools::install_github("JLP-BioInf/comradesOO")
 #OR
