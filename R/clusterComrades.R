@@ -116,7 +116,7 @@ setMethod("clusterComrades",
               for(i in 1:length(sampleNames(cds))){
                 plottingList[[i]] = list()
                 
-                if(is.na(chimeraListSampled[[i]][["left"]])){
+                if(any(is.na(chimeraListSampled[[i]][["left"]]))){
                   plottingList[[i]][[k]] = GRanges()
                 }else{
                   
