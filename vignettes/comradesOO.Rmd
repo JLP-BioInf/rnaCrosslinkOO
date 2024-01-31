@@ -616,27 +616,39 @@ plotMatrices(cds = cds,         # The comradesDataSet instance
              b = rnaSize(cds),  # End coord for x-axis
              c = 1,             # Start coord for y-axis
              d = rnaSize(cds),  # End coord for y-axis
-             h = 5)             # The hight of the image (if saved)
+             h = 5)             # The height of the image (if saved)
 
 ```
 
+A plot for two chosen samples and stages in the analysis can be made using the *plotCombinedMatrix* function.
 
+```{r}
+plotCombinedMatrix(cds,
+           type1 = "original",
+           type2 = "noHost",
+           b = rnaSize(cds),
+           d = rnaSize(cds))
+```
 
-See which contact maps are available by checking the status of the object 
+See which contact maps are available by checking the status of the object. 
 
 ```{r}
 trimmedClusters
+```
 
+A plot for all samples can be made using the *plotMatricesAverage* function. The plot can display up to two chosen analysis stages on separate halves.
+
+```{r}
 # Plot heatmaps for all samples combined and all controls combined
 plotMatricesAverage(cds = trimmedClusters, # The comradesDataSet instance 
-             type = "trimmedClusters", # The "analysis stage"
+             type1 = "trimmedClusters", # The "analysis stage" to plot on the upper half of the heatmap
+             type2 = "original",        # The "analysis stage" to plot on the lower half of the heatmap
              directory = 0,     # The directory for output (0 for standard out)
              a = 1,             # Start coord for x-axis
              b = rnaSize(cds),  # End coord for x-axis
              c = 1,             # Start coord for y-axis
              d = rnaSize(cds),  # End coord for y-axis
-             h = 5)             # The hight of the image (if saved)
-
+             h = 5)             # The height of the image (if saved)
 ```
 
 ---
@@ -849,7 +861,7 @@ You can plot these using the *plotMatrices* function
 ```{r}
 # Plot heatmaps for all samples combined and all controls combined
 plotMatricesAverage(cds = knowClusteredCds, # The comradesDataSet instance 
-             type = "KnownAndNovel", # The "analysis stage"
+             type1 = "KnownAndNovel", # The "analysis stage"
              directory = 0,     # The directory for output (0 for standard out)
              a = 1,             # Start coord for x-axis
              b = rnaSize(cds),  # End coord for x-axis
@@ -933,7 +945,7 @@ By plotting the reads on a 2D heatmap you can see structured areas of the transc
 ```{r, eval = FALSE}
 # Have a look at the reads for each sample 
 plotMatricesAverage(cds = cds,
-                    type = "original",
+                    type1 = "original",
                     directory = 0,
                     a = 1,
                     b = rnaSize(cds),
@@ -979,7 +991,7 @@ Plot them to check the clustering and trimming is working as expected.
 
 ```{r, eval = FALSE}
 plotMatricesAverage(cds = clusteredCds,
-                    type = "originalClusters",
+                    type1 = "originalClusters",
                     directory = 0,
                     a = 1,
                     b = rnaSize(cds),
@@ -990,7 +1002,7 @@ plotMatricesAverage(cds = clusteredCds,
 
 ```{r, eval = FALSE}
 plotMatricesAverage(cds = trimmedClusters,
-                    type = "trimmedClusters",
+                    type1 = "trimmedClusters",
                     directory = 0,
                     a = 1,
                     b = rnaSize(cds),

@@ -348,8 +348,6 @@ setMethod("plotMatricesAverage", "comradesDataSet", function(cds,
             }
             c = c + 1
           }
-        } else {
-          hybMatList2[[rna]][[type]][[i]] = matrix(data = NA , nrow = 1, ncol = 1)
         }
       }
       if (type2 == 'blank'){
