@@ -280,8 +280,8 @@ setMethod("plotMatrices", "comradesDataSet", function(cds,
 #' Plots a contact map of all samples for two chosen stages in the analysis, with each chosen stage on separate halves of the contact map
 #'
 #' @param cds A comradesDataSet object 
-#' @param type1 The analysis stage to plot on the upper half of the heatmap (use 'blank' for to leave this half blank)
-#' @param type2 The analysis stage to plot on the lower half of the heatmap (use 'blank' for to leave this half blank)
+#' @param type1 The analysis stage to plot on the upper half of the heatmap (use 'blank' to leave this half blank)
+#' @param type2 The analysis stage to plot on the lower half of the heatmap (use 'blank' to leave this half blank)
 #' @param directory An output directory for the heatmap (use 0 for no output)
 #' @param a To make a subsetted plot (left value on x)
 #' @param b To make a subsetted plot (right value on x)
@@ -496,6 +496,115 @@ setMethod("plotCombinedMatrix", "comradesDataSet", function(cds,
     } else{
       pdf(
         paste(directory, "/", rna, "_", sampleNames[sample1], "-", type1 , "-", sampleNames[sample2], "-", type2 , ".pdf", sep = ""),
+        height = h,
+        width = h
+      )
+      heatmap3((log2(t(
+        matrixToPlot + 1
+      ))),
+      col = myCol,
+      scale = "none" ,
+      Rowv = NA,
+      Colv = NA,
+      useRaster = T
+      )
+      dev.off()
+    }
+  }
+})
+
+#  plotInteractions
+#'
+#'
+#' Plots a contact map of interactions of an RNA (interactor) on the RNA of interest
+#'
+#' @param cds A comradesDataSet object 
+#' @param rna The RNA of interest
+#' @param interactor The RNA to show interactions with
+#' @param directory An output directory for the heatmap (use 0 for no output)
+#' @param a To make a subsetted plot (left value on x)
+#' @param b To make a subsetted plot (right value on x) (use 'max' to plot the whole RNA strand length)
+#' @param c To make a subsetted plot (left value on y)
+#' @param d To make a subsetted plot (right value on y) (use 'max' to plot the whole RNA strand length)
+#' @param h Height of image (inches) (only useful if plotting)
+#' @name plotInteractions
+#' @docType methods
+#' @rdname plotInteractions
+#' @aliases plotInteractions,comradesDataSet-method
+#' @return A heatmap of interactions of the RNA (interactor) on the RNA of interest
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' plotInteractions(cds,
+#'             rna = "ENSG000000XXXXX_NR003286-2_RN18S1_rRNA",
+#'             interactor = "ENSG00000XXXXXX_NR003287-2_RN28S1_rRNA",
+#'             b = "max",
+#'             d = "max")
+#' @export
+setGeneric("plotInteractions", function(cds,
+                                        rna,
+                                        interactor,
+                                        directory = 0,
+                                        a = 1,
+                                        b = 50,
+                                        c = 1,
+                                        d = 50,
+                                        h= 3)
+  standardGeneric("plotInteractions"))
+
+setMethod("plotInteractions", "comradesDataSet", function(cds, 
+                                                          rna,
+                                                          interactor,
+                                                          directory = 0, 
+                                                          a = 1,
+                                                          b = 50,
+                                                          c = 1,
+                                                          d = 50,
+                                                          h= 3)  {
+  for (i in names(hybFiles(cds)[[rnas(cds)]][["host"]])) {
+    table = hybFiles(cds)[[rnas(cds)]][["host"]][[i]]
+    hybOutput =  table[as.character(table$V4) == rna & as.character(table$V10) == interactor,] 
+    hybOutput = unique(hybOutput)
+    startsends = hybOutput[,c(7,8,13,14)]
+    maxX = max(hybOutput[,8])
+    maxY = max(hybOutput[,14])
+    matrixToPlot = matrix(0, nrow = maxX, ncol = maxY)
+    for(rowNumber in 1:nrow(startsends)){
+      data = startsends[rowNumber,]
+      xData = seq(data$V7, data$V8)
+      yData = seq(data$V14, data$V13)
+      matrixToPlot[xData,yData] = matrixToPlot[xData,yData] + 1
+    }
+    if (b == "max"){
+      b = maxX
+    }
+    if (d == "max"){
+      d = maxY
+    }
+    matrixToPlot = matrixToPlot[a:b, c:d]
+    
+    # choose colour pallet
+    cols = log2(max(matrixToPlot + 1))
+    myCol = c("black", colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols - 1))
+    if (cols > 14) {
+      cols = log2(max(matrixToPlot[matrixToPlot < 30000] + 1))
+      myCol = c("black", colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols - 1),  rep("white", (14 - cols) + 1))
+    }
+    
+    # plot the heatmap
+    if (directory == 0) {
+      heatmap3((log2(t(
+        matrixToPlot + 1
+      ))),
+      col = myCol,
+      scale = "none" ,
+      Rowv = NA,
+      Colv = NA,
+      useRaster = T
+      )
+    } else{
+      pdf(
+        paste(directory, "/", rna, "_", i, "-", interactor, ".pdf", sep = ""),
         height = h,
         width = h
       )

@@ -21,9 +21,9 @@ plotMatricesAverage(
 \arguments{
 \item{cds}{A comradesDataSet object}
 
-\item{type1}{The analysis stage to plot on the upper half of the heatmap (use 'blank' for to leave this half blank)}
+\item{type1}{The analysis stage to plot on the upper half of the heatmap (use 'blank' to leave this half blank)}
 
-\item{type2}{The analysis stage to plot on the lower half of the heatmap (use 'blank' for to leave this half blank)}
+\item{type2}{The analysis stage to plot on the lower half of the heatmap (use 'blank' to leave this half blank)}
 
 \item{directory}{An output directory for the heatmap (use 0 for no output)}
 

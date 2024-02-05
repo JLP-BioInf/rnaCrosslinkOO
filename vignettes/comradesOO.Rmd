@@ -806,6 +806,15 @@ getReverseInteractions(cds,
     theme_bw()
 ```
 
+These interactions can be plotted as contact matrices using *plotInteractions*.
+
+```{r}
+plotInteractions(cds,
+                 rna = "ENSG000000XXXXX_NR003286-2_RN18S1_rRNA",
+                 interactor = "ENSG00000XXXXXX_NR003287-2_RN28S1_rRNA",
+                 b = "max",
+                 d = "max")
+```
 
 
 \
