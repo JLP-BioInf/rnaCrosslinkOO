@@ -428,60 +428,55 @@ setMethod("topInteracters",
 
 #' getInteractions
 #'
-#' This method returns a table interactions of an RNA (interactor) on the RNA of
-#' interest use topInteracters. 
+#' This method returns a table of interactions of an RNA (interactor) on the RNA of interest. 
 #'
 #' @param cds a \code{comradesDataSet} object
-#' @param interactor The rna to show interactions with
+#' @param interactor A vector containing the names of RNAs to show interactions with
 #'
 #'
 #' @name getInteractions
 #' @docType methods
 #' @rdname getInteractions
-#' @return A table showign the read coverage of the interacting RNA 
+#' @return A table showing the read coverage of the specified interacting RNAs 
 #' @aliases getInteractions,comradesDataSet-method
 #' @examples
 #' cds = makeExampleComradesDataSet()
-#' getInteractions(cds, 'transcript2')
+#' getInteractions(cds, c("transcript1","transcript2"))
 #'
 #' @export
 setGeneric("getInteractions",
            function(cds,
-                    interactor)
+                    interactors)
              standardGeneric("getInteractions"))
 
 setMethod("getInteractions",
           "comradesDataSet",
           function(cds,
-                   interactor)  {
+                   interactors)  {
             seq2 <- Vectorize(seq.default, vectorize.args = c("from", "to"))
-            
-            # subset the hyb files based on the interacter of choice
+            # subset the hyb files based on the interactor of choice
             table = data.frame()
-            for (i in names(hybFiles(cds)[[rnas(cds)]][["host"]])) {
-              x = hybFiles(cds)[[rnas(cds)]][["host"]][[i]]
-              x = x[x$V10 == interactor, ]
-              if (nrow(x) == 0) {
-                v = as.data.frame(0)
-                v$rna = interactor
-                v$sample = i
-                colnames(v) = c("Position", "rna", "sample")
-                table = rbind.data.frame(table, v)
-              } else {
-                starts = x$V7
-                ends = x$V8
-                v = as.data.frame(unlist(seq2(from = starts, to = ends)))
-                if(ncol(v) > 1){
-                  next
+            for (interactor in interactors){
+              for (i in names(hybFiles(cds)[[rnas(cds)]][["host"]])) {
+                x = hybFiles(cds)[[rnas(cds)]][["host"]][[i]]
+                x = x[x$V10 == interactor, ]
+                if (nrow(x) == 0) {
+                  v = as.data.frame(0)
+                } 
+                else {
+                  starts = x$V7
+                  ends = x$V8
+                  v = as.data.frame(unlist(seq2(from = starts, to = ends)))
+                  if(ncol(v) > 1){
+                    next
+                  }
                 }
                 v$rna = interactor
                 v$sample = i
                 colnames(v) = c("Position", "rna", "sample")
                 table = rbind.data.frame(table, v)
               }
-              
             }
-            
             colnames(table) = c("Position", "rna", "sample")
             table = aggregate(
               table$Position,
