@@ -536,8 +536,8 @@ setMethod("plotCombinedMatrix", "comradesDataSet", function(cds,
 #' cds = makeExampleComradesDataSet()
 #' 
 #' plotInteractions(cds,
-#'             rna = "ENSG000000XXXXX_NR003286-2_RN18S1_rRNA",
-#'             interactor = "ENSG00000XXXXXX_NR003287-2_RN28S1_rRNA",
+#'             rna = "transcript1",
+#'             interactor = "transcript2",
 #'             b = "max",
 #'             d = "max")
 #' @export
