@@ -38,7 +38,8 @@ NULL
 setGeneric("trimClusters",
            function(clusteredCds,
                     trimFactor = 2.5, 
-                    clusterCutoff = 1) standardGeneric("trimClusters" ) )
+                    clusterCutoff = 1) 
+             standardGeneric("trimClusters" ) )
 
 setMethod("trimClusters",
           "comradesDataSet",
@@ -775,4 +776,188 @@ subsetHybList2 = function(hybList,
     
     return(longDistHyb)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+#  plotClusterAgreementHeat
+#'
+#'
+#' Plot a heatmap that plots the agreements between replicates 
+#' after clusterComrades has been performed
+#'
+#' @param cds A comradesDataSet object 
+#' @param analysisStage The stage of the analysis to plot
+#' @name plotClusterAgreementHeat
+#' @docType methods
+#' @rdname plotClusterAgreementHeat
+#' @aliases plotClusterAgreementHeat,comradesDataSet-method
+#' @return A heatmap of the agreement between replicates in the analysis stage chosen
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' 
+#' clusteredCds = clusterComrades(cds,
+#'                 cores = 1,
+#'                 stepCount = 1,
+#'                 clusterCutoff = 0)
+#' 
+#' 
+#' plotClusterAgreementHeat(cds))
+#' @export
+setGeneric("plotClusterAgreementHeat", 
+           function(cds,
+                    analysisStage = 'originalClusters')
+             standardGeneric("plotClusterAgreementHeat") )
+
+setMethod("plotClusterAgreementHeat", 
+          "comradesDataSet", function(cds,
+                                      analysisStage = 'originalClusters')  {
+            
+            # Get the cluster matrices
+            samples= group(cds)$s
+            # Make an emtpy
+            mat = matrix(0, 
+                         nrow = nrow(getData(cds,
+                                             "matrixList", 
+                                             analysisStage)[[samples[1]]]), 
+                         ncol = ncol(getData(cds,
+                                             "matrixList", 
+                                             analysisStage)[[samples[1]]]))
+            # Add overlap
+            df = data.frame()
+            for(i in 1:length(samples)){
+              x = getData(cds,"matrixList", analysisStage)[[samples[i]]]
+              x[x>0] = 1
+              mat = mat + x
+              df = rbind.data.frame(df,table(x))
+            }
+            # plot
+            heatmap3(t(mat),
+                     scale = "none" ,
+                     Rowv = NA,
+                     Colv = NA,
+                     useRaster = T
+            )
+            
+          })
+
+
+
+
+
+#  plotClusterAgreement
+#'
+#'
+#' Plot a heatmap that plots the agreements between replicates 
+#' after clusterComrades has been performed
+#'
+#' @param cds A comradesDataSet object 
+#' @param analysisStage The stage of the analysis to plot
+#' @name plotClusterAgreement
+#' @docType methods
+#' @rdname plotClusterAgreement
+#' @aliases plotClusterAgreement,comradesDataSet-method
+#' @return A heatmap of the agreement between replicates in the analysis stage chosen
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' 
+#' clusteredCds = clusterComrades(cds,
+#'                 cores = 1,
+#'                 stepCount = 1,
+#'                 clusterCutoff = 0)
+#' 
+#' 
+#' plotClusterAgreement(cds))
+#' @export
+setGeneric("plotClusterAgreement", 
+           function(cds,
+                    analysisStage = 'originalClusters')
+             standardGeneric("plotClusterAgreement") )
+
+setMethod("plotClusterAgreement", 
+          "comradesDataSet", function(cds,
+                                      analysisStage = 'trimmedClusters')  {
+            
+            
+            samples= group(cds)$s
+            
+            
+            mat = matrix(0, 
+                         nrow = nrow(getData(cds,
+                                             "matrixList", 
+                                             analysisStage)[[samples[1]]]), 
+                         ncol = ncol(getData(cds,
+                                             "matrixList", 
+                                             analysisStage)[[samples[1]]]))
+            
+            df = data.frame()
+            for(i in 1:length(samples)){
+              x = getData(cds,"matrixList", analysisStage)[[samples[i]]]
+              x[x>0] = 1
+              mat = mat + x
+              df = rbind.data.frame(df,table(x))
+            }
+            
+            df$sample = sampleTable(cds)$sampleName[samples]
+            colnames(df) = c(0,1,"sample")
+            df = melt(df, id.vars = list("sample"))
+            df2 = as.data.frame(table(mat))
+            df2$sample = "combinedMat"
+            colnames(df2) = c("variable", "value","sample")
+            df = rbind.data.frame(df,df2[,c(3,1,2)])
+            
+            a = ggplot(df[df$variable!=0,]) +
+              geom_bar(aes(x = sample,y = value,fill = variable), stat = "identity") +
+              theme_classic()
+            
+            
+            # get the cluster agreement 
+            clusterDF = data.frame()
+            for(sample in samples){
+              
+              clusters = cds@clusterTableList[[rnas(cds)]][[analysisStage]][[sample]]
+              numberOfClusters = nrow(clusters)
+              highestValue = rep(0,nrow(clusters))
+              for(i in 1:nrow(clusters)){
+                highestValue[i] = (max(mat[clusters$ls[i]:clusters$le[i],clusters$rs[i]:clusters$re[i]]))
+              }
+              d = data.frame(sample = sampleTable(cds)$sampleName[sample],
+                             highestValue = highestValue,
+                             numberOfClusters = numberOfClusters) 
+              clusterDF = rbind.data.frame(clusterDF,d)
+            }
+            clusterDF
+            
+            c = ggplot(clusterDF) +
+              geom_bar(aes(x = sample, fill = as.factor(highestValue)),stat = "count")+
+              theme_classic()
+            
+            a+c
+            
+          })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
