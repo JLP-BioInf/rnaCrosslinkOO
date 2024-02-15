@@ -621,3 +621,131 @@ setMethod("plotInteractions", "comradesDataSet", function(cds,
     }
   }
 })
+
+#  plotInteractionsAverage
+#'
+#'
+#' Plots a contact map of interactions of all samples of an RNA (interactor) on the RNA of interest
+#'
+#' @param cds A comradesDataSet object 
+#' @param rna The RNA of interest
+#' @param interactor The RNA to show interactions with
+#' @param directory An output directory for the heatmap (use 0 for no output)
+#' @param a To make a subsetted plot (left value on x)
+#' @param b To make a subsetted plot (right value on x) (use 'max' to plot the whole RNA strand length)
+#' @param c To make a subsetted plot (left value on y)
+#' @param d To make a subsetted plot (right value on y) (use 'max' to plot the whole RNA strand length)
+#' @param h Height of image (inches) (only useful if plotting)
+#' @name plotInteractionsAverage
+#' @docType methods
+#' @rdname plotInteractionsAverage
+#' @aliases plotInteractionsAverage,comradesDataSet-method
+#' @return A heatmap of interactions of all samples of the RNA (interactor) on the RNA of interest
+#' @examples 
+#' cds = makeExampleComradesDataSet()
+#' 
+#' plotInteractionsAverage(cds,
+#'             rna = "transcript1",
+#'             interactor = "transcript2",
+#'             b = "max",
+#'             d = "max")
+#' @export
+setGeneric("plotInteractionsAverage", function(cds,
+                                               rna,
+                                               interactor,
+                                               directory = 0,
+                                               a = 1,
+                                               b = 50,
+                                               c = 1,
+                                               d = 50,
+                                               h= 3)
+  standardGeneric("plotInteractionsAverage"))
+
+setMethod("plotInteractionsAverage", "comradesDataSet", function(cds, 
+                                                                 rna,
+                                                                 interactor,
+                                                                 directory = 0, 
+                                                                 a = 1,
+                                                                 b = 50,
+                                                                 c = 1,
+                                                                 d = 50,
+                                                                 h= 3)  {
+  
+  for (cors in c("s", "c")) {
+    counter=1
+    maxXAll=0
+    maxYAll=0
+    matrices=list()
+    for (sampleName in group(cds)[[cors]]) {
+      table = hybFiles(cds)[[rnas(cds)]][["host"]][[sampleName]]
+      hybOutput =  table[as.character(table$V4) == rna & as.character(table$V10) == interactor,] 
+      hybOutput = unique(hybOutput)
+      startsends = hybOutput[,c(7,8,13,14)]
+      maxX = max(hybOutput[,8])
+      if (maxXAll<maxX){
+        maxXAll=maxX
+      }
+      maxY = max(hybOutput[,14])
+      if (maxYAll<maxY){
+        maxYAll=maxY
+      }
+      matrixToAdd = matrix(0, nrow = maxX, ncol = maxY)
+      for(rowNumber in 1:nrow(startsends)){
+        data = startsends[rowNumber,]
+        xData = seq(data$V7, data$V8)
+        yData = seq(data$V14, data$V13)
+        matrixToAdd[xData,yData] = matrixToAdd[xData,yData] + 1
+      }
+      matrices[[counter]]=matrixToAdd
+      counter=counter+1
+    }
+    matrixToPlot = matrix(0, nrow = maxXAll, ncol = maxYAll)
+    for (mat in matrices){
+      matrixToPlot[1:dim(mat)[[1]],1:dim(mat)[[2]]] = matrixToPlot[1:dim(mat)[[1]],1:dim(mat)[[2]]] + mat
+    }
+    if (b == "max"){
+      bActual = maxXAll
+    }
+    if (d == "max"){
+      dActual = maxYAll
+    }
+    matrixToPlot = matrixToPlot[a:bActual, c:dActual]
+    
+    # choose colour pallet
+    cols = log2(max(matrixToPlot + 1))
+    myCol = c("black", colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols - 1))
+    if (cols > 14) {
+      cols = log2(max(matrixToPlot[matrixToPlot < 30000] + 1))
+      myCol = c("black", colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols - 1),  rep("white", (14 - cols) + 1))
+    }
+    
+    # plot the heatmap
+    if (directory == 0) {
+      heatmap3((log2(t(
+        matrixToPlot + 1
+      ))),
+      col = myCol,
+      scale = "none" ,
+      Rowv = NA,
+      Colv = NA,
+      useRaster = T
+      )
+    } else{
+      pdf(
+        paste(directory, "/", rna, "_", cors, "-", interactor, ".pdf", sep = ""),
+        height = h,
+        width = h
+      )
+      heatmap3((log2(t(
+        matrixToPlot + 1
+      ))),
+      col = myCol,
+      scale = "none" ,
+      Rowv = NA,
+      Colv = NA,
+      useRaster = T
+      )
+      dev.off()
+    }
+  }
+})
