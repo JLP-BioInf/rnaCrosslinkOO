@@ -5,10 +5,10 @@
 \alias{getMatrices}
 \title{getMatrices}
 \usage{
-getMatrices(hybList, rna, size)
+getMatrices(InputList, rna, size)
 }
 \arguments{
-\item{hybList}{the original hybList created with readHybFiles or subsetHybList}
+\item{InputList}{the original InputList created with readInputFiles or subsetInputList}
 
 \item{rna}{the RNA of interest that you want to subset}
 

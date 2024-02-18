@@ -3,13 +3,13 @@
 \docType{methods}
 \name{sampleTable}
 \alias{sampleTable}
-\alias{sampleTable,comradesDataSet-method}
+\alias{sampleTable,rnaCrosslinkDataSet-method}
 \title{sampleTable}
 \usage{
 sampleTable(x)
 }
 \arguments{
-\item{x}{A comradesDataSet object}
+\item{x}{A rnaCrosslinkDataSet object}
 }
 \value{
 A data frame - The orginal meta-data table
@@ -18,7 +18,7 @@ A data frame - The orginal meta-data table
 Extract the sample table for the instance
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
 sampleTable(cds)
 }

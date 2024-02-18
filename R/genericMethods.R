@@ -1,4 +1,4 @@
-#' @include  comradesDataSet.R 
+#' @include  rnaCrosslinkDataSet.R 
 NULL
 
 
@@ -11,15 +11,15 @@ NULL
 ##################################################
 
  
-setMethod("show", "comradesDataSet", function(object) {
-    cat("comradesDataSet Object \n")
+setMethod("show", "rnaCrosslinkDataSet", function(object) {
+    cat("rnaCrosslinkDataSet Object \n")
     cat("RNAs Analysed                -              - ",rnas(object), "\n")
     cat("Samples Analysed             -              - ",sampleNames(object), "\n")
     types = c()
-    for(i in names(hybFiles(object)[[rnas(object)[1]]])){
+    for(i in names(InputFiles(object)[[rnas(object)[1]]])){
         types = c(types  , i)
     }
-    cat("hybFiles           - Raw data               - ", types, "\n") 
+    cat("InputFiles           - Raw data               - ", types, "\n") 
     
     types = c()
     for(i in names(matrixList(object)[[rnas(object)[1]]])){
@@ -65,22 +65,22 @@ setMethod("show", "comradesDataSet", function(object) {
 #' samples in the dataset and the list contain entries of the data type
 #' and analysis stage you select.
 #' 
-#' @param x A comradesDataSet object
-#' @param data The data type to return <hybFiles | matrixList | clusterGrangesList | clusterTableList>
+#' @param x A rnaCrosslinkDataSet object
+#' @param data The data type to return <InputFiles | matrixList | clusterGrangesList | clusterTableList>
 #' @param type The analysis stage <original | noHost | originalClusters | trimmedClusters> 
 #' @name getData
 #' @docType methods
 #' @rdname getData
-#' @aliases getData,comradesDataSet-method
+#' @aliases getData,rnaCrosslinkDataSet-method
 #' @return A list of the chosen data type - one entry for each sample
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' getData(cds, 'matrixList','original')
 #' 
 #' @export
 setGeneric("getData", function(x,data, type ) standardGeneric("getData"))
-setMethod("getData", "comradesDataSet", function( x,data, type )  
+setMethod("getData", "rnaCrosslinkDataSet", function( x,data, type )  
     slot(x, data)[[rnas(x)]][[type]] )
 
 
@@ -90,52 +90,52 @@ setMethod("getData", "comradesDataSet", function( x,data, type )
 #' 
 #' Extract the sample names for the instance
 #' 
-#' @param x A comradesDataSet object
+#' @param x A rnaCrosslinkDataSet object
 #' @name sampleNames
 #' @docType methods
 #' @rdname sampleNames
-#' @aliases sampleNames,comradesDataSet-method
+#' @aliases sampleNames,rnaCrosslinkDataSet-method
 #' @return A character vector - the sample names
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' sampleNames(cds)
 #' @export
 setGeneric("sampleNames", function(x ) standardGeneric("sampleNames"))
-setMethod("sampleNames", "comradesDataSet", function( x)  
+setMethod("sampleNames", "rnaCrosslinkDataSet", function( x)  
     as.character( sampleTable(x)$sampleName ) )
 
 #' sampleTable
 #' 
 #' Extract the sample table for the instance
-#' @param x A comradesDataSet object
+#' @param x A rnaCrosslinkDataSet object
 #' @name sampleTable
 #' @docType methods
-#' @aliases sampleTable,comradesDataSet-method
+#' @aliases sampleTable,rnaCrosslinkDataSet-method
 #' @rdname sampleTable
 #' @return A data frame - The orginal meta-data table 
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' sampleTable(cds)
 #' @export
 setGeneric("sampleTable", function(x) standardGeneric("sampleTable"))
-setMethod("sampleTable", "comradesDataSet", function(x)   
+setMethod("sampleTable", "rnaCrosslinkDataSet", function(x)   
   x@sampleTable)
 
 #' group
 #' 
 #' Extract the indeces for each group for the instance
-#' @param x A comradesDataSet object
-#' @aliases group,comradesDataSet-method
+#' @param x A rnaCrosslinkDataSet object
+#' @aliases group,rnaCrosslinkDataSet-method
 #' @return A list - The indices of the sample in the control and sample groups
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' group(cds)
 #' @export
 setGeneric("group", function(x) standardGeneric("group"))
-setMethod("group", "comradesDataSet", function(x)
+setMethod("group", "rnaCrosslinkDataSet", function(x)
    list("c" =  which(sampleTable(x)$group == "c"),
         "s" = which(sampleTable(x)$group== "s") )
 )
@@ -144,19 +144,19 @@ setMethod("group", "comradesDataSet", function(x)
 #' rnas
 #' 
 #' Extract the rna ID for the instance
-#' @param x A comradesDataSet object
+#' @param x A rnaCrosslinkDataSet object
 #' @name rnas
 #' @docType methods
 #' @rdname rnas
-#' @aliases rnas,comradesDataSet-method
+#' @aliases rnas,rnaCrosslinkDataSet-method
 #' @return A character - the ID of the RNA
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' rnas(cds)
 #' @export
 setGeneric("rnas", function(x) standardGeneric("rnas"))
-setMethod("rnas", "comradesDataSet", function(x) 
+setMethod("rnas", "rnaCrosslinkDataSet", function(x) 
   x@rnas)
 
 
@@ -164,55 +164,55 @@ setMethod("rnas", "comradesDataSet", function(x)
 #' rnaSize
 #' 
 #' Extract the size of the RNA for the instance
-#' @param x A comradesDataSet object
+#' @param x A rnaCrosslinkDataSet object
 #' @name rnaSize
 #' @docType methods
 #' @rdname rnaSize
-#' @aliases rnaSize,comradesDataSet-method
+#' @aliases rnaSize,rnaCrosslinkDataSet-method
 #' @return A numeric - the size of the RNA (nucleotides)
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' rnaSize(cds)
 #' @export
 setGeneric("rnaSize", function(x) standardGeneric("rnaSize"))
-setMethod("rnaSize", "comradesDataSet", function(x) 
+setMethod("rnaSize", "rnaCrosslinkDataSet", function(x) 
   x@rnaSize)
 
-#' hybFiles
+#' InputFiles
 #' 
 #' Extract the data in original format 
-#' @param x A comradesDataSet object
-#' @name hybFiles
+#' @param x A rnaCrosslinkDataSet object
+#' @name InputFiles
 #' @docType methods
-#' @rdname hybFiles
-#' @aliases hybFiles,comradesDataSet-method
+#' @rdname InputFiles
+#' @aliases InputFiles,rnaCrosslinkDataSet-method
 #' @return A list of tables in the original input format, one entry for each sample
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
-#' hybFiles(cds)
+#' InputFiles(cds)
 #' @export
-setGeneric("hybFiles", function(x) standardGeneric("hybFiles"))
-setMethod("hybFiles", "comradesDataSet", function(x)   x@hybFiles)
+setGeneric("InputFiles", function(x) standardGeneric("InputFiles"))
+setMethod("InputFiles", "rnaCrosslinkDataSet", function(x)   x@InputFiles)
 
 
 #' matrixList
 #' 
 #' Extract the contact matrices
-#' @param x A comradesDataSet object
+#' @param x A rnaCrosslinkDataSet object
 #' @name matrixList
 #' @docType methods
 #' @rdname matrixList
-#' @aliases matrixList,comradesDataSet-method
+#' @aliases matrixList,rnaCrosslinkDataSet-method
 #' @return A list of contract matrices, one entry for each sample
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' matrixList(cds)
 #' @export
 setGeneric("matrixList", function(x) standardGeneric("matrixList"))
-setMethod("matrixList", "comradesDataSet", function(x)   x@matrixList)
+setMethod("matrixList", "rnaCrosslinkDataSet", function(x)   x@matrixList)
 
 
 
@@ -222,56 +222,56 @@ setMethod("matrixList", "comradesDataSet", function(x)   x@matrixList)
 #' clusterGrangesList
 #' 
 #' Extract the cluster coordinates in granges format
-#' @param x A comradesDataSet object
+#' @param x A rnaCrosslinkDataSet object
 #' @name clusterGrangesList
 #' @docType methods
 #' @rdname clusterGrangesList
-#' @aliases clusterGrangesList,comradesDataSet-method
+#' @aliases clusterGrangesList,rnaCrosslinkDataSet-method
 #' @return A list of Granges objects showing the positions of each cluster, one entry for each sample
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' clusterGrangesList(cds)
 #' @export
 setGeneric("clusterGrangesList", function(x) standardGeneric("clusterGrangesList"))
-setMethod("clusterGrangesList", "comradesDataSet", function(x)  x@clusterGrangesList)
+setMethod("clusterGrangesList", "rnaCrosslinkDataSet", function(x)  x@clusterGrangesList)
 
 
 
 #' clusterTableList
 #' 
 #' Extract the cluster coordinates in data frame format
-#' @param x A comradesDataSet object
+#' @param x A rnaCrosslinkDataSet object
 #' @name clusterTableList
 #' @docType methods
 #' @rdname clusterTableList
-#' @aliases clusterTableList,comradesDataSet-method
+#' @aliases clusterTableList,rnaCrosslinkDataSet-method
 #' @return A list of tables showing the vienna structures of each cluster
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' clusterTableList(cds)
 #' @export
 setGeneric("clusterTableList", function(x) standardGeneric("clusterTableList"))
-setMethod("clusterTableList", "comradesDataSet", function(x)  x@clusterTableList)
+setMethod("clusterTableList", "rnaCrosslinkDataSet", function(x)  x@clusterTableList)
 
 
 #' clusterTableFolded
 #' 
 #' Extract the cluster coordinates with fold prediciton in data frame format
-#' @param x A comradesDataSet object
+#' @param x A rnaCrosslinkDataSet object
 #' @name clusterTableFolded
 #' @docType methods
 #' @rdname clusterTableFolded
-#' @aliases clusterTableFolded,comradesDataSet-method
+#' @aliases clusterTableFolded,rnaCrosslinkDataSet-method
 #' @return A table showing the vienna structures of each cluster
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' clusterTableFolded(cds)
 #' @export
 setGeneric("clusterTableFolded", function(x) standardGeneric("clusterTableFolded"))
-setMethod("clusterTableFolded", "comradesDataSet", function(x)  x@clusterTableFolded)
+setMethod("clusterTableFolded", "rnaCrosslinkDataSet", function(x)  x@clusterTableFolded)
 
 
 
@@ -283,42 +283,42 @@ setMethod("clusterTableFolded", "comradesDataSet", function(x)  x@clusterTableFo
 #' matrixList
 #' 
 #' Set new matrixList slot
-#' @param x A comradesDataSet object
+#' @param x A rnaCrosslinkDataSet object
 #' @param value A replacement
 #' @name matrixList<-
 #' @docType methods
 #' @rdname matrixList_set
-#' @aliases matrixList<-,comradesDataSet-method
+#' @aliases matrixList<-,rnaCrosslinkDataSet-method
 #' @return No return - Sets a new matrixList slot
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' newMatrixList <- matrixList(cds)
 #' matrixList(cds) <- newMatrixList
 #' @export
 setGeneric("matrixList<-", function(x, value) standardGeneric("matrixList<-"))
-setMethod("matrixList<-", "comradesDataSet", function(x, value) {
+setMethod("matrixList<-", "rnaCrosslinkDataSet", function(x, value) {
     x@matrixList  = value
 })
 
 #' clusterGrangesList<-
 #' 
 #' Set new clusterGrangesList slot
-#' @param x A comradesDataSet object
+#' @param x A rnaCrosslinkDataSet object
 #' @param value A replacement
 #' @name clusterGrangesList<-
 #' @docType methods
 #' @rdname clusterGrangesList_set
-#' @aliases clusterGrangesList<-,comradesDataSet-method
+#' @aliases clusterGrangesList<-,rnaCrosslinkDataSet-method
 #' @return No return - Sets a new clusterGrangesList slot
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' newclusterGrangesList <- clusterGrangesList(cds)
 #' clusterGrangesList(cds) <- newclusterGrangesList
 #' @export
 setGeneric("clusterGrangesList<-", function(x, value) standardGeneric("clusterGrangesList<-"))
-setMethod("clusterGrangesList<-", "comradesDataSet", function(x, value) {
+setMethod("clusterGrangesList<-", "rnaCrosslinkDataSet", function(x, value) {
     x@clusterGrangesList  = value
 })
 
@@ -326,21 +326,21 @@ setMethod("clusterGrangesList<-", "comradesDataSet", function(x, value) {
 #' 
 #' Set new clusterTableList slot
 #' 
-#' @param x A comradesDataSet object
+#' @param x A rnaCrosslinkDataSet object
 #' @param value A replacement
 #' @name clusterTableList<-
 #' @docType methods
 #' @rdname clusterTableList_set
-#' @aliases clusterTableList<-,comradesDataSet-method
+#' @aliases clusterTableList<-,rnaCrosslinkDataSet-method
 #' @return No return - Sets a new clusterTableList slot
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' newclusterGrangesList <- clusterTableList(cds)
 #' clusterTableList(cds) <- newclusterGrangesList
 #' @export
 setGeneric("clusterTableList<-", function(x, value) standardGeneric("clusterTableList<-"))
-setMethod("clusterTableList<-", "comradesDataSet", function(x, value) {
+setMethod("clusterTableList<-", "rnaCrosslinkDataSet", function(x, value) {
     x@clusterTableList  = value
 })
 

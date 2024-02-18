@@ -1,14 +1,13 @@
-
-#' comradesOO: A package for analysing a COMRADES dataset
+#' rnaCrosslinkOO: A package for analysing a rnaCrosslink dataset
 #'
 #' The package consists of 1 Object:
-#'    comradesDataSet
+#'    rnaCrosslinkDataSet
 #'
-#' @section \code{\link{comradesDataSet}}
+#' @section \code{\link{rnaCrosslinkDataSet}}
 #'
 #'
 #' @docType package
-#' @name comradesOO
+#' @name rnaCrosslinkOO
 #' @keywords internal
 "_PACKAGE"
 
@@ -39,7 +38,7 @@ globalVariables(c(    "ID" ,"PCa" ,"PCb" ,"clusteredCds",  "dgs" ,"k",
 #' @importFrom IRanges IRanges
 #' @importFrom methods new slot
 #' @importFrom grDevices pdf dev.off colorRampPalette
-#' @aliases comradesOOPackage
+#' @aliases rnaCrosslinkOOPackage
 
 ## usethis namespace: start
 ## usethis namespace: end

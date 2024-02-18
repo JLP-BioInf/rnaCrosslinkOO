@@ -3,13 +3,13 @@
 \docType{methods}
 \name{clusterGrangesList}
 \alias{clusterGrangesList}
-\alias{clusterGrangesList,comradesDataSet-method}
+\alias{clusterGrangesList,rnaCrosslinkDataSet-method}
 \title{clusterGrangesList}
 \usage{
 clusterGrangesList(x)
 }
 \arguments{
-\item{x}{A comradesDataSet object}
+\item{x}{A rnaCrosslinkDataSet object}
 }
 \value{
 A list of Granges objects showing the positions of each cluster, one entry for each sample
@@ -18,7 +18,7 @@ A list of Granges objects showing the positions of each cluster, one entry for e
 Extract the cluster coordinates in granges format
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
 clusterGrangesList(cds)
 }

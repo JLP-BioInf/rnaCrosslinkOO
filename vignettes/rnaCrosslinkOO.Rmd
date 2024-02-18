@@ -1,5 +1,5 @@
 ---
-title: "comradesOO"
+title: "rnaCrosslinkOO"
 author: Jonathan Price
 output:
   html_document:
@@ -11,7 +11,7 @@ output:
       collapsed: true
     number_sections: true
 vignette: >
-  %\VignetteIndexEntry{comradessOO}
+  %\VignetteIndexEntry{rnaCrosslinksOO}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -46,7 +46,7 @@ Volume 80
     https://doi.org/10.1016/j.molcel.2020.11.004
     
 
-![Figure from Ziv et al., 2020. Virus-inoculated cells are crosslinked using clickable psoralen. Viral RNA is pulled down from the cell lysate using an array of biotinylated DNA probes, following digestion of the DNA probes and fragmentation of the RNA. Biotin is attached to crosslinked RNA duplexes via click chemistry, enabling pulling down crosslinked RNA using streptavidin beads. Half of the RNA duplexes are proximity-ligated, following reversal of the crosslinking to enable sequencing. The other half serves as a control, in which crosslink reversal proceeds the proximity ligation](comradesProtocol.jpg){width=100%}
+![Figure from Ziv et al., 2020. Virus-inoculated cells are crosslinked using clickable psoralen. Viral RNA is pulled down from the cell lysate using an array of biotinylated DNA probes, following digestion of the DNA probes and fragmentation of the RNA. Biotin is attached to crosslinked RNA duplexes via click chemistry, enabling pulling down crosslinked RNA using streptavidin beads. Half of the RNA duplexes are proximity-ligated, following reversal of the crosslinking to enable sequencing. The other half serves as a control, in which crosslink reversal proceeds the proximity ligation](rnaCrosslinkProtocol.jpg){width=100%}
 
 After sequencing, short reads are produced similar to a spliced / chimeric RNA read but where one half of the read corresponds to one half of a structural RNA duplex and the other half of the reads corresponds to the other half of the structural RNA duplex. This package has been designed to analyse this data. The short reads need to be prepared in a specific way to be inputted into this package. 
 
@@ -64,16 +64,16 @@ PARIS
 
 ---
 
-# COMRADES data pre-processing
+# rnaCrosslink data pre-processing
 
 ## Nextflow pipeline 
 \
-Fastq files produced from the comrades experiment can be processed for input into comradesOO using the Nextflow pre-processing pipeline, to get more information visit here.. The pipeline  takes the reads through trimming alignment, QC and the production of the files necessary for input to comradesOO. Crosslinking experiments often have different library preparation protocols therefore it is not necessary to follow the prescribed pre-processing pipeline. The only requirement is that the input files for comradesOO have the correct format detailed below.
+Fastq files produced from the COMRADES experiment can be processed for input into rnaCrosslinkOO using the Nextflow pre-processing pipeline, to get more information visit here.. The pipeline  takes the reads through trimming alignment, QC and the production of the files necessary for input to rnaCrosslinkOO. Crosslinking experiments often have different library preparation protocols therefore it is not necessary to follow the prescribed pre-processing pipeline. The only requirement is that the input files for rnaCrosslinkOO have the correct format detailed below.
 
 
 ## Nextflow pipeline output
 \
-The main output files are the files entitled *X_gapped.txt*. These are the input files for comradesOO. The columns of the output files are as follows:
+The main output files are the files entitled *X_gapped.txt*. These are the input files for rnaCrosslinkOO. The columns of the output files are as follows:
 
 1. Read Name
 2. Read Sequence
@@ -96,13 +96,13 @@ The main output files are the files entitled *X_gapped.txt*. These are the input
 
 ---
 
-# Input for comrades-OO
+# Input for rnaCrosslink-OO
 \
-The main input files for comrades-OO is a tab delimited text file containing the reads and mapping location on the transcriptome. This can be manually created if your library preparation protocol does not suit the pre-processing pipeline although the easiest way to obtain these files is to use the nextflow pipeline detailed above. There is test data that ships with the package, this contains data for the 18S rRNA and it's interactions with the 28S rRNA. However, full data-sets already published can be found here:[Un-enriched rRNA dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246412).
+The main input files for rnaCrosslink-OO is a tab delimited text file containing the reads and mapping location on the transcriptome. This can be manually created if your library preparation protocol does not suit the pre-processing pipeline although the easiest way to obtain these files is to use the nextflow pipeline detailed above. There is test data that ships with the package, this contains data for the 18S rRNA and it's interactions with the 28S rRNA. However, full data-sets already published can be found here:[Un-enriched rRNA dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246412).
 
 Pre-requisites:
 
-1. Install the comradesOO package
+1. Install the rnaCrosslinkOO package
 2. Input files (nexflow, custom or downloaded)
 3. Meta-data table
 4. ID of the RNA of interest (from the transcript reference )
@@ -117,18 +117,20 @@ Pre-requisites:
 
 ## Load the Library
 
-There is a development version available on github (https://github.com/JLP-BioInf/comradesOO). Issue reporting and collaboration welcome. 
+There is a development version available on github (https://github.com/JLP-BioInf/rnaCrosslinkOO). Issue reporting and collaboration welcome. 
 
 ```{r, echo = T, results = 'hide',message=FALSE}
-# Load the comrades-OO Library 
-#install.packages("comradesOO")
-library(comradesOO)
+
+
+#install.packages("rnaCrosslinkOO")
+# Load the rnaCrosslink-OO Library 
+library(rnaCrosslinkOO)
 ```
 
 The package relies on functions from these packages:
 
 ```{r, echo = T, results = 'hide',message=FALSE}
-# Here are the other libraries on which comradesOO relies
+# Here are the other libraries on which rnaCrosslinkOO relies
 library(seqinr)
 library(GenomicRanges)
 library(ggplot2)
@@ -163,10 +165,10 @@ The metadata table has 4 columns and the column names are specific and case-sens
 # Set up the sample table
 sampleTableRow1 = c(system.file("extdata", 
                                 "s1.txt", 
-                                package="comradesOO"), "s", "1", "s1")
+                                package="rnaCrosslinkOO"), "s", "1", "s1")
 sampleTableRow2 = c(system.file("extdata", 
                                 "c1.txt", 
-                                package="comradesOO"), "c", "1", "c1")
+                                package="rnaCrosslinkOO"), "c", "1", "c1")
 sampleTable2 = rbind.data.frame(sampleTableRow1, sampleTableRow2)
 
 # add the column names 
@@ -196,7 +198,7 @@ Fasta sequence(s) of the RNA(s) of interest, taken from the transcriptome refere
 ```{r}
 path18SFata <- system.file("extdata", 
                            "18S.fasta", 
-                           package="comradesOO")
+                           package="rnaCrosslinkOO")
 
 rnaRefs = list()
 rnaRefs[[rna]] = read.fasta(path18SFata)
@@ -213,7 +215,7 @@ This is optional but you can provide a table of interactions for the RNA to comp
 ```{r}
 path18SFata <- system.file("extdata", 
                            "ribovision18S.txt", 
-                           package="comradesOO")
+                           package="rnaCrosslinkOO")
 known18S = read.table(path18SFata,
                       header = F)
 ```
@@ -228,7 +230,7 @@ If you also have reactivities from a chemical probing experiment they can be inc
 ```{r}
 pathShape <- system.file("extdata",
                          "reactivities.txt", 
-                         package="comradesOO")
+                         package="rnaCrosslinkOO")
 shape = read.table(pathShape,
                       header = F)
 ```
@@ -246,16 +248,13 @@ The package has 3 main processes; clustering, cluster trimming and folding. The 
 
 \
 
-<center>
-![](schematic.jpg)
-</center>
 
 \
 
 ## Make the Object
 
 
-The instance of the *comradesDataSet* object that is created stores the information from the experiment including raw and processed data for the dataset. 
+The instance of the *rnaCrosslinkDataSet* object that is created stores the information from the experiment including raw and processed data for the dataset. 
 
 ### Slots / Attributes
 
@@ -277,14 +276,14 @@ The slots for processed and unprocessed data keep the data from each stage of th
 ##### Raw-data and processed data 
 
 
-+   **hybFiles**                -  Data in the original input file format (list)
-                                hybFiles - rna ID - Analysis stage - Sample Name
++   **InputFiles**                -  Data in the original input file format (list)
+                                InputFiles - rna ID - Analysis stage - Sample Name
 +   **matrixList**              - Data in contact matrix format (list) (cells contain the number of reads assinged to those interacting coordinates)
-                                hybFiles - rna ID - Analysis stage - Sample Name
+                                InputFiles - rna ID - Analysis stage - Sample Name
 +   **clusterGrangesList**      - Granges of clusters identified (list)
-                                hybFiles - rna ID - Analysis stage - Sample Name
+                                InputFiles - rna ID - Analysis stage - Sample Name
 +   **clusterTableList**        - Data frame of clusters identified (list)
-                                hybFiles - rna ID - Analysis stage - Sample Name
+                                InputFiles - rna ID - Analysis stage - Sample Name
 +   **clusterTableFolded**      - A table of all clusters with predicted structures included
 +   **interactionTable**        - A table contraints predicted for folding
 +   **viennaStructures**        - A list of predicted structures in vienna format       
@@ -292,12 +291,12 @@ The slots for processed and unprocessed data keep the data from each stage of th
 
 \
 
-### comradesDataSet - make object 
+### rnaCrosslinkDataSet - make object 
 
 
 ```{r}
 # load the object
-cds = comradesDataSet(rnas = rna,
+cds = rnaCrosslinkDataSet(rnas = rna,
                       sampleTable = sampleTable2)
 ```
 
@@ -365,11 +364,11 @@ sampleNames(cds)
 
 #### Retreive Data in original format 
 
-It is more recommended to use getData for this purpose but sometime is is useful to grab all data in the hybFiles slot which contains all raw and processed data in the original input format from each analysis stage that has been performed. 
+It is more recommended to use getData for this purpose but sometime is is useful to grab all data in the InputFiles slot which contains all raw and processed data in the original input format from each analysis stage that has been performed. 
 
 ```{r, eval=FALSE,echo=TRUE}
-# Return the hybFiles slot
-hybFiles(cds)
+# Return the InputFiles slot
+InputFiles(cds)
 ```
 
 \
@@ -394,7 +393,7 @@ Get data is more generic method for retrieving data from the object and returns 
 
 ```{r}
 data = getData(x    = cds,              # The object      
-               data =  "hybFiles",       # The Type of data to return     
+               data =  "InputFiles",       # The Type of data to return     
                type = "original")[[1]] # The stage of the analysis for the return data
 
 head(data)
@@ -417,7 +416,7 @@ The first step is to assess the species of RNA present in the dataset, the insta
 ```{r}
 # Returns the RNAs with highest number of assigned reads 
 # regardless of wether it is an Inter or Intra - RNA interaction. 
-topTranscripts(cds, # The comradesDataSet instance
+topTranscripts(cds, # The rnaCrosslinkDataSet instance
                2)  # The number of entried to return
 
 ```
@@ -429,7 +428,7 @@ topTranscripts(cds, # The comradesDataSet instance
 
 ```{r}
 # Returns the RNAs that interact with the RNA of interest
-topInteracters(cds, # The comradesDataSet instance
+topInteracters(cds, # The rnaCrosslinkDataSet instance
                1)   # The number of entries to return
 ```
 
@@ -440,7 +439,7 @@ topInteracters(cds, # The comradesDataSet instance
 
 ```{r}
 # Returns the Interacions with the highest number of assigned reads
-topInteractions(cds, # The comradesDataSet instance
+topInteractions(cds, # The rnaCrosslinkDataSet instance
                 2)   # The number of entries to return
 
 ```
@@ -452,7 +451,7 @@ topInteractions(cds, # The comradesDataSet instance
 
 
 ```{r}
-features = featureInfo(cds) # The comradesDataSet instance
+features = featureInfo(cds) # The rnaCrosslinkDataSet instance
 
 
 # Counts for features at the transcript level
@@ -473,8 +472,8 @@ features$family
 ## Clustering 
 
 
-In the COMRADES data, crosslinking and fragmentation leads to the production of redundant structural information, where the same in vivo structure from different RNA molecules produces slightly different RNA fragments. Clustering of these duplexes that originate from the same place in the reference transcript reduces computational time and allows trimming of these clusters to improve the folding prediction.
-To allow clustering, gapped alignments can be described by the transcript coordinates of the left (L) and right (R) side of the reads and by the nucleotides between L and R (g). Reads with similar or identical g values are likely to originate from the same structure of different molecules. In COMRADES-OO, an adjacency matrix is created for all chimeric reads based on the nucleotide difference between their g values (Deltagap). This results in Deltagap = 0 for identically overlapping gaps and increasing Deltagap values for gapped reads with less overlap:
+In the rnaCrosslink data, crosslinking and fragmentation leads to the production of redundant structural information, where the same in vivo structure from different RNA molecules produces slightly different RNA fragments. Clustering of these duplexes that originate from the same place in the reference transcript reduces computational time and allows trimming of these clusters to improve the folding prediction.
+To allow clustering, gapped alignments can be described by the transcript coordinates of the left (L) and right (R) side of the reads and by the nucleotides between L and R (g). Reads with similar or identical g values are likely to originate from the same structure of different molecules. In rnaCrosslink-OO, an adjacency matrix is created for all chimeric reads based on the nucleotide difference between their g values (Deltagap). This results in Deltagap = 0 for identically overlapping gaps and increasing Deltagap values for gapped reads with less overlap:
 
 + Deltagap(gi,gj) = max(width(gi),width(gj)) – widthofIntersection(gi,gj)
 
@@ -486,12 +485,12 @@ Long range interactions (g >10) are clustered separately and their weights are c
 
 + E(gi, gj) = 15 - Deltagap(gi, gj)
 
-From these weights the network can be defined for short- and long-range interaction as: G = (V, E). To identify clusters within the graph (subgraphs) the graph is clustered using random walks with the cluster_waltrap function (steps = 2) from the iGraph packageå, there is an option for users to remove clusters with less than a specified amount of reads.  These clusters often contain a small number of longer L or R sequences due to the random fragmentation in the COMRADES protocol. 
+From these weights the network can be defined for short- and long-range interaction as: G = (V, E). To identify clusters within the graph (subgraphs) the graph is clustered using random walks with the cluster_waltrap function (steps = 2) from the iGraph packageå, there is an option for users to remove clusters with less than a specified amount of reads.  These clusters often contain a small number of longer L or R sequences due to the random fragmentation in the rnaCrosslink protocol. 
 
 
 ```{r}
 # Cluster the reads
-clusteredCds = clusterComrades(cds = cds,         # The comradesDataSet instance 
+clusteredCds = clusterrnaCrosslink(cds = cds,         # The rnaCrosslinkDataSet instance 
                                cores = 1,         # The number of cores
                                stepCount = 2,     # The number of steps in the random walk
                                clusterCutoff = 1) # The minimum number of reads for a cluster to be considered
@@ -546,11 +545,11 @@ getData(clusteredCds,         # The object
 ## Cluster Trimming 
 \
 
-Given the assumption that the reads within each cluster likely originate from the same structure in different molecules these clusters can be trimmed to contain the regions from L and R that have the most evidence the clustering and trimming is achieved with the clusterComrades and trimClusters methods. 
+Given the assumption that the reads within each cluster likely originate from the same structure in different molecules these clusters can be trimmed to contain the regions from L and R that have the most evidence the clustering and trimming is achieved with the clusterrnaCrosslink and trimClusters methods. 
 
 ```{r}
 # Trim the Clusters
-trimmedClusters = trimClusters(clusteredCds = clusteredCds, # The comradesDataSet instance 
+trimmedClusters = trimClusters(clusteredCds = clusteredCds, # The rnaCrosslinkDataSet instance 
                                trimFactor = 1,              # The cutoff for cluster trimming (see above)
                                clusterCutoff = 0)          # The minimum number of reads for a cluster to be considered
 ```
@@ -581,7 +580,7 @@ The final step is folding, this step populates the `viennaStructures`, `dgs` and
 
 ```{r,error=FALSE,eval = FALSE, results=FALSE,message=FALSE}
 # Fold the RNA in part of whole
-foldedCds = foldComrades(trimmedClusters,
+foldedCds = foldrnaCrosslink(trimmedClusters,
                          rnaRefs = rnaRefs,
                          start = 1600,
                          end = 1869,
@@ -609,7 +608,7 @@ Plots can be made for each sample using the *plotMatrices* function.
 
 ```{r}
 # Plot heatmaps for each sample
-plotMatrices(cds = cds,         # The comradesDataSet instance 
+plotMatrices(cds = cds,         # The rnaCrosslinkDataSet instance 
              type = "original", # The "analysis stage"
              directory = 0,     # The directory for output (0 for standard out)
              a = 1,             # Start coord for x-axis
@@ -640,7 +639,7 @@ A plot for all samples can be made using the *plotMatricesAverage* function. The
 
 ```{r}
 # Plot heatmaps for all samples combined and all controls combined
-plotMatricesAverage(cds = trimmedClusters, # The comradesDataSet instance 
+plotMatricesAverage(cds = trimmedClusters, # The rnaCrosslinkDataSet instance 
              type1 = "trimmedClusters", # The "analysis stage" to plot on the upper half of the heatmap
              type2 = "original",        # The "analysis stage" to plot on the lower half of the heatmap
              directory = 0,     # The directory for output (0 for standard out)
@@ -853,7 +852,7 @@ Using *compareKnown* you can check which clusters agree with the set of interact
 
 ```{r}
 # use compare known to gett he known and not know clusters
-knowClusteredCds = compareKnown(trimmedClusters, # The comradesDataSet instance 
+knowClusteredCds = compareKnown(trimmedClusters, # The rnaCrosslinkDataSet instance 
                                 knownMat, # A contact matrix of know interactions
                                 "trimmedClusters") # The analysis stage of clustering to compare 
 
@@ -869,7 +868,7 @@ You can plot these using the *plotMatrices* function
 
 ```{r}
 # Plot heatmaps for all samples combined and all controls combined
-plotMatricesAverage(cds = knowClusteredCds, # The comradesDataSet instance 
+plotMatricesAverage(cds = knowClusteredCds, # The rnaCrosslinkDataSet instance 
              type1 = "KnownAndNovel", # The "analysis stage"
              directory = 0,     # The directory for output (0 for standard out)
              a = 1,             # Start coord for x-axis
@@ -941,11 +940,11 @@ ggplot(compareKnownStructures(foldedCds, known18S)) +
 
 # Quick start
 \
-The package ships with a subsetted version of the unenriched dataset which can be used to follow the vignette, the full dataset can be found here: [Un-enriched rRNA dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246412). There is also a function `makeExampleComradesDataSet()` from the comradesOO package that will create a simple toy example comradesDataSet object, follow this small section to get a feel for the package and it's functionality. The dataset has 1 sample consisting of a control and sample.  
+The package ships with a subsetted version of the unenriched dataset which can be used to follow the vignette, the full dataset can be found here: [Un-enriched rRNA dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246412). There is also a function `makeExamplernaCrosslinkDataSet()` from the rnaCrosslinkOO package that will create a simple toy example rnaCrosslinkDataSet object, follow this small section to get a feel for the package and it's functionality. The dataset has 1 sample consisting of a control and sample.  
 
 ```{r, eval = FALSE}
 # make an example dataset
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 cds
 ```
 
@@ -980,7 +979,7 @@ featureInfo(cds)
 Clustering and cluster trimming.
 
 ```{r, eval = FALSE}
-clusteredCds = clusterComrades(cds = cds,
+clusteredCds = clusterrnaCrosslink(cds = cds,
                                cores = 1,
                                stepCount = 2,
                                clusterCutoff = 0)
@@ -1048,7 +1047,7 @@ rnaRefs
 
 
 
-foldedCds = foldComrades(trimmedClusters,
+foldedCds = foldrnaCrosslink(trimmedClusters,
                          rnaRefs = rnaRefs,
                          start = 1,
                          end = 83,

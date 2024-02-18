@@ -3,7 +3,7 @@
 \docType{methods}
 \name{plotMatrices}
 \alias{plotMatrices}
-\alias{plotMatrices,comradesDataSet-method}
+\alias{plotMatrices,rnaCrosslinkDataSet-method}
 \title{Plots a number of contact maps to file of each sample for a stage in the analysis}
 \usage{
 plotMatrices(
@@ -18,7 +18,7 @@ plotMatrices(
 )
 }
 \arguments{
-\item{cds}{A comradesDataSet object}
+\item{cds}{A rnaCrosslinkDataSet object}
 
 \item{type}{The analysis stage to plot}
 
@@ -41,7 +41,7 @@ A heatmap of the reads in the analysis stage chosen
 Plots a number of contact maps to file of each sample for a stage in the analysis
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
 plotMatrices(cds,
             b = rnaSize(cds),

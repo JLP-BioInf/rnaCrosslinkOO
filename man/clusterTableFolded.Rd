@@ -3,13 +3,13 @@
 \docType{methods}
 \name{clusterTableFolded}
 \alias{clusterTableFolded}
-\alias{clusterTableFolded,comradesDataSet-method}
+\alias{clusterTableFolded,rnaCrosslinkDataSet-method}
 \title{clusterTableFolded}
 \usage{
 clusterTableFolded(x)
 }
 \arguments{
-\item{x}{A comradesDataSet object}
+\item{x}{A rnaCrosslinkDataSet object}
 }
 \value{
 A table showing the vienna structures of each cluster
@@ -18,7 +18,7 @@ A table showing the vienna structures of each cluster
 Extract the cluster coordinates with fold prediciton in data frame format
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
 clusterTableFolded(cds)
 }

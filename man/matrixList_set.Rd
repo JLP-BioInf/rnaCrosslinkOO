@@ -3,13 +3,13 @@
 \docType{methods}
 \name{matrixList<-}
 \alias{matrixList<-}
-\alias{matrixList<-,comradesDataSet-method}
+\alias{matrixList<-,rnaCrosslinkDataSet-method}
 \title{matrixList}
 \usage{
 matrixList(x) <- value
 }
 \arguments{
-\item{x}{A comradesDataSet object}
+\item{x}{A rnaCrosslinkDataSet object}
 
 \item{value}{A replacement}
 }
@@ -20,7 +20,7 @@ No return - Sets a new matrixList slot
 Set new matrixList slot
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
 newMatrixList <- matrixList(cds)
 matrixList(cds) <- newMatrixList

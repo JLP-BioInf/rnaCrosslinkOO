@@ -3,15 +3,15 @@
 \docType{methods}
 \name{getData}
 \alias{getData}
-\alias{getData,comradesDataSet-method}
+\alias{getData,rnaCrosslinkDataSet-method}
 \title{getData}
 \usage{
 getData(x, data, type)
 }
 \arguments{
-\item{x}{A comradesDataSet object}
+\item{x}{A rnaCrosslinkDataSet object}
 
-\item{data}{The data type to return <hybFiles | matrixList | clusterGrangesList | clusterTableList>}
+\item{data}{The data type to return <InputFiles | matrixList | clusterGrangesList | clusterTableList>}
 
 \item{type}{The analysis stage <original | noHost | originalClusters | trimmedClusters>}
 }
@@ -25,7 +25,7 @@ samples in the dataset and the list contain entries of the data type
 and analysis stage you select.
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
 getData(cds, 'matrixList','original')
 

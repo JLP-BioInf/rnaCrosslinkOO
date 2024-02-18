@@ -1,4 +1,4 @@
-#' @include  comradesDataSet.R
+#' @include  rnaCrosslinkDataSet.R
 NULL
 
 
@@ -7,17 +7,17 @@ NULL
 #' This method prints a table showing the number of clusters in each step 
 #' of the analysis
 #'
-#' @param knowClusteredCds A comradesDataSet object after clustering has been performed
+#' @param knowClusteredCds A rnaCrosslinkDataSet object after clustering has been performed
 #' @param rna The RNA ID of interest - use rna(cdsObject).
 #' @name clusterNumbers
 #' @docType methods
 #' @rdname clusterNumbers
-#' @aliases clusterNumbers,comradesDataSet-method
+#' @aliases clusterNumbers,rnaCrosslinkDataSet-method
 #' @return A data.frame shoing the number of clusters for each sample
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
-#' clusteredCds = clusterComrades(cds,
+#' clusteredCds = clusterrnaCrosslink(cds,
 #'                 cores = 1,
 #'                 stepCount = 1,
 #'                 clusterCutoff = 1)
@@ -28,7 +28,7 @@ setGeneric("clusterNumbers",
                     rna)
              standardGeneric("clusterNumbers"))
 
-setMethod("clusterNumbers", "comradesDataSet", function(knowClusteredCds,
+setMethod("clusterNumbers", "rnaCrosslinkDataSet", function(knowClusteredCds,
                                                         rna)  {
   sampleTable = sampleTable(knowClusteredCds)
   clusters = clusterTableList(knowClusteredCds)
@@ -68,18 +68,18 @@ setMethod("clusterNumbers", "comradesDataSet", function(knowClusteredCds,
 #' This method prints a table showing the number of duplexes in 
 #' the clusters in each step of the analysis
 #'
-#' @param knowClusteredCds A comradesDataSet object after clustering has been performed
+#' @param knowClusteredCds A rnaCrosslinkDataSet object after clustering has been performed
 #' @param rna The RNA ID of interest - use rna(cdsObject).
 #'
 #' @name readNumbers
 #' @docType methods
 #' @rdname readNumbers
-#' @aliases readNumbers,comradesDataSet-method
+#' @aliases readNumbers,rnaCrosslinkDataSet-method
 #' @return A data.frame shoing the number of reads in clusters for each sample
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
-#' clusteredCds = clusterComrades(cds,
+#' clusteredCds = clusterrnaCrosslink(cds,
 #'                 cores = 1,
 #'                 stepCount = 1,
 #'                 clusterCutoff = 1)
@@ -91,11 +91,11 @@ setGeneric("readNumbers",
                     rna)
              standardGeneric("readNumbers"))
 
-setMethod("readNumbers", "comradesDataSet", function(knowClusteredCds,
+setMethod("readNumbers", "rnaCrosslinkDataSet", function(knowClusteredCds,
                                                      rna)  {
   sampleTable = sampleTable(knowClusteredCds)
-  clusters = hybFiles(knowClusteredCds)
-  #get numbers of original hyb files
+  clusters = InputFiles(knowClusteredCds)
+  #get numbers of original Input files
   for (rna in c(rnas(knowClusteredCds), "all")) {
     sampleTable$rna = rnas(knowClusteredCds)
     for (type in 1:length(clusters[[rna]])) {
@@ -115,7 +115,7 @@ setMethod("readNumbers", "comradesDataSet", function(knowClusteredCds,
     }
   }
   
-  if (class(knowClusteredCds)[1] == "comradesDataSet") {
+  if (class(knowClusteredCds)[1] == "rnaCrosslinkDataSet") {
     clusters = clusterGrangesList(knowClusteredCds)
     
     for (rna in rnas(knowClusteredCds)) {
@@ -166,7 +166,7 @@ setMethod("readNumbers", "comradesDataSet", function(knowClusteredCds,
 #'
 #' Plots a number of contact maps to file of each sample for a stage in the analysis
 #'
-#' @param cds A comradesDataSet object 
+#' @param cds A rnaCrosslinkDataSet object 
 #' @param type The analysis stage to plot 
 #' @param directory An output directory for the heatmap (use 0 for no output)
 #' @param a To make a subsetted plot (left value on x)
@@ -177,10 +177,10 @@ setMethod("readNumbers", "comradesDataSet", function(knowClusteredCds,
 #' @name plotMatrices
 #' @docType methods
 #' @rdname plotMatrices
-#' @aliases plotMatrices,comradesDataSet-method
+#' @aliases plotMatrices,rnaCrosslinkDataSet-method
 #' @return A heatmap of the reads in the analysis stage chosen
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' plotMatrices(cds,
 #'             b = rnaSize(cds),
@@ -196,7 +196,7 @@ setGeneric("plotMatrices", function(cds,
                                     h= 3)
   standardGeneric("plotMatrices"))
 
-setMethod("plotMatrices", "comradesDataSet", function(cds, 
+setMethod("plotMatrices", "rnaCrosslinkDataSet", function(cds, 
                                                       type = 'original', 
                                                       directory = 0, 
                                                       a = 1,
@@ -204,24 +204,24 @@ setMethod("plotMatrices", "comradesDataSet", function(cds,
                                                       c = 1,
                                                       d = 50,
                                                       h= 3)  {
-  hybMatList = matrixList(cds)
+  InputMatList = matrixList(cds)
   rnaS = rnas(cds)
-  sampleNames = names(hybMatList[[1]][[type]])
+  sampleNames = names(InputMatList[[1]][[type]])
   if (is.null(sampleNames)) {
-    sampleNames = 1:length(hybMatList[[1]][[type]])
+    sampleNames = 1:length(InputMatList[[1]][[type]])
   }
   
   
   
   for (sample in  1:length(sampleNames)) {
     for (rna in c(rnaS)) {
-      cols = log2(max(hybMatList[[rna]][[type]][[sample]][a:b, c:d] + 1))
+      cols = log2(max(InputMatList[[rna]][[type]][[sample]][a:b, c:d] + 1))
       
       myCol = c("black", colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols -
                                                                         1))
       
       if (cols > 14) {
-        cols = log2(max(hybMatList[[rna]][[type]][[sample]][a:b, c:d][hybMatList[[rna]][[type]][[sample]][a:b, c:d] < 30000] +
+        cols = log2(max(InputMatList[[rna]][[type]][[sample]][a:b, c:d][InputMatList[[rna]][[type]][[sample]][a:b, c:d] < 30000] +
                           1))
         myCol = c("black",
                   colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols - 1),
@@ -230,7 +230,7 @@ setMethod("plotMatrices", "comradesDataSet", function(cds,
       
       if (directory == 0) {
         heatmap3((log2(t(
-          hybMatList[[rna]][[type]][[sample]][a:b, c:d] + 1
+          InputMatList[[rna]][[type]][[sample]][a:b, c:d] + 1
         ))),
         col = myCol,
         scale = "none" ,
@@ -255,7 +255,7 @@ setMethod("plotMatrices", "comradesDataSet", function(cds,
           width = h
         )
         heatmap3((log2(t(
-          hybMatList[[rna]][[type]][[sample]][a:b, c:d] + 1
+          InputMatList[[rna]][[type]][[sample]][a:b, c:d] + 1
         ))),
         col = myCol,
         scale = "none" ,
@@ -279,7 +279,7 @@ setMethod("plotMatrices", "comradesDataSet", function(cds,
 #'
 #' Plots a contact map of all samples for two chosen stages in the analysis, with each chosen stage on separate halves of the contact map
 #'
-#' @param cds A comradesDataSet object 
+#' @param cds A rnaCrosslinkDataSet object 
 #' @param type1 The analysis stage to plot on the upper half of the heatmap (use 'blank' to leave this half blank)
 #' @param type2 The analysis stage to plot on the lower half of the heatmap (use 'blank' to leave this half blank)
 #' @param directory An output directory for the heatmap (use 0 for no output)
@@ -292,10 +292,10 @@ setMethod("plotMatrices", "comradesDataSet", function(cds,
 #' @name plotMatricesAverage
 #' @docType methods
 #' @rdname plotMatricesAverage
-#' @aliases plotMatricesAverage,comradesDataSet-method
+#' @aliases plotMatricesAverage,rnaCrosslinkDataSet-method
 #' @return A heatmap of the reads in the two analysis stages chosen, with each chosen stage on a separate half of the heatmap
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' plotMatricesAverage(cds,
 #'             b = rnaSize(cds),
@@ -313,7 +313,7 @@ setGeneric("plotMatricesAverage", function(cds,
                                            h= 3)
   standardGeneric("plotMatricesAverage"))
 
-setMethod("plotMatricesAverage", "comradesDataSet", function(cds,
+setMethod("plotMatricesAverage", "rnaCrosslinkDataSet", function(cds,
                                                              type1 = 'original',
                                                              type2 = 'blank',
                                                              directory = 0,
@@ -328,8 +328,8 @@ setMethod("plotMatricesAverage", "comradesDataSet", function(cds,
     typeCombinationName = type1
   }
   for (rna in rnas(cds)) {
-    hybMatList = matrixList(cds)
-    hybMatList2 = hybMatList
+    InputMatList = matrixList(cds)
+    InputMatList2 = InputMatList
     for (i in c("c", "s")) {
       for (matrixhalfNumber in 1:2){
         if (matrixhalfNumber == 1){
@@ -341,28 +341,28 @@ setMethod("plotMatricesAverage", "comradesDataSet", function(cds,
           c = 1
           for (j in group(cds)[[i]]) {
             if (length(group(cds)[[i]]) < 2 | c == 1) {
-              sum(hybMatList[[rna]][[type]][[j]])
-              hybMatList2[[rna]][[type]][[i]] = hybMatList[[rna]][[type]][[j]]
+              sum(InputMatList[[rna]][[type]][[j]])
+              InputMatList2[[rna]][[type]][[i]] = InputMatList[[rna]][[type]][[j]]
             } else{
-              hybMatList2[[rna]][[type]][[i]] = hybMatList2[[rna]][[type]][[i]] + hybMatList[[rna]][[type]][[j]]
+              InputMatList2[[rna]][[type]][[i]] = InputMatList2[[rna]][[type]][[i]] + InputMatList[[rna]][[type]][[j]]
             }
             c = c + 1
           }
         }
       }
       if (type2 == 'blank'){
-        hybMatList2[[rna]][[typeCombinationName]][[i]] = hybMatList2[[rna]][[type1]][[i]]
+        InputMatList2[[rna]][[typeCombinationName]][[i]] = InputMatList2[[rna]][[type1]][[i]]
       } else{
         if (type1 == 'blank') {
-          hybMatList2[[rna]][[typeCombinationName]][[i]] = t(hybMatList2[[rna]][[type2]][[i]])
+          InputMatList2[[rna]][[typeCombinationName]][[i]] = t(InputMatList2[[rna]][[type2]][[i]])
         } else{
-          hybMatList2[[rna]][[typeCombinationName]][[i]] = hybMatList2[[rna]][[type1]][[i]] + t(hybMatList2[[rna]][[type2]][[i]])
+          InputMatList2[[rna]][[typeCombinationName]][[i]] = InputMatList2[[rna]][[type1]][[i]] + t(InputMatList2[[rna]][[type2]][[i]])
         }
       }
     }
     sampleNames = c("s", "c")
     for (sample in  sampleNames) {
-      matrixToPlot = hybMatList2[[rna]][[typeCombinationName]][[sample]][a:b, c:d]
+      matrixToPlot = InputMatList2[[rna]][[typeCombinationName]][[sample]][a:b, c:d]
       cols = log2(max(matrixToPlot + 1))
       
       myCol = c("black", colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols -
@@ -413,7 +413,7 @@ setMethod("plotMatricesAverage", "comradesDataSet", function(cds,
 #'
 #' Plots a contact map of two chosen samples for chosen stages in the analysis, with each chosen sample on separate halves of the contact map 
 #'
-#' @param cds A comradesDataSet object 
+#' @param cds A rnaCrosslinkDataSet object 
 #' @param type1 The analysis stage to plot on the upper half of the heatmap
 #' @param type2 The analysis stage to plot on the lower half of the heatmap
 #' @param sample1 The sample number to plot on the upper half of the heatmap
@@ -427,10 +427,10 @@ setMethod("plotMatricesAverage", "comradesDataSet", function(cds,
 #' @name plotCombinedMatrix
 #' @docType methods
 #' @rdname plotCombinedMatrix
-#' @aliases plotCombinedMatrix,comradesDataSet-method
+#' @aliases plotCombinedMatrix,rnaCrosslinkDataSet-method
 #' @return A heatmap of the reads of the chosen sample numbers, in the analysis stages chosen, with each chosen sample on a separate half of the heatmap 
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' plotCombinedMatrix(cds,
 #'             type1 = "original",
@@ -451,7 +451,7 @@ setGeneric("plotCombinedMatrix", function(cds,
                                           h= 3)
   standardGeneric("plotCombinedMatrix"))
 
-setMethod("plotCombinedMatrix", "comradesDataSet", function(cds, 
+setMethod("plotCombinedMatrix", "rnaCrosslinkDataSet", function(cds, 
                                                             type1 = 'original',
                                                             type2 = 'original',
                                                             sample1 = 1,
@@ -462,11 +462,11 @@ setMethod("plotCombinedMatrix", "comradesDataSet", function(cds,
                                                             c = 1,
                                                             d = 50,
                                                             h= 3)  {
-  hybMatList = matrixList(cds)
+  InputMatList = matrixList(cds)
   rnaS = rnas(cds)
-  sampleNames = names(hybMatList[[1]][[type1]])
+  sampleNames = names(InputMatList[[1]][[type1]])
   if (is.null(sampleNames)) {
-    sampleNames = 1:length(hybMatList[[1]][[type1]])
+    sampleNames = 1:length(InputMatList[[1]][[type1]])
   }
   for (rna in c(rnaS)) {
     sumOfUpper = getData(cds, data = "matrixList", type = type1)[[sample1]]
@@ -518,7 +518,7 @@ setMethod("plotCombinedMatrix", "comradesDataSet", function(cds,
 #'
 #' Plots a contact map of interactions of an RNA (interactor) on the RNA of interest
 #'
-#' @param cds A comradesDataSet object 
+#' @param cds A rnaCrosslinkDataSet object 
 #' @param rna The RNA of interest
 #' @param interactor The RNA to show interactions with
 #' @param directory An output directory for the heatmap (use 0 for no output)
@@ -530,10 +530,10 @@ setMethod("plotCombinedMatrix", "comradesDataSet", function(cds,
 #' @name plotInteractions
 #' @docType methods
 #' @rdname plotInteractions
-#' @aliases plotInteractions,comradesDataSet-method
+#' @aliases plotInteractions,rnaCrosslinkDataSet-method
 #' @return A heatmap of interactions of the RNA (interactor) on the RNA of interest
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' plotInteractions(cds,
 #'             rna = "transcript1",
@@ -552,7 +552,7 @@ setGeneric("plotInteractions", function(cds,
                                         h= 3)
   standardGeneric("plotInteractions"))
 
-setMethod("plotInteractions", "comradesDataSet", function(cds, 
+setMethod("plotInteractions", "rnaCrosslinkDataSet", function(cds, 
                                                           rna,
                                                           interactor,
                                                           directory = 0, 
@@ -561,13 +561,13 @@ setMethod("plotInteractions", "comradesDataSet", function(cds,
                                                           c = 1,
                                                           d = 50,
                                                           h= 3)  {
-  for (i in names(hybFiles(cds)[[rnas(cds)]][["host"]])) {
-    table = hybFiles(cds)[[rnas(cds)]][["host"]][[i]]
-    hybOutput =  table[as.character(table$V4) == rna & as.character(table$V10) == interactor,] 
-    hybOutput = unique(hybOutput)
-    startsends = hybOutput[,c(7,8,13,14)]
-    maxX = max(hybOutput[,8])
-    maxY = max(hybOutput[,14])
+  for (i in names(InputFiles(cds)[[rnas(cds)]][["host"]])) {
+    table = InputFiles(cds)[[rnas(cds)]][["host"]][[i]]
+    InputOutput =  table[as.character(table$V4) == rna & as.character(table$V10) == interactor,] 
+    InputOutput = unique(InputOutput)
+    startsends = InputOutput[,c(7,8,13,14)]
+    maxX = max(InputOutput[,8])
+    maxY = max(InputOutput[,14])
     matrixToPlot = matrix(0, nrow = maxX, ncol = maxY)
     for(rowNumber in 1:nrow(startsends)){
       data = startsends[rowNumber,]
@@ -627,7 +627,7 @@ setMethod("plotInteractions", "comradesDataSet", function(cds,
 #'
 #' Plots a contact map of interactions of all samples of an RNA (interactor) on the RNA of interest
 #'
-#' @param cds A comradesDataSet object 
+#' @param cds A rnaCrosslinkDataSet object 
 #' @param rna The RNA of interest
 #' @param interactor The RNA to show interactions with
 #' @param directory An output directory for the heatmap (use 0 for no output)
@@ -639,10 +639,10 @@ setMethod("plotInteractions", "comradesDataSet", function(cds,
 #' @name plotInteractionsAverage
 #' @docType methods
 #' @rdname plotInteractionsAverage
-#' @aliases plotInteractionsAverage,comradesDataSet-method
+#' @aliases plotInteractionsAverage,rnaCrosslinkDataSet-method
 #' @return A heatmap of interactions of all samples of the RNA (interactor) on the RNA of interest
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' plotInteractionsAverage(cds,
 #'             rna = "transcript1",
@@ -661,7 +661,7 @@ setGeneric("plotInteractionsAverage", function(cds,
                                                h= 3)
   standardGeneric("plotInteractionsAverage"))
 
-setMethod("plotInteractionsAverage", "comradesDataSet", function(cds, 
+setMethod("plotInteractionsAverage", "rnaCrosslinkDataSet", function(cds, 
                                                                  rna,
                                                                  interactor,
                                                                  directory = 0, 
@@ -677,15 +677,15 @@ setMethod("plotInteractionsAverage", "comradesDataSet", function(cds,
     maxYAll=0
     matrices=list()
     for (sampleName in group(cds)[[cors]]) {
-      table = hybFiles(cds)[[rnas(cds)]][["host"]][[sampleName]]
-      hybOutput =  table[as.character(table$V4) == rna & as.character(table$V10) == interactor,] 
-      hybOutput = unique(hybOutput)
-      startsends = hybOutput[,c(7,8,13,14)]
-      maxX = max(hybOutput[,8])
+      table = InputFiles(cds)[[rnas(cds)]][["host"]][[sampleName]]
+      InputOutput =  table[as.character(table$V4) == rna & as.character(table$V10) == interactor,] 
+      InputOutput = unique(InputOutput)
+      startsends = InputOutput[,c(7,8,13,14)]
+      maxX = max(InputOutput[,8])
       if (maxXAll<maxX){
         maxXAll=maxX
       }
-      maxY = max(hybOutput[,14])
+      maxY = max(InputOutput[,14])
       if (maxYAll<maxY){
         maxYAll=maxY
       }

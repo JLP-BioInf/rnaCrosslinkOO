@@ -3,13 +3,13 @@
 \docType{methods}
 \name{clusterTableList<-}
 \alias{clusterTableList<-}
-\alias{clusterTableList<-,comradesDataSet-method}
+\alias{clusterTableList<-,rnaCrosslinkDataSet-method}
 \title{clusterTableList<-}
 \usage{
 clusterTableList(x) <- value
 }
 \arguments{
-\item{x}{A comradesDataSet object}
+\item{x}{A rnaCrosslinkDataSet object}
 
 \item{value}{A replacement}
 }
@@ -20,7 +20,7 @@ No return - Sets a new clusterTableList slot
 Set new clusterTableList slot
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
 newclusterGrangesList <- clusterTableList(cds)
 clusterTableList(cds) <- newclusterGrangesList

@@ -3,13 +3,13 @@
 \docType{methods}
 \name{rnaSize}
 \alias{rnaSize}
-\alias{rnaSize,comradesDataSet-method}
+\alias{rnaSize,rnaCrosslinkDataSet-method}
 \title{rnaSize}
 \usage{
 rnaSize(x)
 }
 \arguments{
-\item{x}{A comradesDataSet object}
+\item{x}{A rnaCrosslinkDataSet object}
 }
 \value{
 A numeric - the size of the RNA (nucleotides)
@@ -18,7 +18,7 @@ A numeric - the size of the RNA (nucleotides)
 Extract the size of the RNA for the instance
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
 rnaSize(cds)
 }

@@ -1,31 +1,31 @@
-#' @include  comradesDataSet.R 
+#' @include  rnaCrosslinkDataSet.R 
 NULL
 
 #' trimClusters
 #'
 #' Trimming of the clusters removes redundant information derived from random
 #' fragmentation of the reads during library preparation. This method takes
-#' a \code{comradesDataSet} object where clustering has been performed with 
-#' the clusterCOMRADES method and trims the clusters according to the 
+#' a \code{rnaCrosslinkDataSet} object where clustering has been performed with 
+#' the clusterrnaCrosslink method and trims the clusters according to the 
 #' trimFactor argument.
 #' 
 #' The 3 attributes; matrixList, clusterTableList and clusterGrangesList 
 #' will gain the \code{types} "superClusters" and "trimmedClusters"
 #'
-#' @param clusteredCds a \code{comradesDataSet} object
+#' @param clusteredCds a \code{rnaCrosslinkDataSet} object
 #' @param trimFactor a positive value that defines how much the clusters will 
 #' @param clusterCutoff Minimum number of reads before discarding cluster
 #' be trimmed = mean + ( sd * trimFactor )
 #' 
-#' @return Returns a \code{comradesDataSet} object
+#' @return Returns a \code{rnaCrosslinkDataSet} object
 #' @name trimClusters
 #' @docType methods
 #' @rdname trimClusters
-#' @aliases trimClusters,comradesDataSet-method
+#' @aliases trimClusters,rnaCrosslinkDataSet-method
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
-#' clusteredCds = clusterComrades(cds,
+#' clusteredCds = clusterrnaCrosslink(cds,
 #'                 cores = 1,
 #'                 stepCount = 1,
 #'                 clusterCutoff = 0)
@@ -42,7 +42,7 @@ setGeneric("trimClusters",
              standardGeneric("trimClusters" ) )
 
 setMethod("trimClusters",
-          "comradesDataSet",
+          "rnaCrosslinkDataSet",
           function(clusteredCds,
                    trimFactor = 2.5, 
                    clusterCutoff = 1)  {
@@ -361,7 +361,7 @@ setMethod("trimClusters",
                   
                   ###################################
                   # make the matrices
-                  matListTrimmed[[j]] = hybFiles(clusteredCds)[[rna]][["noHost"]][[j]][hybFiles(clusteredCds)[[rna]][["noHost"]][[j]]$V1 %in% names( allChimerasForSuperClustersPlottingTrimmed[[j]]),]
+                  matListTrimmed[[j]] = InputFiles(clusteredCds)[[rna]][["noHost"]][[j]][InputFiles(clusteredCds)[[rna]][["noHost"]][[j]]$V1 %in% names( allChimerasForSuperClustersPlottingTrimmed[[j]]),]
 
               }
               
@@ -383,11 +383,11 @@ setMethod("trimClusters",
               
               ###################################
               # Re-make the object
-              object  = new("comradesDataSet",
+              object  = new("rnaCrosslinkDataSet",
                             rnas = rnas(clusteredCds),
                             rnaSize = rnaSize(clusteredCds),
                             sampleTable = sampleTable(clusteredCds),
-                            hybFiles = hybFiles(clusteredCds),
+                            InputFiles = InputFiles(clusteredCds),
                             matrixList = ml,
                             clusterTableList = ctl,
                             clusterGrangesList = cgr
@@ -402,42 +402,42 @@ setMethod("trimClusters",
 
 
 
-#' hybToGRanges
+#' InputToGRanges
 #'
-#' This function is useful to turn a list of hyb data into lists of GRanges
+#' This function is useful to turn a list of Input data into lists of GRanges
 #' It creates a list for each sample one for the left side one for the right
 #' side and one for the gap in the middle.
 #' 
-#' @param hybList the original hybList created with readHybFiles or subsetHybList
+#' @param InputList the original InputList created with readInputFiles or subsetInputList
 #' @param rna The rna of interest
 #' 
-#' @return A list of GRanges data in hyb format
-#' @name hybToGRanges
-#' @aliases hybToGRanges
+#' @return A list of GRanges data in Input format
+#' @name InputToGRanges
+#' @aliases InputToGRanges
 #' @docType methods
-#' @rdname hybToGRanges
+#' @rdname InputToGRanges
 #'  
-hybToGRanges = function(hybList, 
+InputToGRanges = function(InputList, 
                         rna){
     seqName = rna
-    hybOutput2 = hybList
+    InputOutput2 = InputList
     gList = list()
-    for(i in 1:length(hybOutput2)){
-      if(!is.data.frame(hybOutput2[[i]])){
+    for(i in 1:length(InputOutput2)){
+      if(!is.data.frame(InputOutput2[[i]])){
         gList[[i]] = list()
         gList[[i]][["left"]] = NA
         gList[[i]][["right"]] = NA
         gList[[i]][["gap"]] = NA
       }else{
-        hybOutput = hybOutput2[[i]]
+        InputOutput = InputOutput2[[i]]
         gList[[i]] = GRangesList()
         #make a Granges from the left
         left <- GRanges(seqnames=seqName,
                         IRanges(
-                            start=hybOutput$V7,
-                            end=hybOutput$V8
+                            start=InputOutput$V7,
+                            end=InputOutput$V8
                         ))
-        names(left) <- hybOutput$V1
+        names(left) <- InputOutput$V1
         
         
         
@@ -445,10 +445,10 @@ hybToGRanges = function(hybList,
         #make a GRanges from the right
         right <-GRanges(seqnames=seqName,
                         IRanges(
-                            start=hybOutput$V13,
-                            end=hybOutput$V14
+                            start=InputOutput$V13,
+                            end=InputOutput$V14
                         ))
-        names(right) <- hybOutput$V1
+        names(right) <- InputOutput$V1
         
         
         
@@ -457,7 +457,7 @@ hybToGRanges = function(hybList,
                                 start=end(left),
                                 end=start(right)
                             ))
-        names(distances) <- hybOutput$V1
+        names(distances) <- InputOutput$V1
         
         gList[[i]][["left"]] = left
         gList[[i]][["right"]] = right
@@ -516,10 +516,10 @@ sampleChimeras = function(chimeraList){
 #' compareKnown
 #'
 #' This method compares the current object to a know structure.run 
-#' \code{trimClusters()} on the  \code{comradesDataSet} first
+#' \code{trimClusters()} on the  \code{rnaCrosslinkDataSet} first
 #'
-#' @param trimmedClusters a \code{comradesDataSet} object, 
-#' run \code{trimClusters()} on the  \code{comradesDataSet} first
+#' @param trimmedClusters a \code{rnaCrosslinkDataSet} object, 
+#' run \code{trimClusters()} on the  \code{rnaCrosslinkDataSet} first
 #' 
 #' @param knownMat Matrix - A marix(ncol = lengthRNA,nrow = lengthRNA) where a
 #' value in matrix[x,y] would indicate a known interation between nucleotide 
@@ -528,18 +528,18 @@ sampleChimeras = function(chimeraList){
 #' available types by just running the objects name
 #' 
 #' 
-#' @return Returns a \code{comradesClusteredDataSet} object
+#' @return Returns a \code{rnaCrosslinkClusteredDataSet} object
 #' 
 #' The 3 attributes matrixList, clusterTableList and clusterGrangesList 
 #' will gain the \code{types} "known" and "novel" and "knownAndNovel"
 #' @name compareKnown
 #' @docType methods
 #' @rdname compareKnown
-#' @aliases compareKnown,comradesDataSet-method
+#' @aliases compareKnown,rnaCrosslinkDataSet-method
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
-#' clusteredCds = clusterComrades(cds,
+#' clusteredCds = clusterrnaCrosslink(cds,
 #'                 cores = 1,
 #'                 stepCount = 1,
 #'                 clusterCutoff = 0)
@@ -558,7 +558,7 @@ setGeneric("compareKnown",
                     knownMat,
                     type) standardGeneric("compareKnown"))
 
-setMethod("compareKnown", "comradesDataSet", function(trimmedClusters, 
+setMethod("compareKnown", "rnaCrosslinkDataSet", function(trimmedClusters, 
                                                       knownMat,
                                                       type)  {
     
@@ -664,11 +664,11 @@ setMethod("compareKnown", "comradesDataSet", function(trimmedClusters,
     
     ###################################
     # create object
-    object  = new("comradesDataSet",
+    object  = new("rnaCrosslinkDataSet",
                   rnas = rnas(clusteredCds),
                   rnaSize = rnaSize(clusteredCds),
                   sampleTable = sampleTable(clusteredCds),
-                  hybFiles = hybFiles(clusteredCds),
+                  InputFiles = InputFiles(clusteredCds),
                   matrixList = ml,
                   clusterTableList = ctl,
                   clusterGrangesList = cgl,   
@@ -695,11 +695,11 @@ setMethod("compareKnown", "comradesDataSet", function(trimmedClusters,
 #'
 #' Does the same as printClusters but is a lot faster and does not create plots
 #' of each cluster
-#' @param  dir the directory that contains the *hybrids.hyb files
+#' @param  dir the directory that contains the *Inputrids.Input files
 #' @param  clustering The output from the iGraph function cluster_walktrap for the (made with adjacency matrix input)
 #' @param  highest_clusters The cluster you are interested in keeping
-#' @param  left list created with hybToGRanges (but just the left section of the list)
-#' @param  right list created with hybToGRanges (but just the right section of the list)
+#' @param  left list created with InputToGRanges (but just the left section of the list)
+#' @param  right list created with InputToGRanges (but just the right section of the list)
 #' @return A table of clusters and coordinates
 #' @name printClustersFast
 #' @docType methods
@@ -739,42 +739,42 @@ addCluster = function(granges, indexes, prev, cluster, type){
 
 
 
-#' subsetHybList2
+#' subsetInputList2
 #' 
-#' Subset a list of hyb files
+#' Subset a list of Input files
 #'
-#' Function used to subset a list of hyb data created by readHybFiles
+#' Function used to subset a list of Input data created by readInputFiles
 #' This function produces the same size list as before but 
 #' it returns ONLY the rna of interest and also
 #' Choose duplexes where the nt difference in position between the
 #' one side and other side of an interaction is between min and max
-#' @param hybList the original hybList created with readHybFiles
+#' @param InputList the original InputList created with readInputFiles
 #' @param min the rna of interest that you want to subset
 #' @param max The number of randomly subsetted chimeric reads you need
 #' @param length The number of randomly subsetted chimeric reads you need
-#' @return A list of subsetted hyb files
-#' @name subsetHybList2
+#' @return A list of subsetted Input files
+#' @name subsetInputList2
 #' @docType methods
-#' @rdname subsetHybList2
-subsetHybList2 = function(hybList, 
+#' @rdname subsetInputList2
+subsetInputList2 = function(InputList, 
                           min, 
                           max, 
                           length){
-    longDistHyb = list()
-    for (i in 1:length(hybList)){
-        hybList[[i]]$dist = hybList[[i]]$V13 -  hybList[[i]]$V8
-        longDistHyb[[i]] = hybList[[i]][hybList[[i]]$dist < max & hybList[[i]]$dist >= min,]
-        leftLength = longDistHyb[[i]]$V6 - longDistHyb[[i]]$V5
-        rightLength = longDistHyb[[i]]$V12 - longDistHyb[[i]]$V11
-        longDistHyb[[i]] = longDistHyb[[i]][leftLength < length & rightLength < length,]
+    longDistInput = list()
+    for (i in 1:length(InputList)){
+        InputList[[i]]$dist = InputList[[i]]$V13 -  InputList[[i]]$V8
+        longDistInput[[i]] = InputList[[i]][InputList[[i]]$dist < max & InputList[[i]]$dist >= min,]
+        leftLength = longDistInput[[i]]$V6 - longDistInput[[i]]$V5
+        rightLength = longDistInput[[i]]$V12 - longDistInput[[i]]$V11
+        longDistInput[[i]] = longDistInput[[i]][leftLength < length & rightLength < length,]
     }
-    for (i in 1:length(hybList)){
-      if(nrow(longDistHyb[[i]]) == 0 ){
-        longDistHyb[[i]] = NA
+    for (i in 1:length(InputList)){
+      if(nrow(longDistInput[[i]]) == 0 ){
+        longDistInput[[i]] = NA
       }
     }
     
-    return(longDistHyb)
+    return(longDistInput)
 }
 
 
@@ -792,26 +792,27 @@ subsetHybList2 = function(hybList,
 #'
 #'
 #' Plot a heatmap that plots the agreements between replicates 
-#' after clusterComrades has been performed
+#' after clusterrnaCrosslink has been performed
 #'
-#' @param cds A comradesDataSet object 
+#' @param cds A rnaCrosslinkDataSet object 
 #' @param analysisStage The stage of the analysis to plot
 #' @name plotClusterAgreementHeat
 #' @docType methods
 #' @rdname plotClusterAgreementHeat
-#' @aliases plotClusterAgreementHeat,comradesDataSet-method
+#' @aliases plotClusterAgreementHeat,rnaCrosslinkDataSet-method
 #' @return A heatmap of the agreement between replicates in the analysis stage chosen
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' 
-#' clusteredCds = clusterComrades(cds,
+#' clusteredCds = clusterrnaCrosslink(cds,
 #'                 cores = 1,
 #'                 stepCount = 1,
 #'                 clusterCutoff = 0)
 #' 
 #' 
-#' plotClusterAgreementHeat(cds))
+#' #plotClusterAgreementHeat(cds)
+#'
 #' @export
 setGeneric("plotClusterAgreementHeat", 
            function(cds,
@@ -819,7 +820,7 @@ setGeneric("plotClusterAgreementHeat",
              standardGeneric("plotClusterAgreementHeat") )
 
 setMethod("plotClusterAgreementHeat", 
-          "comradesDataSet", function(cds,
+          "rnaCrosslinkDataSet", function(cds,
                                       analysisStage = 'originalClusters')  {
             
             # Get the cluster matrices
@@ -858,26 +859,26 @@ setMethod("plotClusterAgreementHeat",
 #'
 #'
 #' Plot a heatmap that plots the agreements between replicates 
-#' after clusterComrades has been performed
+#' after clusterrnaCrosslink has been performed
 #'
-#' @param cds A comradesDataSet object 
+#' @param cds A rnaCrosslinkDataSet object 
 #' @param analysisStage The stage of the analysis to plot
 #' @name plotClusterAgreement
 #' @docType methods
 #' @rdname plotClusterAgreement
-#' @aliases plotClusterAgreement,comradesDataSet-method
+#' @aliases plotClusterAgreement,rnaCrosslinkDataSet-method
 #' @return A heatmap of the agreement between replicates in the analysis stage chosen
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' 
-#' clusteredCds = clusterComrades(cds,
+#' clusteredCds = clusterrnaCrosslink(cds,
 #'                 cores = 1,
 #'                 stepCount = 1,
 #'                 clusterCutoff = 0)
 #' 
 #' 
-#' plotClusterAgreement(cds))
+#' #plotClusterAgreement(cds)
 #' @export
 setGeneric("plotClusterAgreement", 
            function(cds,
@@ -885,7 +886,7 @@ setGeneric("plotClusterAgreement",
              standardGeneric("plotClusterAgreement") )
 
 setMethod("plotClusterAgreement", 
-          "comradesDataSet", function(cds,
+          "rnaCrosslinkDataSet", function(cds,
                                       analysisStage = 'trimmedClusters')  {
             
             

@@ -1,15 +1,15 @@
-#' @include  comradesDataSet.R
+#' @include  rnaCrosslinkDataSet.R
 NULL
 
 
 
-#' foldComrades
+#' foldrnaCrosslink
 #'
 #'
 #' This methods folds an ensebl of structures for the whole RNA or chosen region
-#' of the RNA. See \code{comradesDataSet} for slot information.
+#' of the RNA. See \code{rnaCrosslinkDataSet} for slot information.
 #'
-#' @param cdsObject comradesDataSet object created with comradesDataSet
+#' @param cdsObject rnaCrosslinkDataSet object created with rnaCrosslinkDataSet
 #' @param rnaRefs named List - a list with named elements that correspond to the
 #'     .RNA of interest. The element of the list must be a fasta file that has
 #'     been read with \code{seqinr::read.fasta()}
@@ -19,16 +19,16 @@ NULL
 #' @param ensembl Number of structures to Nake
 #' @param constraintNumber Number of constraints to add to each final fold
 #' @param shape shape reactivities (0 for no constraints)
-#' @name foldComrades
+#' @name foldrnaCrosslink
 #' @docType methods
-#' @rdname foldComrades
-#' @aliases foldComrades,comradesDataSet-method
-#' @return a comradesDataSet object
+#' @rdname foldrnaCrosslink
+#' @aliases foldrnaCrosslink,rnaCrosslinkDataSet-method
+#' @return a rnaCrosslinkDataSet object
 #' @examples 
 #' \dontrun{
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
-#' clusteredCds = clusterComrades(cds,
+#' clusteredCds = clusterrnaCrosslink(cds,
 #'                 cores = 1,
 #'                 stepCount = 1,
 #'                 clusterCutoff = 0)
@@ -57,7 +57,7 @@ NULL
 #' 
 #' 
 #' 
-#' foldedCds = foldComrades(trimmedClusters,
+#' foldedCds = foldrnaCrosslink(trimmedClusters,
 #'                          rnaRefs = rnaRefs,
 #'                          start = 1,
 #'                          end = 83,
@@ -68,7 +68,7 @@ NULL
 #' foldedCds
 #' }
 #' @export
-setGeneric("foldComrades",
+setGeneric("foldrnaCrosslink",
            function(cdsObject,
                     rnaRefs,
                     start,
@@ -77,10 +77,10 @@ setGeneric("foldComrades",
                     ensembl = 50,
                     constraintNumber = 20,
                     shape = 0)
-             standardGeneric("foldComrades"))
+             standardGeneric("foldrnaCrosslink"))
 
-setMethod("foldComrades",
-          "comradesDataSet",
+setMethod("foldrnaCrosslink",
+          "rnaCrosslinkDataSet",
           function(cdsObject,
                    rnaRefs,
                    start,
@@ -469,13 +469,13 @@ setMethod("foldComrades",
             # Make object
             ###########################################################
             print(" *** Creating object ***")
-            #create comrades dataset object
+            #create rnaCrosslink dataset object
             object  = new(
-              "comradesDataSet",
+              "rnaCrosslinkDataSet",
               rnas = rnas(cdsObject),
               rnaSize = rnaSize(cdsObject),
               sampleTable = sampleTable(cdsObject),
-              hybFiles = hybFiles(cdsObject),
+              InputFiles = InputFiles(cdsObject),
               matrixList = matrixList(cdsObject),
               clusterTableList = clusterTableList(cdsObject),
               clusterGrangesList = clusterGrangesList(cdsObject),

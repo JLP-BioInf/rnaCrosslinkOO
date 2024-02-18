@@ -3,13 +3,13 @@
 \docType{methods}
 \name{sampleNames}
 \alias{sampleNames}
-\alias{sampleNames,comradesDataSet-method}
+\alias{sampleNames,rnaCrosslinkDataSet-method}
 \title{sampleNames}
 \usage{
 sampleNames(x)
 }
 \arguments{
-\item{x}{A comradesDataSet object}
+\item{x}{A rnaCrosslinkDataSet object}
 }
 \value{
 A character vector - the sample names
@@ -18,7 +18,7 @@ A character vector - the sample names
 Extract the sample names for the instance
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
 sampleNames(cds)
 }

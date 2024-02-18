@@ -3,7 +3,7 @@
 \docType{methods}
 \name{plotCombinedMatrix}
 \alias{plotCombinedMatrix}
-\alias{plotCombinedMatrix,comradesDataSet-method}
+\alias{plotCombinedMatrix,rnaCrosslinkDataSet-method}
 \title{Plots a contact map of two chosen samples for chosen stages in the analysis, with each chosen sample on separate halves of the contact map}
 \usage{
 plotCombinedMatrix(
@@ -21,7 +21,7 @@ plotCombinedMatrix(
 )
 }
 \arguments{
-\item{cds}{A comradesDataSet object}
+\item{cds}{A rnaCrosslinkDataSet object}
 
 \item{type1}{The analysis stage to plot on the upper half of the heatmap}
 
@@ -50,7 +50,7 @@ A heatmap of the reads of the chosen sample numbers, in the analysis stages chos
 Plots a contact map of two chosen samples for chosen stages in the analysis, with each chosen sample on separate halves of the contact map
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
 plotCombinedMatrix(cds,
             type1 = "original",

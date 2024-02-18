@@ -1,4 +1,4 @@
-#' @include  comradesDataSet.R
+#' @include  rnaCrosslinkDataSet.R
 NULL
 
 
@@ -515,9 +515,9 @@ findBasePairsRNAfold2 = function(startPos,
 #' This method compares the predicted structures to a set of known interactions
 #' 
 #'
-#' @param foldedCds a \code{comradesDataSet} object
+#' @param foldedCds a \code{rnaCrosslinkDataSet} object
 #'
-#' @param  foldedCds  \code{comradesDataSet} after running foldComrades
+#' @param  foldedCds  \code{rnaCrosslinkDataSet} after running foldrnaCrosslink
 #' @param  file a two column file with column header i and j with numeric values showing
 #' nucleoide i binds to nucleotide j
 #'
@@ -526,12 +526,12 @@ findBasePairsRNAfold2 = function(startPos,
 #' @name compareKnownStructures
 #' @docType methods
 #' @rdname compareKnownStructures
-#' @aliases compareKnownStructures,comradesDataSet-method
+#' @aliases compareKnownStructures,rnaCrosslinkDataSet-method
 #' @return a tables showing the number of predicted interactions and their agreement
 #' @examples
 #' \dontrun{
-#' cds = makeExampleComradesDataSet()
-#' clusteredCds = clusterComrades(cds = cds,
+#' cds = makeExamplernaCrosslinkDataSet()
+#' clusteredCds = clusterrnaCrosslink(cds = cds,
 #'                                cores = 3,
 #'                                stepCount = 2,
 #'                                clusterCutoff = 1)
@@ -559,7 +559,7 @@ findBasePairsRNAfold2 = function(startPos,
 #' 
 #' 
 #' 
-#' foldedCds = foldComrades(trimmedClusters,
+#' foldedCds = foldrnaCrosslink(trimmedClusters,
 #'                          rnaRefs = rnaRefs,
 #'                          start = 1,
 #'                          end = 83,
@@ -582,7 +582,7 @@ setGeneric("compareKnownStructures",
              standardGeneric("compareKnownStructures"))
 
 setMethod("compareKnownStructures",
-          "comradesDataSet",
+          "rnaCrosslinkDataSet",
           function(foldedCds, 
                    file)  {
             known18S = file
@@ -651,19 +651,19 @@ setMethod("compareKnownStructures",
 #' This method plots a PCA of the ensembl
 #'
 #'
-#' @param  foldedCds  \code{comradesDataSet} after running foldComrades
+#' @param  foldedCds  \code{rnaCrosslinkDataSet} after running foldrnaCrosslink
 #' @param labels plot with labels or not (TRUE/FALSE)
 #' @param split split the plot using facets based on the samples  (TRUE/FALSE)
 #'
 #' @name plotEnsemblePCA
 #' @docType methods
 #' @rdname plotEnsemblePCA
-#' @aliases plotEnsemblePCA,comradesDataSet-method
+#' @aliases plotEnsemblePCA,rnaCrosslinkDataSet-method
 #' @return a PCA plot of the ensembl
 #' @examples
 #' \dontrun{
-#' cds = makeExampleComradesDataSet()
-#' clusteredCds = clusterComrades(cds = cds,
+#' cds = makeExamplernaCrosslinkDataSet()
+#' clusteredCds = clusterrnaCrosslink(cds = cds,
 #'                                cores = 3,
 #'                                stepCount = 2,
 #'                                clusterCutoff = 1)
@@ -691,7 +691,7 @@ setMethod("compareKnownStructures",
 #' 
 #' 
 #' 
-#' foldedCds = foldComrades(trimmedClusters,
+#' foldedCds = foldrnaCrosslink(trimmedClusters,
 #'                          rnaRefs = rnaRefs,
 #'                          start = 1,
 #'                          end = 83,
@@ -713,7 +713,7 @@ setGeneric("plotEnsemblePCA",
              standardGeneric("plotEnsemblePCA"))
 
 setMethod("plotEnsemblePCA",
-          "comradesDataSet",
+          "rnaCrosslinkDataSet",
           function(foldedCds,
                    labels = TRUE,
                    split = TRUE)  {
@@ -784,7 +784,7 @@ setMethod("plotEnsemblePCA",
 #' This method plots two structures chosen from the
 #' plotEnsemblePCA method
 #'
-#' @param  foldedCds  \code{comradesDataSet} after running foldComrades
+#' @param  foldedCds  \code{rnaCrosslinkDataSet} after running foldrnaCrosslink
 #' @param  s1 sample of structure 1
 #' @param  s2 sample of structure 2
 #' @param  n1 number of structure from first sample
@@ -793,12 +793,12 @@ setMethod("plotEnsemblePCA",
 #' @name plotComparisonArc
 #' @docType methods
 #' @rdname plotComparisonArc
-#' @aliases plotComparisonArc,comradesDataSet-method
+#' @aliases plotComparisonArc,rnaCrosslinkDataSet-method
 #' @return an ark diagram of the two strcutures
 #' @examples
 #' \dontrun{
-#' cds = makeExampleComradesDataSet()
-#' clusteredCds = clusterComrades(cds = cds,
+#' cds = makeExamplernaCrosslinkDataSet()
+#' clusteredCds = clusterrnaCrosslink(cds = cds,
 #'                                cores = 3,
 #'                                stepCount = 2,
 #'                                clusterCutoff = 1)
@@ -826,7 +826,7 @@ setMethod("plotEnsemblePCA",
 #' 
 #' 
 #' 
-#' foldedCds = foldComrades(trimmedClusters,
+#' foldedCds = foldrnaCrosslink(trimmedClusters,
 #'                          rnaRefs = rnaRefs,
 #'                          start = 1,
 #'                          end = 83,
@@ -848,7 +848,7 @@ setGeneric("plotComparisonArc",
              standardGeneric("plotComparisonArc"))
 
 setMethod("plotComparisonArc",
-          "comradesDataSet",
+          "rnaCrosslinkDataSet",
           function(foldedCds,
                    s1 = "s1",
                    s2 = "s2",
@@ -881,7 +881,7 @@ setMethod("plotComparisonArc",
 #' This method plots a structures chosen from the
 #' plotEnsemblePCA method
 #'
-#' @param  foldedCds  \code{comradesDataSet} after running foldComrades
+#' @param  foldedCds  \code{rnaCrosslinkDataSet} after running foldrnaCrosslink
 #' @param  rnaRefs A fasta of the transcript (made with seqinr::read.fasta)
 #' @param  s sample of structure
 #' @param  n number of structure
@@ -892,12 +892,12 @@ setMethod("plotComparisonArc",
 #' @name plotStructure
 #' @docType methods
 #' @rdname plotStructure
-#' @aliases plotStructure,comradesDataSet-method
+#' @aliases plotStructure,rnaCrosslinkDataSet-method
 #' @return a diagram of the predicted structure
 #' @examples
 #' \dontrun{
-#' cds = makeExampleComradesDataSet()
-#' clusteredCds = clusterComrades(cds = cds,
+#' cds = makeExamplernaCrosslinkDataSet()
+#' clusteredCds = clusterrnaCrosslink(cds = cds,
 #'                                cores = 3,
 #'                                stepCount = 2,
 #'                                clusterCutoff = 1)
@@ -925,7 +925,7 @@ setMethod("plotComparisonArc",
 #' 
 #' 
 #' 
-#' foldedCds = foldComrades(trimmedClusters,
+#' foldedCds = foldrnaCrosslink(trimmedClusters,
 #'                          rnaRefs = rnaRefs,
 #'                          start = 1,
 #'                          end = 83,
@@ -948,7 +948,7 @@ setGeneric("plotStructure",
              standardGeneric("plotStructure"))
 
 setMethod("plotStructure",
-          "comradesDataSet",
+          "rnaCrosslinkDataSet",
           function(foldedCds,
                    rnaRefs,
                    s = "s1",

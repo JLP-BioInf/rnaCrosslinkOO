@@ -5,10 +5,10 @@
 \alias{getAdjacancyMat}
 \title{getAdjacancyMat}
 \usage{
-getAdjacancyMat(hybGranges, nucletideOrPerc, cutoff)
+getAdjacancyMat(InputGranges, nucletideOrPerc, cutoff)
 }
 \arguments{
-\item{hybGranges}{list created with hybToGRanges (but just the gap section of the list)}
+\item{InputGranges}{list created with InputToGRanges (but just the gap section of the list)}
 
 \item{nucletideOrPerc}{measure difference by percentage or nucleotides}
 

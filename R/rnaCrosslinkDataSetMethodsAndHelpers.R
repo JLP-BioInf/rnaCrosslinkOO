@@ -1,11 +1,11 @@
-#' @include  comradesDataSet.R
+#' @include  rnaCrosslinkDataSet.R
 NULL
 
 
 
 ################################################################################
 # Methods functions and methods relating to creation and use of
-# comradesDataSets
+# rnaCrosslinkDataSets
 ################################################################################
 
 
@@ -14,16 +14,16 @@ NULL
 #' Produces a list list of 2 elemnts 'transcript' and 'family'
 #' Each element contains a table with the counts for each RNA in each sample.
 #'
-#' @param cds a \code{comradesDataSet} object
+#' @param cds a \code{rnaCrosslinkDataSet} object
 #'
 #' 
 #' @name featureInfo
 #' @docType methods
-#' @aliases featureInfo,comradesDataSet-method
+#' @aliases featureInfo,rnaCrosslinkDataSet-method
 #' @rdname featureInfo
 #' @return A list - Feature level and transcript level counts for each sample
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' featureInfo(cds)
 #'
 #' @export
@@ -32,38 +32,38 @@ setGeneric("featureInfo",
              standardGeneric("featureInfo"))
 
 setMethod("featureInfo",
-          "comradesDataSet",
+          "rnaCrosslinkDataSet",
           function(cds)  {
-            alteredHybList = list()
+            alteredInputList = list()
             TE = rnas(cds)
-            hybList = getData(x = cds, 
-                              data = "hybFiles", 
+            InputList = getData(x = cds, 
+                              data = "InputFiles", 
                               type = "original")
             
-            for (hyb in 1:length(hybList)) {
-              controlHyb = hybList[[hyb]]
+            for (Input in 1:length(InputList)) {
+              controlInput = InputList[[Input]]
               #get the right columns
-              controlHyb  = as.data.frame(cbind(
-                as.character(controlHyb$V4),
-                as.character(controlHyb$V10)
+              controlInput  = as.data.frame(cbind(
+                as.character(controlInput$V4),
+                as.character(controlInput$V10)
               ))
               
               #get only those lines with the RNA
-              controlHyb = controlHyb
+              controlInput = controlInput
               
               #remove the factor levels
-              controlHyb$V1 = as.character(controlHyb$V1)
-              controlHyb$V2 = as.character(controlHyb$V2)
+              controlInput$V1 = as.character(controlInput$V1)
+              controlInput$V2 = as.character(controlInput$V2)
               
               #Swap the columns around 
-              controlHybtmp1 = controlHyb[controlHyb$V1 == TE, ]
-              controlHybtmp2 = controlHyb[!(controlHyb$V1 == TE), ]
-              controlHybtmp2 = rev(controlHybtmp2)
-              colnames(controlHybtmp2) = c("V1", "V2")
-              controlHyb = as.data.frame(rbind(controlHybtmp1, controlHybtmp2))
+              controlInputtmp1 = controlInput[controlInput$V1 == TE, ]
+              controlInputtmp2 = controlInput[!(controlInput$V1 == TE), ]
+              controlInputtmp2 = rev(controlInputtmp2)
+              colnames(controlInputtmp2) = c("V1", "V2")
+              controlInput = as.data.frame(rbind(controlInputtmp1, controlInputtmp2))
               
               #add to list
-              alteredHybList[[TE]][[hyb]] = controlHyb
+              alteredInputList[[TE]][[Input]] = controlInput
               
             }
             
@@ -75,15 +75,15 @@ setMethod("featureInfo",
             df[[TE]] = data.frame()
             aggList = list()
             totalNames = c()
-            for (hyb in 1:length(alteredHybList[[TE]])) {
+            for (Input in 1:length(alteredInputList[[TE]])) {
               
               
-              sampleHyb = alteredHybList[[TE]][[hyb]]
-              sData = sampleHyb[sampleHyb$V1 == TE, ]
+              sampleInput = alteredInputList[[TE]][[Input]]
+              sData = sampleInput[sampleInput$V1 == TE, ]
               freqSample2 = aggregate(sData$V1, by = list(sData$V2), FUN = length)
               freqSample = freqSample2$x
               names(freqSample) = freqSample2$Group.1
-              aggList[[TE]][[hyb]] = freqSample 
+              aggList[[TE]][[Input]] = freqSample 
               # Get the total features that exist in the dataset
               totalNames = unique(sort(c(totalNames, names(freqSample))))
             }
@@ -91,7 +91,7 @@ setMethod("featureInfo",
             
             
             # geta. matrix for plotting
-            tmpMat = matrix(0, nrow = length(totalNames), ncol = length(hybList))
+            tmpMat = matrix(0, nrow = length(totalNames), ncol = length(InputList))
             row.names(tmpMat) = totalNames
             colnames(tmpMat) = sampleNames(cds)
             for (i in 1:nrow(tmpMat)) {
@@ -183,16 +183,16 @@ setMethod("featureInfo",
 #' This method prints the top transcripts that have the most duplexes
 #' assigned
 #'
-#' @param cds a \code{comradesDataSet} object
+#' @param cds a \code{rnaCrosslinkDataSet} object
 #' @param ntop the number of entries to display
 #'
 #' @name topTranscripts
 #' @docType methods
 #' @rdname topTranscripts
-#' @aliases topTranscripts,comradesDataSet-method
+#' @aliases topTranscripts,rnaCrosslinkDataSet-method
 #' @return A table, the number of counts per sample per transcript
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' topTranscripts(cds)
 #' @export
 #'
@@ -202,15 +202,15 @@ setGeneric("topTranscripts",
              standardGeneric("topTranscripts"))
 
 setMethod("topTranscripts",
-          "comradesDataSet",
+          "rnaCrosslinkDataSet",
           function(cds,
                    ntop = 10)  {
             c = group(cds)[["s"]]
             vect = c()
             for (i in c) {
               vect = c(vect,
-                       hybFiles(cds)[["all"]][["all"]][[i]]$V4,
-                       hybFiles(cds)[["all"]][["all"]][[i]][hybFiles(cds)[["all"]][["all"]][[i]]$V10 != hybFiles(cds)[["all"]][["all"]][[i]]$V4,"V10"]        )
+                       InputFiles(cds)[["all"]][["all"]][[i]]$V4,
+                       InputFiles(cds)[["all"]][["all"]][[i]][InputFiles(cds)[["all"]][["all"]][[i]]$V10 != InputFiles(cds)[["all"]][["all"]][[i]]$V4,"V10"]        )
             }
             x = table(vect)[order(table(vect), decreasing = T)]
             
@@ -219,8 +219,8 @@ setMethod("topTranscripts",
             vect = c()
             for (i in c) {
               vect = c(vect,
-                       hybFiles(cds)[["all"]][["all"]][[i]]$V4,
-                       hybFiles(cds)[["all"]][["all"]][[i]][hybFiles(cds)[["all"]][["all"]][[i]]$V10 != hybFiles(cds)[["all"]][["all"]][[i]]$V4,"V10"] )
+                       InputFiles(cds)[["all"]][["all"]][[i]]$V4,
+                       InputFiles(cds)[["all"]][["all"]][[i]][InputFiles(cds)[["all"]][["all"]][[i]]$V10 != InputFiles(cds)[["all"]][["all"]][[i]]$V4,"V10"] )
             }
             y = table(vect)[order(table(vect), decreasing = T)]
             
@@ -246,9 +246,9 @@ setMethod("topTranscripts",
             
             }
             
-            for (i in names(hybFiles(cds)[["all"]][["all"]])) {
-              t = c(hybFiles(cds)[["all"]][["all"]][[i]]$V4,
-                    hybFiles(cds)[["all"]][["all"]][[i]][hybFiles(cds)[["all"]][["all"]][[i]]$V10 != hybFiles(cds)[["all"]][["all"]][[i]]$V4,"V10"] )
+            for (i in names(InputFiles(cds)[["all"]][["all"]])) {
+              t = c(InputFiles(cds)[["all"]][["all"]][[i]]$V4,
+                    InputFiles(cds)[["all"]][["all"]][[i]][InputFiles(cds)[["all"]][["all"]][[i]]$V10 != InputFiles(cds)[["all"]][["all"]][[i]]$V4,"V10"] )
               t = table(t)
               
               t = t[names(x[1:ntop])]
@@ -267,16 +267,16 @@ setMethod("topTranscripts",
 #' This method prints the top transcript interactions that have the most duplexes
 #' assigned
 #'
-#' @param cds a \code{comradesDataSet} object
+#' @param cds a \code{rnaCrosslinkDataSet} object
 #' @param ntop the number of entries to display
 #'
 #' @name topInteractions
 #' @docType methods
 #' @rdname topInteractions
-#' @aliases topInteractions,comradesDataSet-method
+#' @aliases topInteractions,rnaCrosslinkDataSet-method
 #' @return A table, the number of counts per sample per interaction
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' topInteractions(cds)
 #'
 #' @export
@@ -286,15 +286,15 @@ setGeneric("topInteractions",
              standardGeneric("topInteractions"))
 
 setMethod("topInteractions",
-          "comradesDataSet",
+          "rnaCrosslinkDataSet",
           function(cds,
                    ntop = 10)  {
             c = group(cds)[["s"]]
             vect = c()
             for (i in c) {
               vect = c(vect,
-                       paste(hybFiles(cds)[["all"]][["all"]][[i]]$V4,
-                             hybFiles(cds)[["all"]][["all"]][[i]]$V10, sep = "::"))
+                       paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4,
+                             InputFiles(cds)[["all"]][["all"]][[i]]$V10, sep = "::"))
             }
             x = table(vect)[order(table(vect), decreasing = T)]
             
@@ -303,8 +303,8 @@ setMethod("topInteractions",
             vect = c()
             for (i in c) {
               vect = c(vect,
-                       paste(hybFiles(cds)[["all"]][["all"]][[i]]$V4,
-                             hybFiles(cds)[["all"]][["all"]][[i]]$V10, sep = "::"))
+                       paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4,
+                             InputFiles(cds)[["all"]][["all"]][[i]]$V10, sep = "::"))
             }
             y = table(vect)[order(table(vect), decreasing = T)]
             
@@ -329,9 +329,9 @@ setMethod("topInteractions",
             
             }
             
-            for (i in names(hybFiles(cds)[["all"]][["all"]])) {
-              t =   paste(hybFiles(cds)[["all"]][["all"]][[i]]$V4,
-                          hybFiles(cds)[["all"]][["all"]][[i]]$V10, sep = "::")
+            for (i in names(InputFiles(cds)[["all"]][["all"]])) {
+              t =   paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4,
+                          InputFiles(cds)[["all"]][["all"]][[i]]$V10, sep = "::")
               t = table(t)
               
               t = t[names(x[1:ntop])]
@@ -351,16 +351,16 @@ setMethod("topInteractions",
 #' This method prints the top transcripts that have the most duplexes
 #' assigned that interact with the transcript of interest 
 #'
-#' @param cds a \code{comradesDataSet} object
+#' @param cds a \code{rnaCrosslinkDataSet} object
 #' @param ntop the number of entries to display
 #'
 #' @name topInteracters
 #' @docType methods
 #' @rdname topInteracters
-#' @aliases topInteracters,comradesDataSet-method
+#' @aliases topInteracters,rnaCrosslinkDataSet-method
 #' @return A table, the number of counts per sample per interacting transcript
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' topInteracters(cds)
 #'
 #' @export
@@ -370,13 +370,13 @@ setGeneric("topInteracters",
              standardGeneric("topInteracters"))
 
 setMethod("topInteracters",
-          "comradesDataSet",
+          "rnaCrosslinkDataSet",
           function(cds,
                    ntop = 10)  {
             c = group(cds)[["s"]]
             vect = c()
             for (i in c) {
-              vecto = hybFiles(cds)[[2]][["host"]][[i]]
+              vecto = InputFiles(cds)[[2]][["host"]][[i]]
               vecto = vecto[vecto$V4 == rnas(cds), ]
               vect = c(vect, vecto$V10)
             }
@@ -386,7 +386,7 @@ setMethod("topInteracters",
             c = group(cds)[["c"]]
             vect = c()
             for (i in c) {
-              vecto = hybFiles(cds)[[2]][["host"]][[i]]
+              vecto = InputFiles(cds)[[2]][["host"]][[i]]
               vecto = vecto[vecto$V4 == rnas(cds), ]
               vect = c(vect, vecto$V10)
             }
@@ -412,8 +412,8 @@ setMethod("topInteracters",
               x2$enrichment = x2$Samples /  x2$Control
             }
             
-            for (i in names(hybFiles(cds)[[rnas(cds)]][["host"]])) {
-              t =   hybFiles(cds)[[rnas(cds)]][["host"]][[i]]$V10
+            for (i in names(InputFiles(cds)[[rnas(cds)]][["host"]])) {
+              t =   InputFiles(cds)[[rnas(cds)]][["host"]][[i]]$V10
               t = table(t)
               
               t = t[names(x[1:ntop])]
@@ -430,17 +430,17 @@ setMethod("topInteracters",
 #'
 #' This method returns a table of interactions of an RNA (interactor) on the RNA of interest. 
 #'
-#' @param cds a \code{comradesDataSet} object
-#' @param interactor A vector containing the names of RNAs to show interactions with
+#' @param cds a \code{rnaCrosslinkDataSet} object
+#' @param interactors A vector containing the names of RNAs to show interactions with
 #'
 #'
 #' @name getInteractions
 #' @docType methods
 #' @rdname getInteractions
 #' @return A table showing the read coverage of the specified interacting RNAs 
-#' @aliases getInteractions,comradesDataSet-method
+#' @aliases getInteractions,rnaCrosslinkDataSet-method
 #' @examples
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' getInteractions(cds, c("transcript1","transcript2"))
 #'
 #' @export
@@ -450,15 +450,15 @@ setGeneric("getInteractions",
              standardGeneric("getInteractions"))
 
 setMethod("getInteractions",
-          "comradesDataSet",
+          "rnaCrosslinkDataSet",
           function(cds,
                    interactors)  {
             seq2 <- Vectorize(seq.default, vectorize.args = c("from", "to"))
-            # subset the hyb files based on the interactor of choice
+            # subset the Input files based on the interactor of choice
             table = data.frame()
             for (interactor in interactors){
-              for (i in names(hybFiles(cds)[[rnas(cds)]][["host"]])) {
-                x = hybFiles(cds)[[rnas(cds)]][["host"]][[i]]
+              for (i in names(InputFiles(cds)[[rnas(cds)]][["host"]])) {
+                x = InputFiles(cds)[[rnas(cds)]][["host"]][[i]]
                 x = x[x$V10 == interactor, ]
                 if (nrow(x) == 0) {
                   v = as.data.frame(0)
@@ -497,16 +497,16 @@ setMethod("getInteractions",
 #' This method prints interactions of the RNA of interest on another RNA
 #' transcript.
 #'
-#' @param cds a \code{comradesDataSet} object
+#' @param cds a \code{rnaCrosslinkDataSet} object
 #' @param interactor The rna to show interactions with
 #'
 #' @name getReverseInteractions
 #' @docType methods
 #' @rdname getReverseInteractions
-#' @aliases getReverseInteractions,comradesDataSet-method
+#' @aliases getReverseInteractions,rnaCrosslinkDataSet-method
 #' @return A long format table shoing the read coverage of chosen RNA
 #' @examples
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' getReverseInteractions(cds, 'transcript2')
 #'
 #' @export
@@ -516,15 +516,15 @@ setGeneric("getReverseInteractions",
              standardGeneric("getReverseInteractions"))
 
 setMethod("getReverseInteractions",
-          "comradesDataSet",
+          "rnaCrosslinkDataSet",
           function(cds,
                    interactor)  {
             seq2 <- Vectorize(seq.default, vectorize.args = c("from", "to"))
             
-            # subset the hyb files based on the interacter of choice
+            # subset the Input files based on the interacter of choice
             table = data.frame()
-            for (i in names(hybFiles(cds)[[rnas(cds)]][["host"]])) {
-              x = hybFiles(cds)[[rnas(cds)]][["host"]][[i]]
+            for (i in names(InputFiles(cds)[[rnas(cds)]][["host"]])) {
+              x = InputFiles(cds)[[rnas(cds)]][["host"]][[i]]
               x = x[x$V10 == interactor, ]
               if (nrow(x) == 0) {
                 v = as.data.frame(0)
@@ -560,64 +560,64 @@ setMethod("getReverseInteractions",
 
 
 
-#' swapHybs
+#' swapInputs
 #'
 #' Swap the table to ensure that 3 prime most duplex side is on he left of the
 #' table used to make one sides heatmaps and other reasons where having the
 #' left of the table coming after the right side is a problem. Different from
-#' swapHybs as it ensure that BOTH duplex sides originate from the RNA of
+#' swapInputs as it ensure that BOTH duplex sides originate from the RNA of
 #' interest.
 #'
-#' @param hybList the original hybList created with readHybFiles or subsetHybList
+#' @param InputList the original InputList created with readInputFiles or subsetInputList
 #' @param rna The rna of interest
 #'
-#' @name swapHybs
+#' @name swapInputs
 #' @docType methods
-#' @rdname swapHybs
-#' @return A list of "swapped" hyb datas
+#' @rdname swapInputs
+#' @return A list of "swapped" Input datas
 #'
-swapHybs = function(hybList, 
+swapInputs = function(InputList, 
                     rna) {
-  hybListSwap = hybList
-  for (hyb in 1:length(hybList)) {
-    hybListS  =  hybList[[hyb]][hybList[[hyb]]$V4 == rna |
-                                  hybList[[hyb]]$V10 == rna, ]
+  InputListSwap = InputList
+  for (Input in 1:length(InputList)) {
+    InputListS  =  InputList[[Input]][InputList[[Input]]$V4 == rna |
+                                  InputList[[Input]]$V10 == rna, ]
     
     
     
-    comb = hybListS
+    comb = InputListS
     
     
     
     
-    hybListSwap[[hyb]] = comb
+    InputListSwap[[Input]] = comb
   }
   
-  return(hybListSwap)
+  return(InputListSwap)
 }
 
 
 
-#' swapHybs2
+#' swapInputs2
 #'
 #' Swap the table to ensure that 3 prime most duplex side is on the left of the table
 #' used to make one sides heatmaps and other reasons where having the left of the table
-#' coming after the right side is a problem. Different from swapHybs as it
+#' coming after the right side is a problem. Different from swapInputs as it
 #' ensure that BOTH duplex sides originate from the RNA of interest.
-#' @param hybList the original hybList created with readHybFiles or subsetHybList
+#' @param InputList the original InputList created with readInputFiles or subsetInputList
 #' @param rna The rna of interest
-#' @name swapHybs2
+#' @name swapInputs2
 #' @docType methods
-#' @rdname swapHybs2
-#' @return A list of "swapped" hyb data
+#' @rdname swapInputs2
+#' @return A list of "swapped" Input data
 #'
-swapHybs2 = function(hybList, 
+swapInputs2 = function(InputList, 
                      rna) {
-  for (hyb in 1:length(hybList)) {
-    hybList18S = hybList[[hyb]][as.character(hybList[[hyb]]$V4) == rna &
-                                  as.character(hybList[[hyb]]$V10) == rna, ]
-    tmp1 = hybList18S[hybList18S$V7 < hybList18S$V13, ]
-    tmp2 = hybList18S[hybList18S$V7 > hybList18S$V13, ]
+  for (Input in 1:length(InputList)) {
+    InputList18S = InputList[[Input]][as.character(InputList[[Input]]$V4) == rna &
+                                  as.character(InputList[[Input]]$V10) == rna, ]
+    tmp1 = InputList18S[InputList18S$V7 < InputList18S$V13, ]
+    tmp2 = InputList18S[InputList18S$V7 > InputList18S$V13, ]
     tmp2 = tmp2[, c(
       "V1",
       "V2",
@@ -637,35 +637,35 @@ swapHybs2 = function(hybList,
     )]
     colnames(tmp2) = colnames(tmp1)
     comb = rbind.data.frame(tmp1, tmp2)
-    hybList[[hyb]] = comb
+    InputList[[Input]] = comb
   }
   
-  return(hybList)
+  return(InputList)
 }
 
 
 
 
-#' swapHybs3
+#' swapInputs3
 #'
 #' Swap the table to ensure that 3 prime most duplex side is ont he left of the table
 #' used to make one sides heatmaps and other reasons where having the left of the table
-#' coming after the right side is a problem. Different from swapHybs as it
+#' coming after the right side is a problem. Different from swapInputs as it
 #' ensure that BOTH duplex sides originate from the RNA of interest.
-#' @param hybList the original hybList created with readHybFiles or subsetHybList
+#' @param InputList the original InputList created with readInputFiles or subsetInputList
 #' @param rna The rna of interest
 #'
-#' @return A list of "swapped" hyb datas
-#' @name swapHybs3
+#' @return A list of "swapped" Input datas
+#' @name swapInputs3
 #' @docType methods
-#' @rdname swapHybs3
-swapHybs3 = function(hybList, rna) {
-  hybListSwap = hybList
-  for (hyb in 1:length(hybList)) {
-    hybListS  =  hybList[[hyb]][hybList[[hyb]]$V4 == rna |
-                                  hybList[[hyb]]$V10 == rna, ]
-    tmp1 = hybListS[hybListS$V4 == rna, ]
-    tmp2 = hybListS[hybListS$V4 != rna, ]
+#' @rdname swapInputs3
+swapInputs3 = function(InputList, rna) {
+  InputListSwap = InputList
+  for (Input in 1:length(InputList)) {
+    InputListS  =  InputList[[Input]][InputList[[Input]]$V4 == rna |
+                                  InputList[[Input]]$V10 == rna, ]
+    tmp1 = InputListS[InputListS$V4 == rna, ]
+    tmp2 = InputListS[InputListS$V4 != rna, ]
     tmp2 = tmp2[, c(
       "V1",
       "V2",
@@ -685,9 +685,9 @@ swapHybs3 = function(hybList, rna) {
     )]
     colnames(tmp2) = colnames(tmp1)
     comb = rbind.data.frame(tmp1, tmp2, stringsAsFactors = F)
-    hybListSwap[[hyb]] = comb
+    InputListSwap[[Input]] = comb
   }
-  return(hybListSwap)
+  return(InputListSwap)
 }
 
 
@@ -698,17 +698,17 @@ swapHybs3 = function(hybList, rna) {
 
 
 
-#' makeExampleComradesDataSet
+#' makeExamplernaCrosslinkDataSet
 #'
-#' Creat a minimal example comradesdataSetObject
+#' Creat a minimal example rnaCrosslinkdataSetObject
 #'
-#' @return An example comradesDataSet objext
-#' @name makeExampleComradesDataSet
-#' @rdname makeExampleComradesDataSet
+#' @return An example rnaCrosslinkDataSet objext
+#' @name makeExamplernaCrosslinkDataSet
+#' @rdname makeExamplernaCrosslinkDataSet
 #' @examples
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' @export
-makeExampleComradesDataSet = function() {
+makeExamplernaCrosslinkDataSet = function() {
   
   c4 = c(rep("transcript1",100),rep("transcript2",100) )
   c10 = c(rep("transcript1",200) )
@@ -822,7 +822,7 @@ makeExampleComradesDataSet = function() {
   # Choose RNA and set up the object ----
   rna = c("transcript1")
   # load the object
-  cds = comradesDataSet(rnas = rna,
+  cds = rnaCrosslinkDataSet(rnas = rna,
                         rnaSize = 0,
                         sampleTable = sampleTable2)
   

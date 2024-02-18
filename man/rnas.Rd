@@ -3,13 +3,13 @@
 \docType{methods}
 \name{rnas}
 \alias{rnas}
-\alias{rnas,comradesDataSet-method}
+\alias{rnas,rnaCrosslinkDataSet-method}
 \title{rnas}
 \usage{
 rnas(x)
 }
 \arguments{
-\item{x}{A comradesDataSet object}
+\item{x}{A rnaCrosslinkDataSet object}
 }
 \value{
 A character - the ID of the RNA
@@ -18,7 +18,7 @@ A character - the ID of the RNA
 Extract the rna ID for the instance
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
 rnas(cds)
 }

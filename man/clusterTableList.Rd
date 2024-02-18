@@ -3,13 +3,13 @@
 \docType{methods}
 \name{clusterTableList}
 \alias{clusterTableList}
-\alias{clusterTableList,comradesDataSet-method}
+\alias{clusterTableList,rnaCrosslinkDataSet-method}
 \title{clusterTableList}
 \usage{
 clusterTableList(x)
 }
 \arguments{
-\item{x}{A comradesDataSet object}
+\item{x}{A rnaCrosslinkDataSet object}
 }
 \value{
 A list of tables showing the vienna structures of each cluster
@@ -18,7 +18,7 @@ A list of tables showing the vienna structures of each cluster
 Extract the cluster coordinates in data frame format
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
 clusterTableList(cds)
 }

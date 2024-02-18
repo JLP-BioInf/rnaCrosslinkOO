@@ -1,4 +1,4 @@
-Package: comradesOO
+Package: rnaCrosslinkOO
 Type: Package
 Title: Analysis of COMRADES (Cross-Linking Matched RNA and Deep Sequencing) Data 
 Version: 0.1.1
@@ -14,17 +14,17 @@ Imports: ggplot2, reshape2, MASS, mixtools, utils, S4Vectors,
         heatmap3, TopDom, tidyverse, RRNA, ggrepel, methods, parallel
 RoxygenNote: 7.3.1
 Collate: 
-    'comradesOO.R'
-    'comradesDataSet.R'
-    'clusterComrades.R'
-    'clusterComradesMethodsAndHelpers.R'
+    'rnaCrosslinkOO.R'
+    'rnaCrosslinkDataSet.R'
+    'clusterrnaCrosslink.R'
+    'clusterrnaCrosslinkMethodsAndHelpers.R'
     'commonHelpersAndMethods.R'
     'commonStatsAndPlots.R'
-    'comradesDataSetMethodsAndHelpers.R'
-    'comradesOO-package.R'
-    'foldComrades.R'
-    'foldComradesMethodsAndHelpers.R'
+    'foldrnaCrosslink.R'
+    'foldrnaCrosslinkMethodsAndHelpers.R'
     'genericMethods.R'
+    'rnaCrosslinkDataSetMethodsAndHelpers.R'
+    'rnaCrosslinkOO-package.R'
 Suggests: knitr, rmarkdown, testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3

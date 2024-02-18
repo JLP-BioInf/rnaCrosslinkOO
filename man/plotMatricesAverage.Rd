@@ -3,7 +3,7 @@
 \docType{methods}
 \name{plotMatricesAverage}
 \alias{plotMatricesAverage}
-\alias{plotMatricesAverage,comradesDataSet-method}
+\alias{plotMatricesAverage,rnaCrosslinkDataSet-method}
 \title{plotMatricesAverage}
 \usage{
 plotMatricesAverage(
@@ -19,7 +19,7 @@ plotMatricesAverage(
 )
 }
 \arguments{
-\item{cds}{A comradesDataSet object}
+\item{cds}{A rnaCrosslinkDataSet object}
 
 \item{type1}{The analysis stage to plot on the upper half of the heatmap (use 'blank' to leave this half blank)}
 
@@ -44,7 +44,7 @@ A heatmap of the reads in the two analysis stages chosen, with each chosen stage
 Plots a contact map of all samples for two chosen stages in the analysis, with each chosen stage on separate halves of the contact map
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
 plotMatricesAverage(cds,
             b = rnaSize(cds),

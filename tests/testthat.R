@@ -1,4 +1,4 @@
 library(testthat)
-library(comradesOO)
+library(rnaCrosslinkOO)
 
 #test_check("comradesOO")

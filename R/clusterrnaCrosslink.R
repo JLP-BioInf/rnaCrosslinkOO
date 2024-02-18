@@ -1,42 +1,42 @@
-#' @include comradesOO.R comradesDataSet.R
+#' @include rnaCrosslinkOO.R rnaCrosslinkDataSet.R
 NULL
 
 
 
 
-#' clusterComrades
+#' clusterrnaCrosslink
 #'
 #'  This method clusters the duplexes. 
 #'
 #'
-#' @param cds comradesDataSet object created with comradesDataSet
+#' @param cds rnaCrosslinkDataSet object created with rnaCrosslinkDataSet
 #' @param cores numeric - The number of cores to use 
 #' @param stepCount Stringency for clustering 
 #' @param clusterCutoff The minimum number of reads a cluster requires 
 #'
 #'
-#' @name clusterComrades
-#' @aliases clusterComrades,comradesDataSet-method
+#' @name clusterrnaCrosslink
+#' @aliases clusterrnaCrosslink,rnaCrosslinkDataSet-method
 #' @docType methods
-#' @rdname clusterComrades
-#' @return A \code{comradesDataSet} object
+#' @rdname clusterrnaCrosslink
+#' @return A \code{rnaCrosslinkDataSet} object
 #' @examples 
-#' cds = makeExampleComradesDataSet()
+#' cds = makeExamplernaCrosslinkDataSet()
 #' 
-#' clusterComrades(cds,
+#' clusterrnaCrosslink(cds,
 #'                 cores = 1,
 #'                 stepCount = 1,
 #'                 clusterCutoff = 0)
 #' @export
 
-setGeneric("clusterComrades",
+setGeneric("clusterrnaCrosslink",
            function(cds,
                     cores = 3,
                     stepCount = 2,
-                    clusterCutoff = 20) standardGeneric("clusterComrades" ) )
+                    clusterCutoff = 20) standardGeneric("clusterrnaCrosslink" ) )
 
-setMethod("clusterComrades",
-          "comradesDataSet",
+setMethod("clusterrnaCrosslink",
+          "rnaCrosslinkDataSet",
           function(cds,
                    cores = 3,
                    stepCount = 2,
@@ -58,9 +58,9 @@ setMethod("clusterComrades",
    
               ##############################
               message(paste("****       Assessing Long Range         ****"))
-              longDistHyb = subsetHybList2(hybFiles(cds)[[rna]][[ "noHost" ]],
+              longDistInput = subsetInputList2(InputFiles(cds)[[rna]][[ "noHost" ]],
                                            11,rnaSize,length = 800)
-              chimeraList = hybToGRanges(longDistHyb,rna)
+              chimeraList = InputToGRanges(longDistInput,rna)
               message(paste("****        Sampling Long Range         ****"))
               chimeraListSampled = sampleChimeras(chimeraList)
               
@@ -105,9 +105,9 @@ setMethod("clusterComrades",
               ##############################
               # short Long interactions
               message(paste("****      Assessing Short Range         ****"))
-              longDistHyb = subsetHybList2(hybFiles(cds)[[rna]][[ "noHost" ]],
+              longDistInput = subsetInputList2(InputFiles(cds)[[rna]][[ "noHost" ]],
                                            1,10,length = 800)
-              chimeraList = hybToGRanges(longDistHyb,rna)
+              chimeraList = InputToGRanges(longDistInput,rna)
               
               message(paste("****      Sampling short Range          ****"))
               chimeraListSampled = sampleChimeras(chimeraList)
@@ -224,12 +224,12 @@ setMethod("clusterComrades",
             ###########################################################
             message("*****          Creating object         *****")
             message("******************************************** ")
-            #create comrades dataset object
-            object  = new("comradesDataSet",
+            #create rnaCrosslink dataset object
+            object  = new("rnaCrosslinkDataSet",
                           rnas = rnas(cds),
                           rnaSize = rnaSize(cds),
                           sampleTable = sampleTable(cds),
-                          hybFiles = hybFiles(cds),
+                          InputFiles = InputFiles(cds),
                           matrixList = matrixList,
                           clusterTableList = clusterTables,
                           clusterGrangesList = clusterGranges,

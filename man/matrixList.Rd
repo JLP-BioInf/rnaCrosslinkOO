@@ -3,13 +3,13 @@
 \docType{methods}
 \name{matrixList}
 \alias{matrixList}
-\alias{matrixList,comradesDataSet-method}
+\alias{matrixList,rnaCrosslinkDataSet-method}
 \title{matrixList}
 \usage{
 matrixList(x)
 }
 \arguments{
-\item{x}{A comradesDataSet object}
+\item{x}{A rnaCrosslinkDataSet object}
 }
 \value{
 A list of contract matrices, one entry for each sample
@@ -18,7 +18,7 @@ A list of contract matrices, one entry for each sample
 Extract the contact matrices
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
 matrixList(cds)
 }

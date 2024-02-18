@@ -3,13 +3,13 @@
 \docType{methods}
 \name{clusterNumbers}
 \alias{clusterNumbers}
-\alias{clusterNumbers,comradesDataSet-method}
+\alias{clusterNumbers,rnaCrosslinkDataSet-method}
 \title{clusterNumbers}
 \usage{
 clusterNumbers(knowClusteredCds, rna)
 }
 \arguments{
-\item{knowClusteredCds}{A comradesDataSet object after clustering has been performed}
+\item{knowClusteredCds}{A rnaCrosslinkDataSet object after clustering has been performed}
 
 \item{rna}{The RNA ID of interest - use rna(cdsObject).}
 }
@@ -21,9 +21,9 @@ This method prints a table showing the number of clusters in each step
 of the analysis
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
-clusteredCds = clusterComrades(cds,
+clusteredCds = clusterrnaCrosslink(cds,
                 cores = 1,
                 stepCount = 1,
                 clusterCutoff = 1)

@@ -2,13 +2,13 @@
 % Please edit documentation in R/genericMethods.R
 \name{group}
 \alias{group}
-\alias{group,comradesDataSet-method}
+\alias{group,rnaCrosslinkDataSet-method}
 \title{group}
 \usage{
 group(x)
 }
 \arguments{
-\item{x}{A comradesDataSet object}
+\item{x}{A rnaCrosslinkDataSet object}
 }
 \value{
 A list - The indices of the sample in the control and sample groups
@@ -17,7 +17,7 @@ A list - The indices of the sample in the control and sample groups
 Extract the indeces for each group for the instance
 }
 \examples{
-cds = makeExampleComradesDataSet()
+cds = makeExamplernaCrosslinkDataSet()
 
 group(cds)
 }

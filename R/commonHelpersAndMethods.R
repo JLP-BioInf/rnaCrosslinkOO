@@ -1,4 +1,4 @@
-#' @include  comradesDataSet.R 
+#' @include  rnaCrosslinkDataSet.R 
 NULL
 
 
@@ -9,27 +9,27 @@ NULL
 #' Function used to create a list of matrices for plotting with
 #' plotMatrixList or plotMatrixListFull, the output list will be same as the
 #' input except for an extra list layer for the specific RNA
-#' @param hybList the original hybList created with readHybFiles or subsetHybList
+#' @param InputList the original InputList created with readInputFiles or subsetInputList
 #' @param rna the RNA of interest that you want to subset
 #' @param size The size of the RNA
 #' @return A list of matrices
 #' @name getMatrices
 #' @docType methods
 #' @rdname getMatrices
-getMatrices = function(hybList, 
+getMatrices = function(InputList, 
                        rna, 
                        size){
-    hybMatList = list()
-    for(hyb in 1:length(hybList)){
+    InputMatList = list()
+    for(Input in 1:length(InputList)){
 
-        hybOutputO = hybList[[hyb]]
-        #print(hybOutputO)
+        InputOutputO = InputList[[Input]]
+        #print(InputOutputO)
         
         
-        hybOutput =  hybOutputO[as.character(hybOutputO$V4) == rna & as.character(hybOutputO$V10) == rna,]
-        hybOutput = unique(hybOutput)
+        InputOutput =  InputOutputO[as.character(InputOutputO$V4) == rna & as.character(InputOutputO$V10) == rna,]
+        InputOutput = unique(InputOutput)
         
-        startsends = hybOutput[,c(7,8,13,14)]
+        startsends = InputOutput[,c(7,8,13,14)]
         
 
         
@@ -43,10 +43,10 @@ getMatrices = function(hybList,
             
         }
         
-        hybMatList[[hyb]] = mat
+        InputMatList[[Input]] = mat
         
     }
-    return(hybMatList)
+    return(InputMatList)
 }
 
 
@@ -59,15 +59,15 @@ getMatrices = function(hybList,
 #' Makes and adjacency matrix list (for clustering)
 #'
 #' Makes and adjacency matrix list (for clustering)
-#' @param hybGranges list created with hybToGRanges (but just the gap section of the list)
+#' @param InputGranges list created with InputToGRanges (but just the gap section of the list)
 #' @param  nucletideOrPerc measure difference by percentage or nucleotides
 #' @param  cutoff The maximum difference before giving these two gaps 0
 #' @return A list of Adjacancy matrices
 #' @name getAdjacancyMat
 #' @docType methods
 #' @rdname getAdjacancyMat
-getAdjacancyMat = function(hybGranges, nucletideOrPerc, cutoff){
-    distances = hybGranges
+getAdjacancyMat = function(InputGranges, nucletideOrPerc, cutoff){
+    distances = InputGranges
     max = max(width(distances))
     
     #get overlapping
