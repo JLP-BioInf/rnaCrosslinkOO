@@ -842,13 +842,15 @@ setMethod("plotClusterAgreementHeat",
               df = rbind.data.frame(df,table(x))
             }
             # plot
-
+            pdf("clusteragreement.pdf", height = 5, width =5)
+            myCol = c("darkgrey", "#52934E","#3F7B39","#244420")
             heatmap3(t(mat),
                      scale = "none" ,col = myCol,
                      Rowv = NA,
                      Colv = NA,
                      useRaster = T
             )
+            dev.off()
             
           })
 

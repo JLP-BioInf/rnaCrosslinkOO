@@ -575,6 +575,7 @@ setMethod("plotInteractions", "rnaCrosslinkDataSet", function(cds,
       yData = seq(data$V14, data$V13)
       matrixToPlot[xData,yData] = matrixToPlot[xData,yData] + 1
     }
+    bActual = b
     if (b == "max"){
       b = maxX
     }
