@@ -361,7 +361,7 @@ setMethod("trimClusters",
                   
                   ###################################
                   # make the matrices
-                  matListTrimmed[[sampleNames(clusteredCds)[j]]] = InputFiles(clusteredCds)[[rna]][["noHost"]][[j]][InputFiles(clusteredCds)[[rna]][["noHost"]][[j]]$V1 %in% names( allChimerasForSuperClustersPlottingTrimmed[[j]]),]
+                  matListTrimmed[[j]] = InputFiles(clusteredCds)[[rna]][["noHost"]][[j]][InputFiles(clusteredCds)[[rna]][["noHost"]][[j]]$V1 %in% names( allChimerasForSuperClustersPlottingTrimmed[[j]]),]
 
               }
               
@@ -373,6 +373,7 @@ setMethod("trimClusters",
 
               ml[[rna]][["trimmedClusters"]] =     getMatrices(matListTrimmed,
                                                                rna, rnaSize)
+              names(ml[[rna]][["trimmedClusters"]]) = sampleNames(clusteredCds)
               
               message("******     Saving granges list        ******")
               cgr[[rna]][["trimmedClusters"]]   =  allChimerasForSuperClustersPlottingTrimmed
