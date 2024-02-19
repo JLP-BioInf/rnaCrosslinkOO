@@ -361,7 +361,7 @@ setMethod("trimClusters",
                   
                   ###################################
                   # make the matrices
-                  matListTrimmed[[j]] = InputFiles(clusteredCds)[[rna]][["noHost"]][[j]][InputFiles(clusteredCds)[[rna]][["noHost"]][[j]]$V1 %in% names( allChimerasForSuperClustersPlottingTrimmed[[j]]),]
+                  matListTrimmed[[sampleNames(clusteredCds)[j]]] = InputFiles(clusteredCds)[[rna]][["noHost"]][[j]][InputFiles(clusteredCds)[[rna]][["noHost"]][[j]]$V1 %in% names( allChimerasForSuperClustersPlottingTrimmed[[j]]),]
 
               }
               

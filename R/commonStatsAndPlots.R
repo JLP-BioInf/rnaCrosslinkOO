@@ -468,6 +468,7 @@ setMethod("plotCombinedMatrix", "rnaCrosslinkDataSet", function(cds,
   if (is.null(sampleNames)) {
     sampleNames = 1:length(InputMatList[[1]][[type1]])
   }
+  #sample1 = which(sampleTable(cds)[sampleTable(cds)$sampleName == sample1])
   for (rna in c(rnaS)) {
     sumOfUpper = getData(cds, data = "matrixList", type = type1)[[sample1]]
     sumOfLower = getData(cds, data = "matrixList", type = type2)[[sample2]]
