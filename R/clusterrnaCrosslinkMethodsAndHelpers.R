@@ -842,7 +842,7 @@ setMethod("plotClusterAgreementHeat",
               df = rbind.data.frame(df,table(x))
             }
             # plot
-            myCol = c("#52934E","#244420","#3F7B39")
+
             heatmap3(t(mat),
                      scale = "none" ,col = myCol,
                      Rowv = NA,
