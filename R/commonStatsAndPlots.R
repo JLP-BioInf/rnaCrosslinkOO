@@ -314,7 +314,7 @@ setGeneric("plotMatricesAverage", function(cds,
   standardGeneric("plotMatricesAverage"))
 
 setMethod("plotMatricesAverage", "rnaCrosslinkDataSet", function(cds,
-                                                             type1 = 'original',
+                                                             type1 = 'noHost',
                                                              type2 = 'blank',
                                                              directory = 0,
                                                              a = 1,
@@ -662,13 +662,11 @@ setGeneric("plotInteractionsAverage", function(cds,
   standardGeneric("plotInteractionsAverage"))
 
 setMethod("plotInteractionsAverage", "rnaCrosslinkDataSet", function(cds, 
-                                                                 rna,
+                                                                 rna = rnaSize(cds),
                                                                  interactor,
                                                                  directory = 0, 
-                                                                 a = 1,
-                                                                 b = 50,
                                                                  c = 1,
-                                                                 d = 50,
+                                                                 d = rnaSize(cds),
                                                                  h= 3)  {
   
   for (cors in c("s", "c")) {
@@ -703,13 +701,14 @@ setMethod("plotInteractionsAverage", "rnaCrosslinkDataSet", function(cds,
     for (mat in matrices){
       matrixToPlot[1:dim(mat)[[1]],1:dim(mat)[[2]]] = matrixToPlot[1:dim(mat)[[1]],1:dim(mat)[[2]]] + mat
     }
+    bActual = 0
     if (b == "max"){
       bActual = maxXAll
     }
     if (d == "max"){
       dActual = maxYAll
     }
-    matrixToPlot = matrixToPlot[a:bActual, c:dActual]
+    matrixToPlot = matrixToPlot[1:bActual, c:dActual]
     
     # choose colour pallet
     cols = log2(max(matrixToPlot + 1))
