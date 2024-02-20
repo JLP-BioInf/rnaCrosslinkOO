@@ -664,12 +664,14 @@ setGeneric("plotInteractionsAverage", function(cds,
   standardGeneric("plotInteractionsAverage"))
 
 setMethod("plotInteractionsAverage", "rnaCrosslinkDataSet", function(cds, 
-                                                                 rna = rnaSize(cds),
-                                                                 interactor,
-                                                                 directory = 0, 
-                                                                 c = 1,
-                                                                 d = rnaSize(cds),
-                                                                 h= 3)  {
+                                                                     rna,
+                                                                     interactor,
+                                                                     directory = 0, 
+                                                                     a = 1,
+                                                                     b = 50,
+                                                                     c = 1,
+                                                                     d = 50,
+                                                                     h= 3)  {
   
   for (cors in c("s", "c")) {
     counter=1
@@ -703,14 +705,15 @@ setMethod("plotInteractionsAverage", "rnaCrosslinkDataSet", function(cds,
     for (mat in matrices){
       matrixToPlot[1:dim(mat)[[1]],1:dim(mat)[[2]]] = matrixToPlot[1:dim(mat)[[1]],1:dim(mat)[[2]]] + mat
     }
-    bActual = 0
+    bActual = b
     if (b == "max"){
       bActual = maxXAll
     }
+    dActual = d
     if (d == "max"){
       dActual = maxYAll
     }
-    matrixToPlot = matrixToPlot[1:bActual, c:dActual]
+    matrixToPlot = matrixToPlot[a:bActual, c:dActual]
     
     # choose colour pallet
     cols = log2(max(matrixToPlot + 1))
