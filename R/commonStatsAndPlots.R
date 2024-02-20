@@ -576,14 +576,16 @@ setMethod("plotInteractions", "rnaCrosslinkDataSet", function(cds,
       yData = seq(data$V14, data$V13)
       matrixToPlot[xData,yData] = matrixToPlot[xData,yData] + 1
     }
+
     bActual = b
     if (b == "max"){
-      b = maxX
+      bActual = maxX
     }
+    dActual = d
     if (d == "max"){
-      d = maxY
+      dActual = maxY
     }
-    matrixToPlot = matrixToPlot[a:b, c:d]
+    matrixToPlot = matrixToPlot[a:bActual, c:dActual]
     
     # choose colour pallet
     cols = log2(max(matrixToPlot + 1))
