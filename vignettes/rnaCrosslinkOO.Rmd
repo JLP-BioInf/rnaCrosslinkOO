@@ -77,18 +77,19 @@ The main output files are the files entitled *X_gapped.txt*. These are the input
 
 1. Read Name
 2. Read Sequence
-3. Side 1 transcript ID
-4. Side 1 Position start in read sequence
-5. Side 1 Position end in read sequence
-6. Side 1 Coordinate start in transcript
-7. Side 1 Coordinate end in transcript
-8. NA
-9. Side 2 transcript ID
-10. Side 2 Position start in read sequence
-11. Side 2 Position end in read sequence
-12. Side 2 Coordinate start in transcript
-13. Side 2 Coordinate end in transcript
-14. NA
+3. NA
+4. Side 1 transcript ID
+5. Side 1 Position start in read sequence
+6. Side 1 Position end in read sequence
+7. Side 1 Coordinate start in transcript
+8. Side 1 Coordinate end in transcript
+9. NA
+10. Side 2 transcript ID
+11. Side 2 Position start in read sequence
+12. Side 2 Position end in read sequence
+13. Side 2 Coordinate start in transcript
+14. Side 2 Coordinate end in transcript
+15. NA
 
 
 ![](inputFileSchematic.jpg)
