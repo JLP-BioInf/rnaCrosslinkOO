@@ -1,7 +1,7 @@
 Package: rnaCrosslinkOO
 Type: Package
 Title: Analysis of COMRADES (Cross-Linking Matched RNA and Deep Sequencing) Data 
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(person("Jonathan", "Price", email="jlp76@cam.ac.uk", role=c("aut","cre")))
 Maintainer: Jonathan Price <jlp76@cam.ac.uk>
 Description: Analysis of RNA crosslinking data for RNA structure prediction. The package is suitable for the analysis of RNA structure cross-linking data and chemical probing data.
