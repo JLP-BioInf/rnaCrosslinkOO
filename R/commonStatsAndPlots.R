@@ -597,14 +597,14 @@ setMethod("plotInteractions", "rnaCrosslinkDataSet", function(cds,
     
     # plot the heatmap
     if (directory == 0) {
-      heatmap3((log2(t(
+      aspectHeatmap((log2(t(
         matrixToPlot + 1
       ))),
       col = myCol,
       scale = "none" ,
       Rowv = NA,
       Colv = NA,
-      useRaster = T
+      hExp = dActual/bActual
       )
     } else{
       pdf(
@@ -612,14 +612,14 @@ setMethod("plotInteractions", "rnaCrosslinkDataSet", function(cds,
         height = h,
         width = h
       )
-      heatmap3((log2(t(
+      aspectHeatmap((log2(t(
         matrixToPlot + 1
       ))),
       col = myCol,
       scale = "none" ,
       Rowv = NA,
       Colv = NA,
-      useRaster = T
+      hExp = dActual/bActual
       )
       dev.off()
     }
@@ -727,14 +727,14 @@ setMethod("plotInteractionsAverage", "rnaCrosslinkDataSet", function(cds,
     
     # plot the heatmap
     if (directory == 0) {
-      heatmap3((log2(t(
+      aspectHeatmap((log2(t(
         matrixToPlot + 1
       ))),
       col = myCol,
       scale = "none" ,
       Rowv = NA,
       Colv = NA,
-      useRaster = T
+      hExp = dActual/bActual
       )
     } else{
       pdf(
@@ -742,14 +742,14 @@ setMethod("plotInteractionsAverage", "rnaCrosslinkDataSet", function(cds,
         height = h,
         width = h
       )
-      heatmap3((log2(t(
+      aspectHeatmap((log2(t(
         matrixToPlot + 1
       ))),
       col = myCol,
       scale = "none" ,
       Rowv = NA,
       Colv = NA,
-      useRaster = T
+      hExp = dActual/bActual
       )
       dev.off()
     }

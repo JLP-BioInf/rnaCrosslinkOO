@@ -11,7 +11,7 @@ BugReports: https://github.com/JLP-BioInf/comradesOO/issues
 Depends: seqinr, GenomicRanges, stats
 Imports: ggplot2, reshape2, MASS, mixtools, utils, S4Vectors,
          doParallel, igraph, R4RNA, RColorBrewer, IRanges, foreach,grDevices,
-        heatmap3, TopDom, tidyverse, RRNA, ggrepel, methods, parallel
+        heatmap3, TopDom, tidyverse, RRNA, ggrepel, methods, parallel, ClassDiscovery
 RoxygenNote: 7.3.1
 Collate: 
     'rnaCrosslinkOO.R'

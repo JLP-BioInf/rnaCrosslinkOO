@@ -4,7 +4,7 @@
 \name{plotInteractions}
 \alias{plotInteractions}
 \alias{plotInteractions,rnaCrosslinkDataSet-method}
-\title{Plots a contact map of interactions of an RNA (interactor) on the RNA of interest}
+\title{Plots a contact map of interactions of each sample of an RNA (interactor) on the RNA of interest}
 \usage{
 plotInteractions(
   cds,
@@ -41,7 +41,7 @@ plotInteractions(
 A heatmap of interactions of the RNA (interactor) on the RNA of interest
 }
 \description{
-Plots a contact map of interactions of an RNA (interactor) on the RNA of interest
+Plots a contact map of interactions of each sample of an RNA (interactor) on the RNA of interest
 }
 \examples{
 cds = makeExamplernaCrosslinkDataSet()
