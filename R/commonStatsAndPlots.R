@@ -517,7 +517,7 @@ setMethod("plotCombinedMatrix", "rnaCrosslinkDataSet", function(cds,
 #  plotInteractions
 #'
 #'
-#' Plots a contact map of interactions of an RNA (interactor) on the RNA of interest
+#' Plots a contact map of interactions of each sample of an RNA (interactor) on the RNA of interest
 #'
 #' @param cds A rnaCrosslinkDataSet object 
 #' @param rna The RNA of interest

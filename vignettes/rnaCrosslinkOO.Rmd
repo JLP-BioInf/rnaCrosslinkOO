@@ -54,7 +54,7 @@ There are other types of crosslinking data!
 
 PARIS
 
-*test4
+*
 
 *
 
@@ -815,6 +815,15 @@ plotInteractions(cds,
                  d = "max")
 ```
 
+Plot heatmaps of interactions for all samples combined and all controls combined using *plotInteractionsAverage*
+
+```{r}
+plotInteractionsAverage(cds,
+                 rna = "ENSG000000XXXXX_NR003286-2_RN18S1_rRNA",
+                 interactor = "ENSG00000XXXXXX_NR003287-2_RN28S1_rRNA",
+                 b = "max",
+                 d = "max")
+```
 
 \
 
