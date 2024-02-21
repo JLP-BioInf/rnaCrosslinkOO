@@ -34,6 +34,7 @@ globalVariables(c(    "ID" ,"PCa" ,"PCb" ,"clusteredCds",  "dgs" ,"k",
 #' @import ggrepel
 #' @import foreach
 #' @import GenomicRanges
+#' @importFrom ClassDiscovery aspectHeatmap
 #' @importFrom S4Vectors subjectHits queryHits
 #' @importFrom IRanges IRanges
 #' @importFrom methods new slot
