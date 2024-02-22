@@ -376,9 +376,11 @@ setMethod("foldrnaCrosslink",
                   constraintFile$k = 1
                   constraintFile = constraintFile[, c(3, 1, 2, 4)]
                   
+                  
+                  tmpFile = tempfile()
                   write.table(
                     constraintFile,
-                    file = "constraints.txt",
+                    file = tmpFile,
                     quote = F,
                     row.names = F,
                     col.names = F
@@ -396,7 +398,7 @@ setMethod("foldrnaCrosslink",
                       rna,
                       "\n",
                       paste(rnaRefs[[1]][[1]][start:end], collapse = ""),
-                      "\" | RNAfold  --noPS --constraint=constraints.txt ",
+                      "\" | RNAfold  --noPS --constraint=",tmpFile,
                       sep = ""
                     )
                     x = system(command, intern = T)
@@ -407,9 +409,10 @@ setMethod("foldrnaCrosslink",
                                             "y" = shape2)
                     shapeTable = shapeTable[complete.cases(shapeTable), ]
                     
+                    tmpFile2 = tempfile()
                     write.table(
                       shapeTable,
-                      "shapeConstraints.txt",
+                      tmpFile2,
                       quote = F,
                       row.names = F,
                       col.names = F
@@ -419,7 +422,7 @@ setMethod("foldrnaCrosslink",
                       rna,
                       "\n",
                       paste(rnaRefs[[1]][[1]][start:end], collapse = ""),
-                      "\" | RNAfold  --noPS --constraint=constraints.txt --shape=shapeConstraints.txt",
+                      "\" | RNAfold  --noPS --constraint=",tmpFile," --shape=",tmpFile2,
                       sep = ""
                     )
                     x = system(command, intern = T)
@@ -468,7 +471,7 @@ setMethod("foldrnaCrosslink",
             ###########################################################
             # Make object
             ###########################################################
-            print(" *** Creating object ***")
+            message(" *** Creating object ***")
             #create rnaCrosslink dataset object
             object  = new(
               "rnaCrosslinkDataSet",

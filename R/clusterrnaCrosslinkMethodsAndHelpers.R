@@ -812,7 +812,7 @@ subsetInputList2 = function(InputList,
 #'                 clusterCutoff = 0)
 #' 
 #' 
-#' #plotClusterAgreementHeat(cds)
+#' plotClusterAgreementHeat(cds)
 #'
 #' @export
 setGeneric("plotClusterAgreementHeat", 
@@ -843,7 +843,6 @@ setMethod("plotClusterAgreementHeat",
               df = rbind.data.frame(df,table(x))
             }
             # plot
-            pdf("clusteragreement.pdf", height = 5, width =5)
             myCol = c("darkgrey", "#52934E","#3F7B39","#244420")
             heatmap3(t(mat),
                      scale = "none" ,col = myCol,
@@ -851,8 +850,7 @@ setMethod("plotClusterAgreementHeat",
                      Colv = NA,
                      useRaster = T
             )
-            dev.off()
-            
+
           })
 
 
@@ -882,7 +880,7 @@ setMethod("plotClusterAgreementHeat",
 #'                 clusterCutoff = 0)
 #' 
 #' 
-#' #plotClusterAgreement(cds)
+#' plotClusterAgreement(cds)
 #' @export
 setGeneric("plotClusterAgreement", 
            function(cds,
@@ -944,7 +942,8 @@ setMethod("plotClusterAgreement",
             clusterDF
             
             c = ggplot(clusterDF) +
-              geom_bar(aes(x = sample, fill = as.factor(highestValue)),stat = "count")+
+              geom_bar(aes(x = sample, fill = as.factor(highestValue)),stat = "count",
+                       position = "fill")+
               theme_classic()
             
             a+c

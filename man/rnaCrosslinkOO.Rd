@@ -20,18 +20,23 @@ NA
 \seealso{
 Useful links:
 \itemize{
-  \item Report bugs at \url{https://github.com/JLP-BioInf/comradesOO/issues}
+  \item Report bugs at \url{https://github.com/JLP-BioInf/rnaCrosslinkOO/issues}
 }
 
 
 Useful links:
 \itemize{
-  \item Report bugs at \url{https://github.com/JLP-BioInf/comradesOO/issues}
+  \item Report bugs at \url{https://github.com/JLP-BioInf/rnaCrosslinkOO/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Jonathan Price \email{jlp76@cam.ac.uk}
+\strong{Maintainer}: Jonathan Price \email{jlp76@cam.ac.uk} (\href{https://orcid.org/0000-0001-6554-5667}{ORCID})
+
+Other contributors:
+\itemize{
+  \item Andrew Lim \email{ajhl3@cam.ac.uk} [contributor]
+}
 
 }
 \keyword{internal}

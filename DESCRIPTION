@@ -1,13 +1,20 @@
 Package: rnaCrosslinkOO
 Type: Package
-Title: Analysis of COMRADES (Cross-Linking Matched RNA and Deep Sequencing) Data 
+Title: Analysis of RNA Crosslinking Data 
 Version: 0.1.2
-Authors@R: c(person("Jonathan", "Price", email="jlp76@cam.ac.uk", role=c("aut","cre")))
+Authors@R: c(person("Jonathan", "Price", 
+                    email="jlp76@cam.ac.uk", 
+                    role=c("aut","cre"),
+                    comment = c(ORCID = "0000-0001-6554-5667")),
+             person("Andrew", 
+                    "Lim", 
+                     email="ajhl3@cam.ac.uk",
+                     role=c("ctb")))
 Maintainer: Jonathan Price <jlp76@cam.ac.uk>
 Description: Analysis of RNA crosslinking data for RNA structure prediction. The package is suitable for the analysis of RNA structure cross-linking data and chemical probing data.
 License: GPL-3 
 Encoding: UTF-8
-BugReports: https://github.com/JLP-BioInf/comradesOO/issues
+BugReports: https://github.com/JLP-BioInf/rnaCrosslinkOO/issues
 Depends: seqinr, GenomicRanges, stats
 Imports: ggplot2, reshape2, MASS, mixtools, utils, S4Vectors,
          doParallel, igraph, R4RNA, RColorBrewer, IRanges, foreach,grDevices,

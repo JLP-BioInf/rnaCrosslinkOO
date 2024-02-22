@@ -126,15 +126,13 @@ findBasePairsRNAcoFold2 = function(startPos1,
     length1 = (endPos1 - startPos1) + 1
     length2 = (endPos2 - startPos2) + 1
     
-    print(length1)
-    print(length2)
-    print(c(1:(length1), (length1 + As + 1):((length1 + As) + length2)))
+
     shapeTable = data.frame("x" = c(1:(length1), (length1 + As + 1):((length1 +
                                                                         As) + length2)),
                             "y" = c(shape1, shape2))
     shapeTable = shapeTable[complete.cases(shapeTable), ]
     
-    print(shapeTable)
+
     sfile = tempfile()
     write.table(
       shapeTable,
@@ -328,9 +326,7 @@ findBasePairsRNAfold = function(startPos,
     shapeTable = data.frame("x" = 1:length,
                             "y" = shape2)
     shapeTable = shapeTable[complete.cases(shapeTable), ]
-    print(startPos)
-    print(endPos)
-    print(shapeTable)
+
     sfile = tempfile()
     write.table(
       shapeTable,
