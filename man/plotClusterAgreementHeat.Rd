@@ -31,6 +31,6 @@ clusteredCds = clusterrnaCrosslink(cds,
                 clusterCutoff = 0)
 
 
-#plotClusterAgreementHeat(cds)
+plotClusterAgreementHeat(cds)
 
 }

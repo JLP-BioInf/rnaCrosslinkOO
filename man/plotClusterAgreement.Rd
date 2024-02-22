@@ -31,5 +31,5 @@ clusteredCds = clusterrnaCrosslink(cds,
                 clusterCutoff = 0)
 
 
-#plotClusterAgreement(cds)
+plotClusterAgreement(cds)
 }

@@ -848,7 +848,7 @@ setMethod("plotClusterAgreementHeat",
                      scale = "none" ,col = myCol,
                      Rowv = NA,
                      Colv = NA,
-                     useRaster = T
+                     useRaster = TRUE
             )
 
           })
