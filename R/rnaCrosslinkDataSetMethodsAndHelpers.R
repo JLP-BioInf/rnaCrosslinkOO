@@ -388,7 +388,7 @@ setMethod("topTranscripts",
               
               
               same = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 ==
-                             InputFiles(cds)[["all"]][["all"]][[i]]$V10)
+                             InputFiles(cds)[["all"]][["all"]][[i]]$V10 & InputFiles(cds)[["all"]][["all"]][[i]]$V10)
               notSame = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 !=
                                 InputFiles(cds)[["all"]][["all"]][[i]]$V10)
               
@@ -398,7 +398,7 @@ setMethod("topTranscripts",
               s = unlist(lapply(s, function(x)  
                 unlist(strsplit(x,split = "::"))[1] ))
               s = as.data.frame(table(s))
-              s$type="inter"
+              s$type="intra"
               s$sample = i
               colnames(s) = c("RNA","reads","type","sample")
               
@@ -413,7 +413,7 @@ setMethod("topTranscripts",
                 unlist(strsplit(x,split = "::"))[2] ))
               t = c(t1,t2)
               t = as.data.frame(table(t))
-              t$type="intra"
+              t$type="inter"
               t$sample = i
               colnames(t) = c("RNA","reads","type","sample")
               
@@ -437,7 +437,7 @@ setMethod("topTranscripts",
             df = df[1:ntop,]
             
             
-            
+            df
             
             
             
