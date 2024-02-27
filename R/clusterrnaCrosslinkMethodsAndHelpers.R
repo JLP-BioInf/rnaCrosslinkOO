@@ -803,6 +803,7 @@ subsetInputList2 = function(InputList,
 #' @aliases plotClusterAgreementHeat,rnaCrosslinkDataSet-method
 #' @return A heatmap of the agreement between replicates in the analysis stage chosen
 #' @examples 
+#' 
 #' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' 
@@ -813,6 +814,8 @@ subsetInputList2 = function(InputList,
 #' 
 #' 
 #' plotClusterAgreementHeat(cds)
+#' 
+#' 
 #'
 #' @export
 setGeneric("plotClusterAgreementHeat", 
@@ -826,6 +829,9 @@ setMethod("plotClusterAgreementHeat",
             
             # Get the cluster matrices
             samples= group(cds)$s
+            if(length(samples) < 2){message("try using more than one replicate")
+              }else{
+            
             # Make an emtpy
             mat = matrix(0, 
                          nrow = nrow(getData(cds,
@@ -850,7 +856,7 @@ setMethod("plotClusterAgreementHeat",
                      Colv = NA,
                      useRaster = TRUE
             )
-
+}
           })
 
 
@@ -871,6 +877,7 @@ setMethod("plotClusterAgreementHeat",
 #' @aliases plotClusterAgreement,rnaCrosslinkDataSet-method
 #' @return A heatmap of the agreement between replicates in the analysis stage chosen
 #' @examples 
+#' 
 #' cds = makeExamplernaCrosslinkDataSet()
 #' 
 #' 
@@ -881,6 +888,8 @@ setMethod("plotClusterAgreementHeat",
 #' 
 #' 
 #' plotClusterAgreement(cds)
+#' 
+#' 
 #' @export
 setGeneric("plotClusterAgreement", 
            function(cds,
@@ -893,7 +902,9 @@ setMethod("plotClusterAgreement",
             
             
             samples= group(cds)$s
-            
+            samples= group(cds)$s
+            if(length(samples) < 2){message("try using more than one replicate")
+            }else{
             
             mat = matrix(0, 
                          nrow = nrow(getData(cds,
@@ -947,7 +958,7 @@ setMethod("plotClusterAgreement",
               theme_classic()
             
             a+c
-            
+            }
           })
 
 

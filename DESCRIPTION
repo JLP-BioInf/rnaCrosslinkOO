@@ -16,7 +16,7 @@ License: GPL-3
 Encoding: UTF-8
 BugReports: https://github.com/JLP-BioInf/rnaCrosslinkOO/issues
 Depends: seqinr, GenomicRanges, stats
-Imports: ggplot2, reshape2, MASS, mixtools, utils, S4Vectors,
+Imports: ggplot2, reshape2, MASS, mixtools, utils, S4Vectors, patchwork,
          doParallel, igraph, R4RNA, RColorBrewer, IRanges, foreach,grDevices,
         heatmap3, TopDom, tidyverse, RRNA, ggrepel, methods, parallel, ClassDiscovery
 RoxygenNote: 7.3.1

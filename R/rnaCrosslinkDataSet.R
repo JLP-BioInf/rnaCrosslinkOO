@@ -248,6 +248,12 @@ rnaCrosslinkDataSet <- function(rnas,
                  nextflow pipeline, please check the documentation. "
     )
   }
+  
+  
+  inputs = lapply(inputs, function(x) x[complete.cases(x),] )
+  inputs = lapply(inputs, function(x) x[!is.infinite(x$V8),] )
+  inputs = lapply(inputs, function(x) x[!is.infinite(x$V14),] )
+
   InputFiles[["all"]][["all"]] = inputs
   names(InputFiles[["all"]][["all"]]) = sampleNames
   
@@ -256,11 +262,13 @@ rnaCrosslinkDataSet <- function(rnas,
   getMax = function(file, rna) {
     return(max(file[file$V4 == rnas & file$V10 == rnas, "V14"],
                max(file[file$V4 == rnas & file$V10 == rnas, "V8"])))
+
   }
+ 
   
   maxPos = max(sapply(inputs, getMax, rna = rnas))
   
-  
+
   
   
   

@@ -19,7 +19,7 @@ globalVariables(c(    "ID" ,"PCa" ,"PCb" ,"clusteredCds",  "dgs" ,"k",
 #' @importFrom  stats aggregate median complete.cases prcomp reorder
 #' @import ggplot2
 #' @import reshape2
-#' @import MASS
+#' @rawNamespace import("MASS", except = area)
 #' @import mixtools
 #' @import utils
 #' @importFrom doParallel stopImplicitCluster registerDoParallel
@@ -31,6 +31,7 @@ globalVariables(c(    "ID" ,"PCa" ,"PCb" ,"clusteredCds",  "dgs" ,"k",
 #' @import TopDom
 #' @import tidyverse
 #' @import RRNA
+#' @import patchwork 
 #' @import ggrepel
 #' @import foreach
 #' @import GenomicRanges

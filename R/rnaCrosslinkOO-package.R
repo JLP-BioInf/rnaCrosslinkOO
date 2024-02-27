@@ -13,17 +13,17 @@
 
 
 globalVariables(c(    "ID" ,"PCa" ,"PCb" ,"clusteredCds",  "dgs" ,"k", 
-                      "sampleTable2" ,"sd" ,"value","stopCluster"))
+                      "sampleTable2" ,"sd" ,"value","stopCluster","variable"))
 
 #' @importFrom seqinr read.fasta
 #' @importFrom  stats aggregate median complete.cases prcomp reorder
 #' @import ggplot2
 #' @import reshape2
-#' @import MASS
+#' @rawNamespace import("MASS", except = area)
 #' @import mixtools
 #' @import utils
 #' @importFrom doParallel stopImplicitCluster registerDoParallel
-#' @importFrom parallel makeCluster
+#' @importFrom parallel makeCluster stopCluster
 #' @importFrom igraph cluster_walktrap graph_from_adjacency_matrix membership
 #' @import R4RNA
 #' @import RColorBrewer
@@ -31,9 +31,11 @@ globalVariables(c(    "ID" ,"PCa" ,"PCb" ,"clusteredCds",  "dgs" ,"k",
 #' @import TopDom
 #' @import tidyverse
 #' @import RRNA
+#' @import patchwork 
 #' @import ggrepel
 #' @import foreach
 #' @import GenomicRanges
+#' @importFrom ClassDiscovery aspectHeatmap
 #' @importFrom S4Vectors subjectHits queryHits
 #' @importFrom IRanges IRanges
 #' @importFrom methods new slot

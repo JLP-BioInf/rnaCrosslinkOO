@@ -22,6 +22,7 @@ Plot a heatmap that plots the agreements between replicates
 after clusterrnaCrosslink has been performed
 }
 \examples{
+
 cds = makeExamplernaCrosslinkDataSet()
 
 
@@ -32,4 +33,6 @@ clusteredCds = clusterrnaCrosslink(cds,
 
 
 plotClusterAgreement(cds)
+
+
 }
