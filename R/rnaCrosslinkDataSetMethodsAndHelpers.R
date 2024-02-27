@@ -388,7 +388,7 @@ setMethod("topTranscripts",
               
               
               same = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 ==
-                             InputFiles(cds)[["all"]][["all"]][[i]]$V10 & InputFiles(cds)[["all"]][["all"]][[i]]$V10)
+                             InputFiles(cds)[["all"]][["all"]][[i]]$V10 )
               notSame = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 !=
                                 InputFiles(cds)[["all"]][["all"]][[i]]$V10)
               
