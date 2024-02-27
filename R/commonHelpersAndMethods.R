@@ -29,6 +29,11 @@ getMatrices = function(InputList,
         InputOutput =  InputOutputO[as.character(InputOutputO$V4) == rna & as.character(InputOutputO$V10) == rna,]
         InputOutput = unique(InputOutput)
         
+        
+        if(nrow(InputOutput) == 0){ 
+          InputMatList[[Input]] = matrix(0, ncol = size, nrow =size)
+        }else{
+        
         startsends = InputOutput[,c(7,8,13,14)]
         
 
@@ -44,7 +49,7 @@ getMatrices = function(InputList,
         }
         
         InputMatList[[Input]] = mat
-        
+        }
     }
     return(InputMatList)
 }

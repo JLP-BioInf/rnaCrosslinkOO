@@ -260,8 +260,8 @@ rnaCrosslinkDataSet <- function(rnas,
   
   #get the maxpos
   getMax = function(file, rna) {
-    return(max(file[file$V4 == rnas & file$V10 == rnas, "V14"],
-               max(file[file$V4 == rnas & file$V10 == rnas, "V8"])))
+    return(max(file[file$V10 == rnas, "V14"],
+               max(file[file$V4 == rnas, "V8"])))
 
   }
  
