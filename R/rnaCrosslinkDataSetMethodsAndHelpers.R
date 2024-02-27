@@ -177,91 +177,6 @@ setMethod("featureInfo",
 
 
 
-
-#' topTranscripts
-#'
-#' This method prints the top transcripts that have the most duplexes
-#' assigned
-#'
-#' @param cds a \code{rnaCrosslinkDataSet} object
-#' @param ntop the number of entries to display
-#'
-#' @name topTranscripts
-#' @docType methods
-#' @rdname topTranscripts
-#' @aliases topTranscripts,rnaCrosslinkDataSet-method
-#' @return A table, the number of counts per sample per transcript
-#' @examples 
-#' cds = makeExamplernaCrosslinkDataSet()
-#' topTranscripts(cds)
-#' @export
-#'
-setGeneric("topTranscripts",
-           function(cds,
-                    ntop = 10)
-             standardGeneric("topTranscripts"))
-
-setMethod("topTranscripts",
-          "rnaCrosslinkDataSet",
-          function(cds,
-                   ntop = 10)  {
-            c = group(cds)[["s"]]
-            vect = c()
-            for (i in c) {
-              vect = c(vect,
-                       InputFiles(cds)[["all"]][["all"]][[i]]$V4,
-                       InputFiles(cds)[["all"]][["all"]][[i]][InputFiles(cds)[["all"]][["all"]][[i]]$V10 != InputFiles(cds)[["all"]][["all"]][[i]]$V4,"V10"]        )
-            }
-            x = table(vect)[order(table(vect), decreasing = T)]
-            
-            
-            c = group(cds)[["c"]]
-            vect = c()
-            for (i in c) {
-              vect = c(vect,
-                       InputFiles(cds)[["all"]][["all"]][[i]]$V4,
-                       InputFiles(cds)[["all"]][["all"]][[i]][InputFiles(cds)[["all"]][["all"]][[i]]$V10 != InputFiles(cds)[["all"]][["all"]][[i]]$V4,"V10"] )
-            }
-            y = table(vect)[order(table(vect), decreasing = T)]
-            
-            
-            y = y[names(x[1:ntop])]
-            x = x[1:ntop]
-            
-            
-            if(length(which(complete.cases(c(x)))) == 1){
-              x2 = data.frame(
-                t = names(x), 
-                s = x,
-                c = y)
-              colnames(x2) = c("RNA", "Samples", "Control")
-              x2$enrichment = x2$Samples /  x2$Control
-              
-            }else{
-            
-            x2 = as.data.frame(x)
-            x2$control = y
-            colnames(x2) = c("RNA", "Samples", "Control")
-            x2$enrichment = x2$Samples /  x2$Control
-            
-            }
-            
-            for (i in names(InputFiles(cds)[["all"]][["all"]])) {
-              t = c(InputFiles(cds)[["all"]][["all"]][[i]]$V4,
-                    InputFiles(cds)[["all"]][["all"]][[i]][InputFiles(cds)[["all"]][["all"]][[i]]$V10 != InputFiles(cds)[["all"]][["all"]][[i]]$V4,"V10"] )
-              t = table(t)
-              
-              t = t[names(x[1:ntop])]
-              x2[, i] = t
-            }
-            x2 = x2[, c(1, 5:ncol(x2), 2, 3, 4)]
-            x2
-          })
-
-
-
-
-
 #' topInteractions
 #'
 #' This method prints the top transcript interactions that have the most duplexes
@@ -290,55 +205,241 @@ setMethod("topInteractions",
           function(cds,
                    ntop = 10)  {
             c = group(cds)[["s"]]
+            
+            
+            
             vect = c()
+            vect2 = c()
             for (i in c) {
+              
+              same = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 ==
+                             InputFiles(cds)[["all"]][["all"]][[i]]$V10)
+              notSame = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 !=
+                                InputFiles(cds)[["all"]][["all"]][[i]]$V10)
+              
               vect = c(vect,
-                       paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4,
-                             InputFiles(cds)[["all"]][["all"]][[i]]$V10, sep = "::"))
+                       paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[same],
+                             InputFiles(cds)[["all"]][["all"]][[i]]$V10[same], sep = "::"))
+              vect2 = c(vect2,
+                        paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[notSame],
+                              InputFiles(cds)[["all"]][["all"]][[i]]$V10[notSame], sep = "::"))
             }
             x = table(vect)[order(table(vect), decreasing = T)]
-            
+            x2 = table(vect2)[order(table(vect2), decreasing = T)]
             
             c = group(cds)[["c"]]
+            
+            
+            
             vect = c()
+            vect2 = c()
             for (i in c) {
+              same = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 ==
+                             InputFiles(cds)[["all"]][["all"]][[i]]$V10)
+              notSame = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 !=
+                                InputFiles(cds)[["all"]][["all"]][[i]]$V10)
+              
               vect = c(vect,
-                       paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4,
-                             InputFiles(cds)[["all"]][["all"]][[i]]$V10, sep = "::"))
+                       paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[same],
+                             InputFiles(cds)[["all"]][["all"]][[i]]$V10[same], sep = "::"))
+              vect2 = c(vect2,
+                        paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[notSame],
+                              InputFiles(cds)[["all"]][["all"]][[i]]$V10[notSame], sep = "::"))
             }
+            
+            
             y = table(vect)[order(table(vect), decreasing = T)]
+            y2 = table(vect2)[order(table(vect2), decreasing = T)]
             
             
             y = y[names(x[1:ntop])]
             x = x[1:ntop]
             
+            
+            
+            yn = y2[names(x2[1:ntop])]
+            xn = x2[1:ntop]        
+            
+            x3 = c()
             if(length(which(complete.cases(c(x)))) == 1){
-              x2 = data.frame(
+              x3 = data.frame(
                 t = names(x), 
                 s = x,
                 c = y)
-              colnames(x2) = c("RNA", "Samples", "Control")
-              x2$enrichment = x2$Samples /  x2$Control
+              colnames(x3) = c("RNA", "Samples", "Control")
+              x3$enrichment = x3$Samples /  x3$Control
+              
+              xn2 = data.frame(
+                t = names(xn), 
+                s = xn,
+                c = y)
+              colnames(xn2) = c("RNA", "Samples", "Control")
+              xn2$enrichment = xn2$Samples /xn2$Control
               
             }else{
-            
-            x2 = as.data.frame(x)
-            x2$control = y
-            colnames(x2) = c("RNA", "Samples", "Control")
-            x2$enrichment = x2$Samples /  x2$Control
-            
+              
+              x3 = as.data.frame(x)
+              x3$control = y
+              colnames(x3) = c("RNA", "Samples", "Control")
+              x3$enrichment = x3$Samples /  x3$Control
+              
+              
+              xn2 = as.data.frame(xn)
+              xn2$control = y
+              colnames(xn2) = c("RNA", "Samples", "Control")
+              xn2$enrichment = xn2$Samples /  xn2$Control 
             }
             
+            
+            
+            
+            
+            
+            
+            
+            
             for (i in names(InputFiles(cds)[["all"]][["all"]])) {
-              t =   paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4,
-                          InputFiles(cds)[["all"]][["all"]][[i]]$V10, sep = "::")
+              
+              
+              
+              t =   paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[same],
+                          InputFiles(cds)[["all"]][["all"]][[i]]$V10[same], sep = "::")
               t = table(t)
               
               t = t[names(x[1:ntop])]
-              x2[, i] = t
+              x3[, i] = t
+              
+              
+              
+              t =   paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[notSame],
+                          InputFiles(cds)[["all"]][["all"]][[i]]$V10[notSame], sep = "::")
+              t = table(t)
+              
+              t = t[names(x[1:ntop])]
+              xn2[, i] = t
             }
-            x2 = x2[, c(1, 5:ncol(x2), 2, 3, 4)]
-            x2
+            
+            
+            x3 = x3[, c(1, 5:ncol(x3), 2, 3, 4)]
+            xn2 = xn2[, c(1, 5:ncol(xn2), 2, 3, 4)]
+            x3$type = "inra"
+            xn2$type = "inter"
+            x = rbind.data.frame(xn2,x3)
+            x[order(x$Samples,decreasing = T),]
+          })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#' topTranscripts
+#'
+#' This method prints the top transcripts that have the most duplexes
+#' assigned
+#'
+#' @param cds a \code{rnaCrosslinkDataSet} object
+#' @param ntop the number of entries to display
+#'
+#' @name topTranscripts
+#' @docType methods
+#' @rdname topTranscripts
+#' @aliases topTranscripts,rnaCrosslinkDataSet-method
+#' @return A table, the number of counts per sample per transcript
+#' @examples 
+#' cds = makeExamplernaCrosslinkDataSet()
+#' topTranscripts(cds)
+#' @export
+#'
+setGeneric("topTranscripts",
+           function(cds,
+                    ntop = 10)
+             standardGeneric("topTranscripts"))
+
+setMethod("topTranscripts",
+          "rnaCrosslinkDataSet",
+          function(cds,
+                   ntop = 10)  {
+            ci = group(cds)[["c"]]
+            si = group(cds)[["s"]]
+            
+            
+            
+            
+            
+            df= data.frame()
+            
+            for (i in names(InputFiles(cds)[["all"]][["all"]])) {
+              
+              
+              same = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 ==
+                             InputFiles(cds)[["all"]][["all"]][[i]]$V10)
+              notSame = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 !=
+                                InputFiles(cds)[["all"]][["all"]][[i]]$V10)
+              
+              
+              s =   paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[same],
+                          InputFiles(cds)[["all"]][["all"]][[i]]$V10[same], sep = "::")
+              s = unlist(lapply(s, function(x)  
+                unlist(strsplit(x,split = "::"))[1] ))
+              s = as.data.frame(table(s))
+              s$type="inter"
+              s$sample = i
+              colnames(s) = c("RNA","reads","type","sample")
+              
+              
+              
+              t =   paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[notSame],
+                          InputFiles(cds)[["all"]][["all"]][[i]]$V10[notSame], sep = "::")
+              
+              t1 = unlist(lapply(t, function(x)  
+                unlist(strsplit(x,split = "::"))[1] ))
+              t2 = unlist(lapply(t, function(x)  
+                unlist(strsplit(x,split = "::"))[2] ))
+              t = c(t1,t2)
+              t = as.data.frame(table(t))
+              t$type="intra"
+              t$sample = i
+              colnames(t) = c("RNA","reads","type","sample")
+              
+              df =rbind.data.frame(df,t,s)
+            }
+            
+            df = dcast(df,formula = RNA + type ~ sample,   value.var = "reads")
+            
+            
+            
+            ci = sampleTable(cds)[ci,"sampleName"]
+            si = sampleTable(cds)[si,"sampleName"]
+            
+            
+            
+            df$samples = rowSums(df[,si],na.rm = T)
+            df$control = rowSums(df[,ci],na.rm = T)
+            df$enrichment = df$samples / df$control
+            
+            df = df[order(df$samples,decreasing = T),]
+            df = df[1:ntop,]
+            
+            
+            
+            
+            
             
           })
 
