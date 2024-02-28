@@ -250,10 +250,22 @@ rnaCrosslinkDataSet <- function(rnas,
   }
   
   
+  checkRNA = function(inputs, rna) {
+    rnas %in% c(inputs$V4, inputs$V10)
+    
+  }  
+  rnaCheck = sapply(inputs, checkRNA, rna = rnas)
+  if(!any(rnaCheck)){
+    stop(
+      "No match for chosen RNA exists in this dataSet"
+    )
+  }
+  
   inputs = lapply(inputs, function(x) x[complete.cases(x),] )
   inputs = lapply(inputs, function(x) x[!is.infinite(x$V8),] )
   inputs = lapply(inputs, function(x) x[!is.infinite(x$V14),] )
 
+  
   InputFiles[["all"]][["all"]] = inputs
   names(InputFiles[["all"]][["all"]]) = sampleNames
   

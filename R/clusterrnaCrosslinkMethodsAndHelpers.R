@@ -165,22 +165,17 @@ setMethod("trimClusters",
                           # Make the clustering table
                           superclustersPoisitonList[[z]] = rbind.data.frame(clusterPositionsmissing,
                                                                             clusterPositionsCombined,
-                                                                            stringsAsFactors = F)
+                                                                            stringsAsFactors = FALSE)
                           
                           goodClusters[[z]] = superclustersPoisitonList[[z]][superclustersPoisitonList[[z]]$size.x > clusterCutoff,]                          
                           goodClusters[[z]] = sub("\\s.*","",row.names(superclustersPoisitonList[[z]]))
-                          #superclustersPoisitonList[[z]] = superclustersPoisitonList[[z]][superclustersPoisitonList[[z]]$size.x > clusterCutoff,]
-                          
-                          #superclustersPlotting[[z]] = superclustersPlotting[[z]][superclustersPlotting[[z]]$size.Group.1 %in% superclustersPoisitonList[[z]]$size.Group.1, ]
-                          
+   
                           ##############################
                           # Make matrices of superclusters
                           clusterPositions = superclustersPoisitonList[[z]]
                           
                       }else {
                           clusterPositions = clusterPositions
-                          #cluster = row.names(clusterPositions)
-                          #names(cluster) = clusterPositions$superCluster
                           superclustersPoisitonList[[z]] = clusterPositions
                       }
                       
@@ -211,8 +206,6 @@ setMethod("trimClusters",
               
               ##############################
               # Get Granges List for the super clusters (containing original duplexes)
-              
-              # **
               allChimerasForSuperClustersPlotting = list()
               combinedPlottingSplit = list()
               combinedPlottingUnlist = list()
@@ -612,7 +605,7 @@ setMethod("compareKnown", "rnaCrosslinkDataSet", function(trimmedClusters,
         ###################################
         # Get novel and cannonical tables and matrices
         #print(which((tf == F)))
-        novelClusters[[i]] = clusterPositionsListTrimmed[[i]][which((tf == T)),]
+        novelClusters[[i]] = clusterPositionsListTrimmed[[i]][which((tf == TRUE)),]
         novelClustersMat[[i]] = matrix(0, nrow = rnaSize, ncol = rnaSize)
         if(nrow(novelClusters[[i]]) > 0){
             for(j in 1:nrow(novelClusters[[i]])){
@@ -629,7 +622,7 @@ setMethod("compareKnown", "rnaCrosslinkDataSet", function(trimmedClusters,
         }
         
         #print(which((tf == T)))
-        cannonicalClusters[[i]] = clusterPositionsListTrimmed[[i]][which((tf == F)),]
+        cannonicalClusters[[i]] = clusterPositionsListTrimmed[[i]][which((tf == FALSE)),]
         cannonicalClustersMat[[i]] = matrix(0, nrow = rnaSize, ncol = rnaSize)
         
         

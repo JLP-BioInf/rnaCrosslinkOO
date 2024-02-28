@@ -52,14 +52,8 @@ After sequencing, short reads are produced similar to a spliced / chimeric RNA r
 
 There are other types of crosslinking data! 
 
-PARIS
 
-*
-
-*
-
-*
-
+[Paris](https://www.nature.com/articles/s41467-021-22552-y)
 
 
 ---
@@ -121,8 +115,6 @@ Pre-requisites:
 There is a development version available on github (https://github.com/JLP-BioInf/rnaCrosslinkOO). Issue reporting and collaboration welcome. 
 
 ```{r, echo = T, results = 'hide',message=FALSE}
-
-
 #install.packages("rnaCrosslinkOO")
 # Load the rnaCrosslink-OO Library 
 library(rnaCrosslinkOO)
@@ -132,22 +124,22 @@ The package relies on functions from these packages:
 
 ```{r, echo = T, results = 'hide',message=FALSE}
 # Here are the other libraries on which rnaCrosslinkOO relies
-library(seqinr)
-library(GenomicRanges)
-library(ggplot2)
-library(reshape2)
-library(MASS)
-library(ggplot2)
-library(doParallel)
-library(igraph)
-library(R4RNA)
-library(RColorBrewer)
-library(heatmap3)
-library(mixtools)
-library(TopDom)
-library(tidyverse)
-library(RRNA)
-library(ggrepel)
+#library(seqinr)
+#library(GenomicRanges)
+#library(ggplot2)
+#library(reshape2)
+#library(MASS)
+#library(ggplot2)
+#library(doParallel)
+#library(igraph)
+#library(R4RNA)
+#library(RColorBrewer)
+#library(heatmap3)
+#library(mixtools)
+#library(TopDom)
+#library(tidyverse)
+#library(RRNA)
+#library(ggrepel)
 ```
 
 
@@ -417,8 +409,7 @@ The first step is to assess the species of RNA present in the dataset, the insta
 ```{r}
 # Returns the RNAs with highest number of assigned reads 
 # regardless of wether it is an Inter or Intra - RNA interaction. 
-topTranscripts(cds, # The rnaCrosslinkDataSet instance
-               2)  # The number of entried to return
+topTranscripts(cds,2)  # The number of entried to return
 
 ```
 
@@ -570,8 +561,22 @@ clusterNumbers(trimmedClusters)
 readNumbers( trimmedClusters)
 ```
 
-see [Plotting contact matrices](#plotting-contact-matrices).
+see [Plotting contact matrices](#plotting-contact-matrices)
 
+
+## Check Cluster Agreement between replicates
+\
+
+```{r}
+#plotClusterAgreement(trimmedClusters,
+#                     "trimmedClusters")
+```
+
+
+```{r}
+#plotClusterAgreementHeat(trimmedClusters,
+#                         "trimmedClusters")
+```
 
 ## Folding 
 \

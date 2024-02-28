@@ -157,9 +157,9 @@ findBasePairsRNAcoFold2 = function(startPos1,
     write.table(
       t(as.data.frame(row)),
       file = csfile,
-      quote = F,
-      row.names = F,
-      col.names = F
+      quote = FALSE,
+      row.names = FALSE,
+      col.names = FALSE
     )
     
     
@@ -177,7 +177,7 @@ findBasePairsRNAcoFold2 = function(startPos1,
     
     #create vienna command and run capturing output
     #command = paste("echo \">",startPos1,"-", endPos1,"\n",seq1,"\n>",startPos2,"-",endPos2,"\n",seq2,"\" | RNAduplex", sep = "")
-    x = system(command, intern = T)
+    x = system(command, intern = TRUE)
     
     
     #extract the vienna and the start locations
@@ -280,7 +280,7 @@ findBasePairsRNAfold = function(startPos,
                     seqs,
                     "\" | RNAfold   --noPS",
                     sep = "")
-    x = system(command, intern = T)
+    x = system(command, intern = TRUE)
     
     #extract the vienna and the start locations
     vienna = sub(" .*", "", x[3])
@@ -335,7 +335,7 @@ findBasePairsRNAfold = function(startPos,
       row.names = F,
       col.names = F
     )
-    table = data.frame(stringsAsFactors = FALSE)
+    table = data.frame(stringsAsFactors = TRUE)
     
     
     #  for(i in 1:10){
@@ -350,7 +350,7 @@ findBasePairsRNAfold = function(startPos,
       "\" | RNAfold   --noPS --shape=",sfile ,
       sep = ""
     )
-    x = system(command, intern = T)
+    x = system(command, intern = TRUE)
     
     #extract the vienna and the start locations
     vienna = sub(" .*", "", x[3])
@@ -611,7 +611,7 @@ setMethod("compareKnownStructures",
                                   known18S$V2 < end, ]
 
             known18SID = paste(known18S$V1, known18S$V2, sep = "-")
-            viennaScores = data.frame(stringsAsFactors = F)
+            viennaScores = data.frame(stringsAsFactors = FALSE)
             for (i in 1:length(viennas)) {
               structureIDs = paste(helixes[[i]]$i, helixes[[i]]$j, sep = "-")
               row = c(length(which(structureIDs %in% known18SID)), length(structureIDs),

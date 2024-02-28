@@ -108,7 +108,7 @@ setMethod("foldrnaCrosslink",
               clusterPositionsListTrimmedSarsCombined = rbind.data.frame(
                 clusterPositionsListTrimmedSarsCombined,
                 clusterPositionsListTrimmed[[j]],
-                stringsAsFactors = F
+                stringsAsFactors = FALSE
               )
             }
             
@@ -359,7 +359,7 @@ setMethod("foldrnaCrosslink",
                       1:nrow(interactionTable3_subSample),
                       1,
                       prob = normalized_evidenceSample,
-                      replace = F
+                      replace = FALSE
                     ),
                     prevConstraints
                   )
@@ -381,9 +381,9 @@ setMethod("foldrnaCrosslink",
                   write.table(
                     constraintFile,
                     file = tmpFile,
-                    quote = F,
-                    row.names = F,
-                    col.names = F
+                    quote = FALSE,
+                    row.names = FALSE,
+                    col.names = FALSE
                   )
                   
                   
@@ -401,7 +401,7 @@ setMethod("foldrnaCrosslink",
                       "\" | RNAfold  --noPS --constraint=",tmpFile,
                       sep = ""
                     )
-                    x = system(command, intern = T)
+                    x = system(command, intern = TRUE)
                   } else{
                     shape2 = shape[start:end]
                     length = (end - start) + 1
@@ -413,9 +413,9 @@ setMethod("foldrnaCrosslink",
                     write.table(
                       shapeTable,
                       tmpFile2,
-                      quote = F,
-                      row.names = F,
-                      col.names = F
+                      quote = FALSE,
+                      row.names = FALSE,
+                      col.names = FALSE
                     )
                     command = paste(
                       "echo \">",
@@ -425,7 +425,7 @@ setMethod("foldrnaCrosslink",
                       "\" | RNAfold  --noPS --constraint=",tmpFile," --shape=",tmpFile2,
                       sep = ""
                     )
-                    x = system(command, intern = T)
+                    x = system(command, intern = TRUE)
                   }
                   if (!(grepl("\\(\\(", x[3]))) {
                     prevConstraints = prevConstraints[-1]

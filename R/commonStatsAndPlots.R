@@ -236,7 +236,7 @@ setMethod("plotMatrices", "rnaCrosslinkDataSet", function(cds,
         scale = "none" ,
         Rowv = NA,
         Colv = NA,
-        useRaster = T
+        useRaster = TRUE
         )
       } else{
         pdf(
@@ -261,7 +261,7 @@ setMethod("plotMatrices", "rnaCrosslinkDataSet", function(cds,
         scale = "none" ,
         Rowv = NA,
         Colv = NA,
-        useRaster = T
+        useRaster = TRUE
         )
         dev.off()
       }
@@ -384,7 +384,7 @@ setMethod("plotMatricesAverage", "rnaCrosslinkDataSet", function(cds,
         scale = "none" ,
         Rowv = NA,
         Colv = NA,
-        useRaster = T
+        useRaster = TRUE
         )
         
       } else{
@@ -400,7 +400,7 @@ setMethod("plotMatricesAverage", "rnaCrosslinkDataSet", function(cds,
         scale = "none" ,
         Rowv = NA,
         Colv = NA,
-        useRaster = T
+        useRaster = TRUE
         )
         dev.off()
       }
@@ -492,7 +492,7 @@ setMethod("plotCombinedMatrix", "rnaCrosslinkDataSet", function(cds,
       scale = "none" ,
       Rowv = NA,
       Colv = NA,
-      useRaster = T
+      useRaster = TRUE
       )
     } else{
       pdf(
@@ -507,7 +507,7 @@ setMethod("plotCombinedMatrix", "rnaCrosslinkDataSet", function(cds,
       scale = "none" ,
       Rowv = NA,
       Colv = NA,
-      useRaster = T
+      useRaster = TRUE
       )
       dev.off()
     }
