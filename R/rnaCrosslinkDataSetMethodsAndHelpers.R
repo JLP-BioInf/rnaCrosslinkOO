@@ -224,8 +224,8 @@ setMethod("topInteractions",
                         paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[notSame],
                               InputFiles(cds)[["all"]][["all"]][[i]]$V10[notSame], sep = "::"))
             }
-            x = table(vect)[order(table(vect), decreasing = T)]
-            x2 = table(vect2)[order(table(vect2), decreasing = T)]
+            x = table(vect)[order(table(vect), decreasing = TRUE)]
+            x2 = table(vect2)[order(table(vect2), decreasing = TRUE)]
             
             c = group(cds)[["c"]]
             
@@ -248,8 +248,8 @@ setMethod("topInteractions",
             }
             
             
-            y = table(vect)[order(table(vect), decreasing = T)]
-            y2 = table(vect2)[order(table(vect2), decreasing = T)]
+            y = table(vect)[order(table(vect), decreasing = TRUE)]
+            y2 = table(vect2)[order(table(vect2), decreasing = TRUE)]
             
             
             y = y[names(x[1:ntop])]
@@ -325,7 +325,7 @@ setMethod("topInteractions",
             x3$type = "inra"
             xn2$type = "inter"
             x = rbind.data.frame(xn2,x3)
-            x[order(x$Samples,decreasing = T),]
+            x[order(x$Samples,decreasing = TRUE),]
           })
 
 
@@ -427,13 +427,20 @@ setMethod("topTranscripts",
             ci = sampleTable(cds)[ci,"sampleName"]
             si = sampleTable(cds)[si,"sampleName"]
             
+            if(length(si) == 1){
+              df$samples = df[,si]
+              df$control = df[,ci]
+              df$enrichment = df$samples / df$control
             
+            }else{
             
-            df$samples = rowSums(df[,si],na.rm = T)
-            df$control = rowSums(df[,ci],na.rm = T)
+            df$samples = rowSums(df[,si],na.rm = TRUE)
+            df$control = rowSums(df[,ci],na.rm = TRUE)
             df$enrichment = df$samples / df$control
             
-            df = df[order(df$samples,decreasing = T),]
+            }
+            
+            df = df[order(df$samples,decreasing = TRUE),]
             df = df[1:ntop,]
             
             
@@ -856,7 +863,11 @@ makeExamplernaCrosslinkDataSet = function() {
   
   
   file = tempfile()
-  write.table(exampleInput,file = file, quote = F, row.names = F, sep = "\t", col.names = F)
+  write.table(exampleInput,
+              file = file, 
+              quote = FALSE,
+              row.names = FALSE, 
+              sep = "\t", col.names = F)
   
   
   
@@ -902,7 +913,12 @@ makeExamplernaCrosslinkDataSet = function() {
   
   
   file2 = tempfile()
-  write.table(exampleInput,file = file2, quote = F, row.names = F, sep = "\t", col.names = F)
+  write.table(exampleInput,
+              file = file2, 
+              quote = FALSE, 
+              row.names = FALSE, 
+              sep = "\t",
+              col.names = F)
   
   
   
