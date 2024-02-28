@@ -792,7 +792,7 @@ setMethod("plotEnsemblePCA",
 #' @aliases plotComparisonArc,rnaCrosslinkDataSet-method
 #' @return an ark diagram of the two strcutures
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' cds = makeExamplernaCrosslinkDataSet()
 #' clusteredCds = clusterrnaCrosslink(cds = cds,
 #'                                cores = 3,

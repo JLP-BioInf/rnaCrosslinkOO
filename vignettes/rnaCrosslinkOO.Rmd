@@ -408,8 +408,9 @@ The first step is to assess the species of RNA present in the dataset, the insta
 
 ```{r}
 # Returns the RNAs with highest number of assigned reads 
-# regardless of wether it is an Inter or Intra - RNA interaction. 
-topTranscripts(cds,2)  # The number of entried to return
+# regardless of whether it is an Inter or Intra - RNA interaction. 
+topTranscripts(cds,
+               2)  # The number of entries to return
 
 ```
 
@@ -432,14 +433,14 @@ topInteracters(cds, # The rnaCrosslinkDataSet instance
 ```{r}
 # Returns the Interacions with the highest number of assigned reads
 topInteractions(cds, # The rnaCrosslinkDataSet instance
-                1)   # The number of entries to return
+                2)   # The number of entries to return
 
 ```
 
 
 \
 
-### featureInfo
+### Get Count Matricies
 
 
 ```{r}
@@ -482,10 +483,10 @@ From these weights the network can be defined for short- and long-range interact
 
 ```{r}
 # Cluster the reads
-clusteredCds = clusterrnaCrosslink(cds = cds,         # The rnaCrosslinkDataSet instance 
+clusteredCds = clusterrnaCrosslink(cds = cds,     # The rnaCrosslinkDataSet instance 
                                cores = 1,         # The number of cores
                                stepCount = 2,     # The number of steps in the random walk
-                               clusterCutoff = 1) # The minimum number of reads for a cluster to be considered
+                               clusterCutoff = 2) # The minimum number of reads for a cluster to be considered
 ```
 
 
@@ -614,18 +615,18 @@ Plots can be made for each sample using the *plotMatrices* function.
 
 ```{r}
 # Plot heatmaps for each sample
-plotMatrices(cds = cds,         # The rnaCrosslinkDataSet instance 
-             type = "original", # The "analysis stage"
-             directory = 0,     # The directory for output (0 for standard out)
-             a = 1,             # Start coord for x-axis
-             b = rnaSize(cds),  # End coord for x-axis
-             c = 1,             # Start coord for y-axis
-             d = rnaSize(cds),  # End coord for y-axis
-             h = 5)             # The height of the image (if saved)
+#plotMatrices(cds = cds,         # The rnaCrosslinkDataSet instance 
+#             type = "original", # The "analysis stage"
+#             directory = 0,     # The directory for output (0 for standard out)
+#             a = 1,             # Start coord for x-axis
+#             b = rnaSize(cds),  # End coord for x-axis
+#             c = 1,             # Start coord for y-axis
+#             d = rnaSize(cds),  # End coord for y-axis
+#             h = 5)             # The height of the image (if saved)
 
 ```
 
-A plot for two chosen samples and stages in the analysis can be made using the *plotCombinedMatrix* function.
+A plot for two chosen samples and analysis stages in the analysis can be made using the *plotCombinedMatrix* function.
 
 ```{r}
 plotCombinedMatrix(cds,
@@ -635,7 +636,7 @@ plotCombinedMatrix(cds,
            d = rnaSize(cds))
 ```
 
-See which contact maps are available by checking the status of the object. 
+See which samples and analysis stages are available by checking the status of the object. 
 
 ```{r}
 trimmedClusters

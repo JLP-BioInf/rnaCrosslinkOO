@@ -27,7 +27,7 @@ This method plots two structures chosen from the
 plotEnsemblePCA method
 }
 \examples{
-\donttest{
+\dontrun{
 cds = makeExamplernaCrosslinkDataSet()
 clusteredCds = clusterrnaCrosslink(cds = cds,
                                cores = 3,
