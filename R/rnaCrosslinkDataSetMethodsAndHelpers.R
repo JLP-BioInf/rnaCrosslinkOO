@@ -252,13 +252,13 @@ setMethod("topInteractions",
             y2 = table(vect2)[order(table(vect2), decreasing = TRUE)]
             
             
-            y = y[names(x[1:ntop])]
-            x = x[1:ntop]
+            y = y[names(x)]
+            x = x
             
             
             
-            yn = y2[names(x2[1:ntop])]
-            xn = x2[1:ntop]        
+            yn = y2[names(x2)]
+            xn = x2        
             
             x3 = c()
             if(length(which(complete.cases(c(x)))) == 1){
@@ -306,7 +306,7 @@ setMethod("topInteractions",
                           InputFiles(cds)[["all"]][["all"]][[i]]$V10[same], sep = "::")
               t = table(t)
               
-              t = t[names(x[1:ntop])]
+              t = t[names(x)]
               x3[, i] = t
               
               
@@ -315,7 +315,7 @@ setMethod("topInteractions",
                           InputFiles(cds)[["all"]][["all"]][[i]]$V10[notSame], sep = "::")
               t = table(t)
               
-              t = t[names(x[1:ntop])]
+              t = t[names(x)]
               xn2[, i] = t
             }
             
@@ -325,7 +325,8 @@ setMethod("topInteractions",
             x3$type = "inra"
             xn2$type = "inter"
             x = rbind.data.frame(xn2,x3)
-            x[order(x$Samples,decreasing = TRUE),]
+            x = x[order(x$Samples,decreasing = TRUE),]
+            x[1:ntop,]
           })
 
 

@@ -432,7 +432,7 @@ topInteracters(cds, # The rnaCrosslinkDataSet instance
 ```{r}
 # Returns the Interacions with the highest number of assigned reads
 topInteractions(cds, # The rnaCrosslinkDataSet instance
-                2)   # The number of entries to return
+                1)   # The number of entries to return
 
 ```
 
