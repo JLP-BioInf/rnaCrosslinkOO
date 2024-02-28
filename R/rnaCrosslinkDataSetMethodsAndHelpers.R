@@ -482,55 +482,76 @@ setMethod("topInteracters",
           "rnaCrosslinkDataSet",
           function(cds,
                    ntop = 10)  {
-            c = group(cds)[["s"]]
-            vect = c()
-            for (i in c) {
-              vecto = InputFiles(cds)[[2]][["host"]][[i]]
-              vecto = vecto[vecto$V4 == rnas(cds), ]
-              vect = c(vect, vecto$V10)
+            ci = group(cds)[["c"]]
+            si = group(cds)[["s"]]
+            
+            
+            
+            
+            
+            df= data.frame()
+            
+            for (i in names(InputFiles(cds)[["all"]][["all"]])) {
+              
+              
+              same = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 ==
+                             InputFiles(cds)[["all"]][["all"]][[i]]$V10 )
+              notSame = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 !=
+                                InputFiles(cds)[["all"]][["all"]][[i]]$V10)
+              
+              
+              s =   paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[same],
+                          InputFiles(cds)[["all"]][["all"]][[i]]$V10[same], sep = "::")
+              #s = unlist(lapply(s, function(x)  
+              #  unlist(strsplit(x,split = "::"))[1] ))
+              s = as.data.frame(table(s))
+              s$type="intra"
+              s$sample = i
+              colnames(s) = c("RNA","reads","type","sample")
+              
+              
+              
+              t =   paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[notSame],
+                          InputFiles(cds)[["all"]][["all"]][[i]]$V10[notSame], sep = "::")
+              
+              #t1 = unlist(lapply(t, function(x)  
+              #  unlist(strsplit(x,split = "::"))[1] ))
+              #t2 = unlist(lapply(t, function(x)  
+              #  unlist(strsplit(x,split = "::"))[2] ))
+              #t = c(t1,t2)
+              t = as.data.frame(table(t))
+              t$type="inter"
+              t$sample = i
+              colnames(t) = c("RNA","reads","type","sample")
+              
+              df =rbind.data.frame(df,t,s)
             }
-            x = table(vect)[order(table(vect), decreasing = T)]
+            
+            df = dcast(df,formula = RNA + type ~ sample,   value.var = "reads")
             
             
-            c = group(cds)[["c"]]
-            vect = c()
-            for (i in c) {
-              vecto = InputFiles(cds)[[2]][["host"]][[i]]
-              vecto = vecto[vecto$V4 == rnas(cds), ]
-              vect = c(vect, vecto$V10)
-            }
-            y = table(vect)[order(table(vect), decreasing = T)]
             
+            ci = sampleTable(cds)[ci,"sampleName"]
+            si = sampleTable(cds)[si,"sampleName"]
             
-            y = y[names(x[1:ntop])]
-            x = x[1:ntop]
-            
-            if(length(which(complete.cases(c(x)))) == 1){
-              x2 = data.frame(
-                t = names(x), 
-                s = x,
-                c = y)
-              colnames(x2) = c("RNA", "Samples", "Control")
-              x2$enrichment = x2$Samples /  x2$Control
+            if(length(si) == 1){
+              df$samples = df[,si]
+              df$control = df[,ci]
+              df$enrichment = df$samples / df$control
               
             }else{
               
-              x2 = as.data.frame(x)
-              x2$control = y
-              colnames(x2) = c("RNA", "Samples", "Control")
-              x2$enrichment = x2$Samples /  x2$Control
-            }
-            
-            for (i in names(InputFiles(cds)[[rnas(cds)]][["host"]])) {
-              t =   InputFiles(cds)[[rnas(cds)]][["host"]][[i]]$V10
-              t = table(t)
+              df$samples = rowSums(df[,si],na.rm = TRUE)
+              df$control = rowSums(df[,ci],na.rm = TRUE)
+              df$enrichment = df$samples / df$control
               
-              t = t[names(x[1:ntop])]
-              x2[, i] = t
             }
-            x2 = x2[, c(1, 5:ncol(x2), 2, 3, 4)]
-            x2
             
+            df = df[order(df$samples,decreasing = TRUE),]
+            df = df[1:ntop,]
+            
+            
+            df
           })
 
 
