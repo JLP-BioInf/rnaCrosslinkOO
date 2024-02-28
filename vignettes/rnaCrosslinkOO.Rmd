@@ -137,7 +137,7 @@ The package relies on functions from these packages:
 #library(heatmap3)
 #library(mixtools)
 #library(TopDom)
-#library(tidyverse)
+library(tidyverse)
 #library(RRNA)
 #library(ggrepel)
 ```
