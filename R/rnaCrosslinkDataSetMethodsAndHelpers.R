@@ -440,14 +440,13 @@ setMethod("topInteracters",
             df= data.frame()
             
             for (i in names(InputFiles(cds)[["all"]][["all"]])) {
-              iFile = InputFiles(cds)[["all"]][["all"]][[i]][(iFile$V4 == rnas(cds) | iFile$V10 == rnas(cds)),]
+              iFile = InputFiles(cds)[["all"]][["all"]][[i]][(InputFiles(cds)[["all"]][["all"]][[i]]$V4 == rnas(cds) | InputFiles(cds)[["all"]][["all"]][[i]]$V10 == rnas(cds)),]
               
               same = which(iFile$V4 == iFile$V10 )
               notSame = which(iFile$V4 != iFile$V10 )
               
               
-              s =   paste(iFile$V4[same],
-                          iFile$V10[same], sep = "::")
+              s =   iFile$V4[same]
               #s = unlist(lapply(s, function(x)  
               #  unlist(strsplit(x,split = "::"))[1] ))
               s = as.data.frame(table(s))
@@ -456,9 +455,12 @@ setMethod("topInteracters",
               colnames(s) = c("RNA","reads","type","sample")
               
               
+              v4rna = which(iFile$V4[notSame] == rnas(cds))
+              t1 = iFile$V4[notSame][-v4rna]
+              t2 = iFile$V10[notSame][v4rna]
+              t = c(t1,t2)
               
-              t =   paste(iFile$V4[notSame],
-                          iFile$V10[notSame], sep = "::")
+              
               if(length(notSame) == 0){           df =rbind.data.frame(df,t,c(NA,NA, "inter", i),stringsAsFactors = F)
               }else{
                 
