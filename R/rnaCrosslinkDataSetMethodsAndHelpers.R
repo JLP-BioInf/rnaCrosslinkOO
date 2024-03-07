@@ -440,10 +440,10 @@ setMethod("topInteracters",
             df= data.frame()
             
             for (i in names(InputFiles(cds)[["all"]][["all"]])) {
-              iFile = InputFiles(cds)[["all"]][["all"]][[i]]
+              iFile = InputFiles(cds)[["all"]][["all"]][[i]][(iFile$V4 == rnas(cds) | iFile$V10 == rnas(cds)),]
               
-              same = which(iFile$V4 == iFile$V10 & (iFile$V4 == rnas(cds) | iFile$V10 == rnas(cds) ))
-              notSame = which(iFile$V4 != iFile$V10  & (iFile$V4 == rnas(cds) | iFile$V10 == rnas(cds) ) )
+              same = which(iFile$V4 == iFile$V10 )
+              notSame = which(iFile$V4 != iFile$V10 )
               
               
               s =   paste(iFile$V4[same],
