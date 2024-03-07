@@ -38,8 +38,8 @@ setMethod("featureInfo",
             alteredInputList = list()
             TE = rnas(cds)
             InputList = getData(x = cds, 
-                              data = "InputFiles", 
-                              type = "original")
+                                data = "InputFiles", 
+                                type = "original")
             
             for (Input in 1:length(InputList)) {
               controlInput = InputList[[Input]]
@@ -205,129 +205,76 @@ setMethod("topInteractions",
           "rnaCrosslinkDataSet",
           function(cds,
                    ntop = 10)  {
-            c = group(cds)[["s"]]
-            
-            
-            
-            vect = c()
-            vect2 = c()
-            for (i in c) {
-              
-              same = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 ==
-                             InputFiles(cds)[["all"]][["all"]][[i]]$V10)
-              notSame = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 !=
-                                InputFiles(cds)[["all"]][["all"]][[i]]$V10)
-              
-              vect = c(vect,
-                       paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[same],
-                             InputFiles(cds)[["all"]][["all"]][[i]]$V10[same], sep = "::"))
-              vect2 = c(vect2,
-                        paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[notSame],
-                              InputFiles(cds)[["all"]][["all"]][[i]]$V10[notSame], sep = "::"))
-            }
-            x = table(vect)[order(table(vect), decreasing = TRUE)]
-            x2 = table(vect2)[order(table(vect2), decreasing = TRUE)]
-            
-            c = group(cds)[["c"]]
-            
-            
-            
-            vect = c()
-            vect2 = c()
-            for (i in c) {
-              same = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 ==
-                             InputFiles(cds)[["all"]][["all"]][[i]]$V10)
-              notSame = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 !=
-                                InputFiles(cds)[["all"]][["all"]][[i]]$V10)
-              
-              vect = c(vect,
-                       paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[same],
-                             InputFiles(cds)[["all"]][["all"]][[i]]$V10[same], sep = "::"))
-              vect2 = c(vect2,
-                        paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[notSame],
-                              InputFiles(cds)[["all"]][["all"]][[i]]$V10[notSame], sep = "::"))
-            }
-            
-            
-            y = table(vect)[order(table(vect), decreasing = TRUE)]
-            y2 = table(vect2)[order(table(vect2), decreasing = TRUE)]
-            
-            
-            y = y[names(x)]
-            x = x
-            
-            
-            
-            yn = y2[names(x2)]
-            xn = x2        
-            
-            x3 = c()
-            if(length(which(complete.cases(c(x)))) == 1){
-              x3 = data.frame(
-                t = names(x), 
-                s = x,
-                c = y)
-              colnames(x3) = c("RNA", "Samples", "Control")
-              x3$enrichment = x3$Samples /  x3$Control
-              
-              xn2 = data.frame(
-                t = names(xn), 
-                s = xn,
-                c = y)
-              colnames(xn2) = c("RNA", "Samples", "Control")
-              xn2$enrichment = xn2$Samples /xn2$Control
-              
-            }else{
-              
-              x3 = as.data.frame(x)
-              x3$control = y
-              colnames(x3) = c("RNA", "Samples", "Control")
-              x3$enrichment = x3$Samples /  x3$Control
-              
-              
-              xn2 = as.data.frame(xn)
-              xn2$control = y
-              colnames(xn2) = c("RNA", "Samples", "Control")
-              xn2$enrichment = xn2$Samples /  xn2$Control 
-            }
+            ci = group(cds)[["c"]]
+            si = group(cds)[["s"]]
             
             
             
             
             
-            
-            
-            
+            df= data.frame()
             
             for (i in names(InputFiles(cds)[["all"]][["all"]])) {
               
               
+              same = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 ==
+                             InputFiles(cds)[["all"]][["all"]][[i]]$V10 )
+              notSame = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 !=
+                                InputFiles(cds)[["all"]][["all"]][[i]]$V10)
               
-              t =   paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[same],
+              
+              s =   paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[same],
                           InputFiles(cds)[["all"]][["all"]][[i]]$V10[same], sep = "::")
-              t = table(t)
-              
-              t = t[names(x)]
-              x3[, i] = t
+              #s = unlist(lapply(s, function(x)  
+              #  unlist(strsplit(x,split = "::"))[1] ))
+              s = as.data.frame(table(s))
+              s$type="intra"
+              s$sample = i
+              colnames(s) = c("RNA","reads","type","sample")
               
               
               
               t =   paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[notSame],
                           InputFiles(cds)[["all"]][["all"]][[i]]$V10[notSame], sep = "::")
-              t = table(t)
               
-              t = t[names(x)]
-              xn2[, i] = t
+              #t1 = unlist(lapply(t, function(x)  
+              #  unlist(strsplit(x,split = "::"))[1] ))
+              #t2 = unlist(lapply(t, function(x)  
+              #  unlist(strsplit(x,split = "::"))[2] ))
+              #t = c(t1,t2)
+              t = as.data.frame(table(t))
+              t$type="inter"
+              t$sample = i
+              colnames(t) = c("RNA","reads","type","sample")
+              
+              df =rbind.data.frame(df,t,s)
             }
             
+            df = dcast(df,formula = RNA + type ~ sample,   value.var = "reads")
             
-            x3 = x3[, c(1, 5:ncol(x3), 2, 3, 4)]
-            xn2 = xn2[, c(1, 5:ncol(xn2), 2, 3, 4)]
-            x3$type = "inra"
-            xn2$type = "inter"
-            x = rbind.data.frame(xn2,x3)
-            x = x[order(x$Samples,decreasing = TRUE),]
-            x[1:ntop,]
+            
+            
+            ci = sampleTable(cds)[ci,"sampleName"]
+            si = sampleTable(cds)[si,"sampleName"]
+            
+            if(length(si) == 1){
+              df$samples = df[,si]
+              df$control = df[,ci]
+              df$enrichment = df$samples / df$control
+              
+            }else{
+              
+              df$samples = rowSums(df[,si],na.rm = TRUE)
+              df$control = rowSums(df[,ci],na.rm = TRUE)
+              df$enrichment = df$samples / df$control
+              
+            }
+            
+            df = df[order(df$samples,decreasing = TRUE),]
+            df = df[1:ntop,]
+            
+            
+            df
           })
 
 
@@ -433,13 +380,13 @@ setMethod("topTranscripts",
               df$samples = df[,si]
               df$control = df[,ci]
               df$enrichment = df$samples / df$control
-            
+              
             }else{
-            
-            df$samples = rowSums(df[,si],na.rm = TRUE)
-            df$control = rowSums(df[,ci],na.rm = TRUE)
-            df$enrichment = df$samples / df$control
-            
+              
+              df$samples = rowSums(df[,si],na.rm = TRUE)
+              df$control = rowSums(df[,ci],na.rm = TRUE)
+              df$enrichment = df$samples / df$control
+              
             }
             
             df = df[order(df$samples,decreasing = TRUE),]
@@ -493,16 +440,14 @@ setMethod("topInteracters",
             df= data.frame()
             
             for (i in names(InputFiles(cds)[["all"]][["all"]])) {
+              iFile = InputFiles(cds)[["all"]][["all"]][[i]]
+              
+              same = which(iFile$V4 == iFile$V10 & (iFile$V4 == rnas(cds) | iFile$V10 == rnas(cds) ))
+              notSame = which(iFile$V4 != iFile$V10  & (iFile$V4 == rnas(cds) | iFile$V10 == rnas(cds) ) )
               
               
-              same = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 ==
-                             InputFiles(cds)[["all"]][["all"]][[i]]$V10 )
-              notSame = which(InputFiles(cds)[["all"]][["all"]][[i]]$V4 !=
-                                InputFiles(cds)[["all"]][["all"]][[i]]$V10)
-              
-              
-              s =   paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[same],
-                          InputFiles(cds)[["all"]][["all"]][[i]]$V10[same], sep = "::")
+              s =   paste(iFile$V4[same],
+                          iFile$V10[same], sep = "::")
               #s = unlist(lapply(s, function(x)  
               #  unlist(strsplit(x,split = "::"))[1] ))
               s = as.data.frame(table(s))
@@ -512,21 +457,24 @@ setMethod("topInteracters",
               
               
               
-              t =   paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[notSame],
-                          InputFiles(cds)[["all"]][["all"]][[i]]$V10[notSame], sep = "::")
-              
-              #t1 = unlist(lapply(t, function(x)  
-              #  unlist(strsplit(x,split = "::"))[1] ))
-              #t2 = unlist(lapply(t, function(x)  
-              #  unlist(strsplit(x,split = "::"))[2] ))
-              #t = c(t1,t2)
-              t = as.data.frame(table(t))
-              t$type="inter"
-              t$sample = i
-              colnames(t) = c("RNA","reads","type","sample")
-              
-              df =rbind.data.frame(df,t,s)
+              t =   paste(iFile$V4[notSame],
+                          iFile$V10[notSame], sep = "::")
+              if(length(notSame) == 0){           df =rbind.data.frame(df,t,c(NA,NA, "inter", i),stringsAsFactors = F)
+              }else{
+                
+                t = as.data.frame(table(t),stringsAsFactors = F)
+                t$type="inter"
+                t$sample = i
+                colnames(t) = c("RNA","reads","type","sample")
+              }
+              if(length(same) == 0){           df =rbind.data.frame(df,s,c(NA,NA, "inter", i),stringsAsFactors = F)
+              }else{
+                df =rbind.data.frame(df,t,s,stringsAsFactors = F)
+              }
             }
+            
+            df$reads = as.numeric(df$reads)
+            
             
             df = dcast(df,formula = RNA + type ~ sample,   value.var = "reads")
             
@@ -708,11 +656,11 @@ setMethod("getReverseInteractions",
 #' @return A list of "swapped" Input datas
 #'
 swapInputs = function(InputList, 
-                    rna) {
+                      rna) {
   InputListSwap = InputList
   for (Input in 1:length(InputList)) {
     InputListS  =  InputList[[Input]][InputList[[Input]]$V4 == rna |
-                                  InputList[[Input]]$V10 == rna, ]
+                                        InputList[[Input]]$V10 == rna, ]
     
     
     
@@ -743,10 +691,10 @@ swapInputs = function(InputList,
 #' @return A list of "swapped" Input data
 #'
 swapInputs2 = function(InputList, 
-                     rna) {
+                       rna) {
   for (Input in 1:length(InputList)) {
     InputList18S = InputList[[Input]][as.character(InputList[[Input]]$V4) == rna &
-                                  as.character(InputList[[Input]]$V10) == rna, ]
+                                        as.character(InputList[[Input]]$V10) == rna, ]
     tmp1 = InputList18S[InputList18S$V7 < InputList18S$V13, ]
     tmp2 = InputList18S[InputList18S$V7 > InputList18S$V13, ]
     tmp2 = tmp2[, c(
@@ -794,7 +742,7 @@ swapInputs3 = function(InputList, rna) {
   InputListSwap = InputList
   for (Input in 1:length(InputList)) {
     InputListS  =  InputList[[Input]][InputList[[Input]]$V4 == rna |
-                                  InputList[[Input]]$V10 == rna, ]
+                                        InputList[[Input]]$V10 == rna, ]
     tmp1 = InputListS[InputListS$V4 == rna, ]
     tmp2 = InputListS[InputListS$V4 != rna, ]
     tmp2 = tmp2[, c(
@@ -911,7 +859,7 @@ makeExamplernaCrosslinkDataSet = function() {
   c8 = sample(20:25, 55, replace = TRUE)
   c13 = sample(20:25, 55, replace = TRUE)
   c14 = sample(40:45, 55, replace = TRUE)
-
+  
   # inter RNA 100
   c7 = c(c7,sample(1:40, 90, replace = TRUE))
   c8 = c(c8,sample(20:75, 90, replace = TRUE))
@@ -963,8 +911,8 @@ makeExamplernaCrosslinkDataSet = function() {
   rna = c("transcript1")
   # load the object
   cds = rnaCrosslinkDataSet(rnas = rna,
-                        rnaSize = 0,
-                        sampleTable = sampleTable2)
+                            rnaSize = 0,
+                            sampleTable = sampleTable2)
   
   return(cds)
 }

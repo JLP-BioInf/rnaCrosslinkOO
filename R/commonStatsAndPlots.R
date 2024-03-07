@@ -474,7 +474,7 @@ setMethod("plotCombinedMatrix", "rnaCrosslinkDataSet", function(cds,
     sumOfLower = getData(cds, data = "matrixList", type = type2)[[sample2]]
     matrixToPlot = sumOfUpper + t(sumOfLower)
     matrixToPlot = matrixToPlot[a:b, c:d]
-    
+  
     # choose colour pallet
     cols = log2(max(matrixToPlot + 1))
     myCol = c("black", colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols - 1))
