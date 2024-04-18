@@ -17,7 +17,9 @@ plotCombinedMatrix(
   b = 50,
   c = 1,
   d = 50,
-  h = 3
+  h = 3,
+  sample = 0,
+  returnData = FALSE
 )
 }
 \arguments{
@@ -42,6 +44,8 @@ plotCombinedMatrix(
 \item{d}{To make a subsetted plot (right value on y)}
 
 \item{h}{Height of image (inches) (only useful if plotting)}
+
+\item{returnData}{if TRUE matrix is returned instead of plotting}
 }
 \value{
 A heatmap of the reads of the chosen sample numbers, in the analysis stages chosen, with each chosen sample on a separate half of the heatmap
