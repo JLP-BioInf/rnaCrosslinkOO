@@ -144,8 +144,8 @@ rnaCrosslinkDataSet <- function(rnas,
     paste(group[["c"]],
           collapse = " ") ,
     paste(rep(" ",
-              (
-                length(group[["c"]]) * (3 - length(group[["c"]]))) * 2),
+              
+                2),
           collapse = ""),
     "   ***** "
   ))
@@ -155,7 +155,7 @@ rnaCrosslinkDataSet <- function(rnas,
           collapse = " ") ,
     paste(rep(" ",
               (
-                length(group[["s"]]) * (3 - (length(group[["s"]]))) * 2)),
+               2)),
           collapse = ""),
     "   ***** "
   ))

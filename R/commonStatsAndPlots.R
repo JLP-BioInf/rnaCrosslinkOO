@@ -424,6 +424,7 @@ setMethod("plotMatricesAverage", "rnaCrosslinkDataSet", function(cds,
 #' @param c To make a subsetted plot (left value on y)
 #' @param d To make a subsetted plot (right value on y)
 #' @param h Height of image (inches) (only useful if plotting)
+#' @param returnData if TRUE matrix is returned instead of plotting
 #' @name plotCombinedMatrix
 #' @docType methods
 #' @rdname plotCombinedMatrix
@@ -448,7 +449,9 @@ setGeneric("plotCombinedMatrix", function(cds,
                                           b = 50,
                                           c = 1,
                                           d = 50,
-                                          h= 3)
+                                          h= 3,
+                                          sample = 0,
+                                          returnData = FALSE)
   standardGeneric("plotCombinedMatrix"))
 
 setMethod("plotCombinedMatrix", "rnaCrosslinkDataSet", function(cds, 
@@ -461,7 +464,8 @@ setMethod("plotCombinedMatrix", "rnaCrosslinkDataSet", function(cds,
                                                             b = 50,
                                                             c = 1,
                                                             d = 50,
-                                                            h= 3)  {
+                                                            h= 3,
+                                                            returnData = FALSE)  {
   InputMatList = matrixList(cds)
   rnaS = rnas(cds)
   sampleNames = names(InputMatList[[1]][[type1]])
@@ -470,9 +474,18 @@ setMethod("plotCombinedMatrix", "rnaCrosslinkDataSet", function(cds,
   }
   #sample1 = which(sampleTable(cds)[sampleTable(cds)$sampleName == sample1])
   for (rna in c(rnaS)) {
-    sumOfUpper = getData(cds, data = "matrixList", type = type1)[[sample1]]
-    sumOfLower = getData(cds, data = "matrixList", type = type2)[[sample2]]
-    matrixToPlot = sumOfUpper + t(sumOfLower)
+    if(sample1 == "blank"){
+      sumOfUpper = getData(cds, data = "matrixList", type = type1)[[sample2]]
+    matrixToPlot =sumOfUpper  
+    }else if(sample2 == "blank"){
+      sumOfLower = getData(cds, data = "matrixList", type = type2)[[sample1]]
+      matrixToPlot =sumOfLower  
+      }else{
+      sumOfUpper = getData(cds, data = "matrixList", type = type1)[[sample1]]
+      sumOfLower = getData(cds, data = "matrixList", type = type2)[[sample2]]
+      matrixToPlot = sumOfUpper + t(sumOfLower)
+    }
+    
     matrixToPlot = matrixToPlot[a:b, c:d]
   
     # choose colour pallet
@@ -482,7 +495,7 @@ setMethod("plotCombinedMatrix", "rnaCrosslinkDataSet", function(cds,
       cols = log2(max(matrixToPlot[matrixToPlot < 30000] + 1))
       myCol = c("black", colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols - 1),  rep("white", (14 - cols) + 1))
     }
-    
+    if(returnData == TRUE){return(matrixToPlot)}
     # plot the heatmap
     if (directory == 0) {
       heatmap3((log2(t(
@@ -496,7 +509,7 @@ setMethod("plotCombinedMatrix", "rnaCrosslinkDataSet", function(cds,
       )
     } else{
       pdf(
-        paste(directory, "/", rna, "_", sampleNames[sample1], "-", type1 , "-", sampleNames[sample2], "-", type2 , ".pdf", sep = ""),
+        paste(directory, "/", rna, "_", sample1, "-", type1 , "-", sample2, "-", type2 , ".pdf", sep = ""),
         height = h,
         width = h
       )
