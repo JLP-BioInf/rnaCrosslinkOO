@@ -32,6 +32,7 @@ Collate:
     'genericMethods.R'
     'rnaCrosslinkDataSetMethodsAndHelpers.R'
     'rnaCrosslinkOO-package.R'
+    'rnaCrosslinkQC.R'
 Suggests: knitr, rmarkdown, testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
