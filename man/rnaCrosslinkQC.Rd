@@ -22,3 +22,118 @@ ggplot and txt file
 get a plot fo the read lengths and transcripts in the dataset
 The fucntion will make 1 pdf and 2 text file in the directory provided
 }
+\examples{
+  c4 = c(rep("transcript1",100),rep("transcript2",100) )
+ c10 = c(rep("transcript1",200) )
+ c1 = 1:200
+ c2 = rep(paste(rep("A", 40), collapse = ""),200)
+ c3 = rep(".",200)
+ c9 = rep(".",200)
+ c15 = rep(".",200)
+ c5 = rep(1,200)
+ c11 = rep(21,200)
+ c6 = rep(20,200)
+ c12= rep(40,200)
+ # short distance 50
+ c7 = sample(1:5, 50, replace = TRUE)
+ c8 = sample(20:25, 50, replace = TRUE)
+ c13 = sample(20:25, 50, replace = TRUE)
+ c14 = sample(40:45, 50, replace = TRUE)
+ # long distance 50
+ c7 = c(c7,sample(1:5, 50, replace = TRUE))
+ c8 = c(c8,sample(20:25, 50, replace = TRUE))
+ c13 = c(c13,sample(60:70, 50, replace = TRUE))
+ c14 = c(c14,sample(80:83, 50, replace = TRUE))
+ # inter RNA 100
+ c7 = c(c7,sample(1:5, 100, replace = TRUE))
+ c8 = c(c8,sample(20:25, 100, replace = TRUE))
+ c13 = c(c13,sample(1:5, 100, replace = TRUE))
+ c14 = c(c14,sample(20:25, 100, replace = TRUE))
+ 
+ exampleInput = data.frame(V1 = c1,
+                           V2 = c2,
+                           V3 = c3,
+                           V4 = c4,
+                           V5 = as.numeric(c5),
+                           V6 = as.numeric(c6),
+                           V7 = as.numeric(c7),
+                           V8 = as.numeric(c8),
+                           V9 = c9,
+                           V10 = c10,
+                           V11 = as.numeric(c11),
+                           V12 = as.numeric(c12),
+                           V13 = as.numeric(c13),
+                           V14 = as.numeric(c14),
+                           V15 = c15)
+ 
+ 
+ file = tempfile()
+ write.table(exampleInput,
+             file = file, 
+             quote = FALSE,
+             row.names = FALSE, 
+             sep = "\t", col.names = F)
+ 
+ 
+ 
+ 
+ c4 = c(rep("transcript1",55),rep("transcript2",90) )
+ c10 = c(rep("transcript1",145) )
+ c1 = 1:145
+ c2 = rep(paste(rep("A", 40), collapse = ""),145)
+ c3 = rep(".",145)
+ c9 = rep(".",145)
+ c15 = rep(".",145)
+ c5 = rep(1,145)
+ c11 = rep(21,145)
+ c6 = rep(20,145)
+ c12= rep(40,145)
+ # short distance 55
+ c7 = sample(1:5, 55, replace = TRUE)
+ c8 = sample(20:25, 55, replace = TRUE)
+ c13 = sample(20:25, 55, replace = TRUE)
+ c14 = sample(40:45, 55, replace = TRUE)
+ 
+ # inter RNA 100
+ c7 = c(c7,sample(1:40, 90, replace = TRUE))
+ c8 = c(c8,sample(20:75, 90, replace = TRUE))
+ c13 = c(c13,sample(1:40, 90, replace = TRUE))
+ c14 = c(c14,sample(20:75, 90, replace = TRUE))
+ 
+ exampleInput = data.frame(V1 = c1,
+                           V2 = c2,
+                           V3 = c3,
+                           V4 = c4,
+                           V5 = as.numeric(c5),
+                           V6 = as.numeric(c6),
+                           V7 = as.numeric(c7),
+                           V8 = as.numeric(c8),
+                           V9 = c9,
+                           V10 = c10,
+                           V11 = as.numeric(c11),
+                           V12 = as.numeric(c12),
+                           V13 = as.numeric(c13),
+                           V14 = as.numeric(c14),
+                           V15 = c15)
+ 
+ 
+file2 = tempfile()
+ write.table(exampleInput,
+             file = file2, 
+             quote = FALSE, 
+             row.names = FALSE, 
+             sep = "\t",
+             col.names = F)
+
+ 
+ # Set up the sample table. ----
+ sampleTabler1 = c(file, "s", "1", "s1")
+ sampleTabler2 = c(file2, "c", "1", "c1")
+ # make the sample table 
+ sampleTable2 = rbind.data.frame(sampleTabler1, sampleTabler2)
+ # add the column names 
+ colnames(sampleTable2) = c("file", "group", "sample", "sampleName")
+
+rnaCrosslinkQC(sampleTable2,tempdir())
+
+}
