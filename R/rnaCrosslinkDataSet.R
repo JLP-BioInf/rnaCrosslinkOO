@@ -51,6 +51,8 @@ setValidity("rnaCrosslinkDataSet", function(object) {
 #'  must have 4 columns, fileName (the full path and file name of the input
 #'  Input file for each sample ), group ("s" - sample or "c" - control),
 #'  sample (1,2,3, etc), sampleName (must be unique).
+#' @param subset a vector of 4 values to subset based on structural read size. c(l-min,l-max,r-min,r-max)
+#' @param sample The number of reads to sample for each sample.
 #'
 #' @return A rnaCrosslinkDataSet object.
 #'
@@ -93,7 +95,9 @@ setValidity("rnaCrosslinkDataSet", function(object) {
 #' @export
 rnaCrosslinkDataSet <- function(rnas,
                             rnaSize = 0 ,
-                            sampleTable) {
+                            sampleTable,
+                            subset = "all",
+                            sample = "all") {
   ###########################################################
   # Read in the sample table
   ###########################################################
@@ -248,6 +252,89 @@ rnaCrosslinkDataSet <- function(rnas,
                  nextflow pipeline, please check the documentation. "
     )
   }
+  
+  
+  #subset based on user options
+  message(" *****  Checking Subsetting Options  ***** ")
+  
+  if(length(subset) > 1){
+    if( (subset[1] > subset[2]) | (subset[3] > subset[4])   ){
+      stop("Subsetting options do not look right, min value is geater than max")
+    }
+  }
+  
+  
+  if(length(subset) < 1){
+    message(" *****  No user subsetting chosen  ***** ")
+  }else{
+    message(paste(" *****  Subsetting ","leftMinMax = ",subset[1],
+                  subset[2],
+                  "RightMinMax = ",subset[3],
+                  subset[4],"  ***** "))
+    
+    inputs <- lapply(inputs, function(x){
+      
+      x = x[which( (c(x$V6 - x$V5) > subset[1] &  c(x$V6 - x$V5) < subset[2]) & 
+                     (c(x$V14 - x$V13) > subset[3] &  c(x$V14 - x$V13) < subset[4]) ),]
+      
+      colnames(x) =       c(
+        "V1",
+        "V2",
+        "V3",
+        "V4",
+        "V5",
+        "V6",
+        "V7",
+        "V8",
+        "V9",
+        "V10",
+        "V11",
+        "V12",
+        "V13",
+        "V14",
+        "V15"
+      )
+      
+      x
+      
+    })
+  }
+  
+  message(" *****  Checking Sampling Options  ***** ")
+  if(sample == "all"){
+    message(" *****  No user sampling chosen  ***** ")
+  }else{
+    message(paste(" *****  Sampling ",sample,
+                  "Structural duplexes  ***** "))
+    
+    inputs <- lapply(inputs, function(x){
+      
+      x = x[sample(1:nrow(x),size = sample,replace = F),]
+      
+      colnames(x) =       c(
+        "V1",
+        "V2",
+        "V3",
+        "V4",
+        "V5",
+        "V6",
+        "V7",
+        "V8",
+        "V9",
+        "V10",
+        "V11",
+        "V12",
+        "V13",
+        "V14",
+        "V15"
+      )
+      
+      x
+      
+    })
+  }
+  
+
   
   
   checkRNA = function(inputs, rna) {

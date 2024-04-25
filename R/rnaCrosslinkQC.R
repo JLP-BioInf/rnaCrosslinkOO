@@ -133,7 +133,7 @@ NULL
 rnaCrosslinkQC = function(sampleTable, directory){
   
   message(" ******************************************** ")
-  message(" *****            rnaCrosslink-OO          ****** ")
+  message(" *****            Collect Metrics      ****** ")
   message(" ******************************************** ")
   message(" *****-------*******************-------****** ")
   message(" *****       Reading SampleTable       ****** ")
@@ -294,7 +294,6 @@ rnaCrosslinkQC = function(sampleTable, directory){
   
   widthLeft <- lapply(1:nrow(sampleTable), 
                       function(x) { 
-                        print(x)
                         x = data.frame(width = widthLeft[[x]],
                                       type = "left",
                                       sample =  sampleTable[x,"sampleName"] )
@@ -304,7 +303,6 @@ rnaCrosslinkQC = function(sampleTable, directory){
   
   widthRight <- lapply(1:nrow(sampleTable), 
                       function(x) { 
-                        print(x)
                         x = data.frame(width = widthRight[[x]],
                                        type = "right",
                                        sample =  sampleTable[x,"sampleName"] )
@@ -313,6 +311,19 @@ rnaCrosslinkQC = function(sampleTable, directory){
   
   
   widthdf = rbind.data.frame(do.call(rbind,widthLeft ),do.call(rbind,widthRight ))
+  
+  
+  
+  widthdf = aggregate(widthdf$width, 
+                      by = list(widthdf$width, 
+                      widthdf$type,widthdf$sample),
+                      FUN = length )
+  colnames(widthdf) = c("width","type","sample","count")
+
+  plot(ggplot(widthdf) +
+    geom_bar(mapping = aes(x = width, y = count), stat = "identity") +
+    facet_grid(sample~type) +
+    theme_bw())
   
 
   
@@ -404,14 +415,7 @@ rnaCrosslinkQC = function(sampleTable, directory){
               file = paste(directory,"/topTranscripts_all.txt", sep = ""),
               quote = F, row.names = F)
   
-  pdf(paste(directory,"/readWidths.pdf", sep = ""), height = nrow(sampleTable)*2, width = 5)
-  
-  ggplot(widthdf) +
-    geom_histogram(mapping = aes(x = width), bins = round(max(widthdf$width)/2)) +
-    facet_grid(sample~type) +
-    theme_bw()
-  
-  dev.off()
+
   
   
 }
