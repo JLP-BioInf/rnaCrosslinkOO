@@ -264,7 +264,7 @@ rnaCrosslinkDataSet <- function(rnas,
   }
   
   
-  if(length(subset) < 1){
+  if(length(subset) == 1){
     message(" *****  No user subsetting chosen  ***** ")
   }else{
     message(paste(" *****  Subsetting ","leftMinMax = ",subset[1],

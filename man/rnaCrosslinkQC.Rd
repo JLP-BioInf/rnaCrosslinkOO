@@ -5,7 +5,7 @@
 \alias{rnaCrosslinkQC}
 \title{rnaCrosslinkQC}
 \usage{
-rnaCrosslinkQC(sampleTable, directory)
+rnaCrosslinkQC(sampleTable, directory, topTranscripts = TRUE)
 }
 \arguments{
 \item{sampleTable}{string - The address of the sample table, the sample table
@@ -13,7 +13,9 @@ must have 4 columns, fileName (the full path and file name of the input
 Input file for each sample ), group ("s" - sample or "c" - control),
 sample (1,2,3, etc), sampleName (must be unique).}
 
-\item{Directory}{A directory address to write the files}
+\item{directory}{A directory address to write the files}
+
+\item{topTranscripts}{If FALSE a table of top trandscirpts will not be written to file}
 }
 \value{
 ggplot and txt file
@@ -72,7 +74,7 @@ The fucntion will make 1 pdf and 2 text file in the directory provided
              file = file, 
              quote = FALSE,
              row.names = FALSE, 
-             sep = "\t", col.names = F)
+             sep = "\t", col.names = FALSE)
  
  
  
@@ -123,7 +125,7 @@ file2 = tempfile()
              quote = FALSE, 
              row.names = FALSE, 
              sep = "\t",
-             col.names = F)
+             col.names = FALSE)
 
  
  # Set up the sample table. ----

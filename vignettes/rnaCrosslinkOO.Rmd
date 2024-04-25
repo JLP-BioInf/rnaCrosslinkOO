@@ -252,7 +252,9 @@ The package has 3 main processes; clustering, cluster trimming and folding. The 
 Befor eyou make the object you can check the read sizes of the duplexes and the transcripts that exist within the dataset using the `rnaCrosslinkQC` method. 
 
 ```{r}
-rnaCrosslinkQC(sampleTable2,directory = tempfile())
+rnaCrosslinkQC(sampleTable2,
+               directory = ".", 
+               topTranscripts = F)
 
 ```
 
@@ -310,7 +312,9 @@ The slots for processed and unprocessed data keep the data from each stage of th
 ```{r}
 # load the object
 cds = rnaCrosslinkDataSet(rnas = rna,
-                      sampleTable = sampleTable2)
+                      sampleTable = sampleTable2,
+                      subset = "all",
+                      sample = "all")
 # be aware there are extra options here
 # including:
 # subset - allows you to choose specific read sizes (this affects resolution and accuracy)

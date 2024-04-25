@@ -12,7 +12,7 @@
 "_PACKAGE"
 
 
-globalVariables(c(    "ID" ,"PCa" ,"PCb" ,"clusteredCds",  "dgs" ,"k", 
+globalVariables(c( "count",   "ID" ,"PCa" ,"PCb" ,"clusteredCds",  "dgs" ,"k", 
                       "sampleTable2" ,"sd" ,"value","stopCluster","variable"))
 
 #' @importFrom seqinr read.fasta

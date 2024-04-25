@@ -6,12 +6,14 @@
 \alias{topInteracters,rnaCrosslinkDataSet-method}
 \title{topInteracters}
 \usage{
-topInteracters(cds, ntop = 10)
+topInteracters(cds, ntop = 10, sds = TRUE)
 }
 \arguments{
 \item{cds}{a \code{rnaCrosslinkDataSet} object}
 
 \item{ntop}{the number of entries to display}
+
+\item{sds}{known bug, doesn't work for small data sets fix incoming}
 }
 \value{
 A table, the number of counts per sample per interacting transcript
@@ -22,6 +24,6 @@ assigned that interact with the transcript of interest
 }
 \examples{
 cds = makeExamplernaCrosslinkDataSet()
-topInteracters(cds)
+topInteracters(cds, sds = TRUE)
 
 }

@@ -18,7 +18,6 @@ plotCombinedMatrix(
   c = 1,
   d = 50,
   h = 3,
-  sample = 0,
   returnData = FALSE
 )
 }

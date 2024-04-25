@@ -11,7 +11,9 @@ NULL
 #'  must have 4 columns, fileName (the full path and file name of the input
 #'  Input file for each sample ), group ("s" - sample or "c" - control),
 #'  sample (1,2,3, etc), sampleName (must be unique).
-#' @param Directory A directory address to write the files
+#' @param directory A directory address to write the files
+#' @param topTranscripts If FALSE a table of top trandscirpts will not be written to file
+#' 
 #' @return ggplot and txt file
 #' @name rnaCrosslinkQC
 #' @docType methods
@@ -66,7 +68,7 @@ NULL
 #'              file = file, 
 #'              quote = FALSE,
 #'              row.names = FALSE, 
-#'              sep = "\t", col.names = F)
+#'              sep = "\t", col.names = FALSE)
 #'  
 #'  
 #'  
@@ -117,7 +119,7 @@ NULL
 #'              quote = FALSE, 
 #'              row.names = FALSE, 
 #'              sep = "\t",
-#'              col.names = F)
+#'              col.names = FALSE)
 #'
 #'  
 #'  # Set up the sample table. ----
@@ -130,7 +132,9 @@ NULL
 #' 
 #' rnaCrosslinkQC(sampleTable2,tempdir())
 #' @export
-rnaCrosslinkQC = function(sampleTable, directory){
+rnaCrosslinkQC = function(sampleTable, 
+                          directory,
+                          topTranscripts = TRUE){
   
   message(" ******************************************** ")
   message(" *****            Collect Metrics      ****** ")
@@ -330,7 +334,7 @@ rnaCrosslinkQC = function(sampleTable, directory){
   
   # now get the transcript sin the dataset
   
-  
+  if(topTranscripts == TRUE){
   
   ci = group[["c"]]
   si = group[["s"]]
@@ -413,8 +417,8 @@ rnaCrosslinkQC = function(sampleTable, directory){
   
   write.table(df, 
               file = paste(directory,"/topTranscripts_all.txt", sep = ""),
-              quote = F, row.names = F)
-  
+              quote = FALSE, row.names = FALSE)
+  }
 
   
   

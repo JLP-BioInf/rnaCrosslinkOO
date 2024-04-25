@@ -410,6 +410,7 @@ setMethod("topTranscripts",
 #'
 #' @param cds a \code{rnaCrosslinkDataSet} object
 #' @param ntop the number of entries to display
+#' @param sds known bug, doesn't work for small data sets fix incoming
 #'
 #' @name topInteracters
 #' @docType methods
@@ -418,18 +419,21 @@ setMethod("topTranscripts",
 #' @return A table, the number of counts per sample per interacting transcript
 #' @examples 
 #' cds = makeExamplernaCrosslinkDataSet()
-#' topInteracters(cds)
+#' topInteracters(cds, sds = TRUE)
 #'
 #' @export
 setGeneric("topInteracters",
            function(cds,
-                    ntop = 10)
+                    ntop = 10,
+                    sds = TRUE)
              standardGeneric("topInteracters"))
 
 setMethod("topInteracters",
           "rnaCrosslinkDataSet",
           function(cds,
-                   ntop = 10)  {
+                   ntop = 10,
+                   sds = TRUE)  {
+            if(sds != TRUE){
             ci = group(cds)[["c"]]
             si = group(cds)[["s"]]
             
@@ -439,16 +443,15 @@ setMethod("topInteracters",
             
             df= data.frame()
             
-            for (i in names(InputFiles(cds)[["all"]][["all"]])) {
-              iFile = InputFiles(cds)[["all"]][["all"]][[i]][(InputFiles(cds)[["all"]][["all"]][[i]]$V4 == rnas(cds) | InputFiles(cds)[["all"]][["all"]][[i]]$V10 == rnas(cds)),]
+            for (i in names(InputFiles(cds)[[rnas(cds)]][["noHost"]])) {
+              iFile = InputFiles(cds)[[rnas(cds)]][["noHost"]][[i]]
               
               same = which(iFile$V4 == iFile$V10 )
               notSame = which(iFile$V4 != iFile$V10 )
               
               
               s =   iFile$V4[same]
-              #s = unlist(lapply(s, function(x)  
-              #  unlist(strsplit(x,split = "::"))[1] ))
+
               s = as.data.frame(table(s))
               s$type="intra"
               s$sample = i
@@ -461,7 +464,8 @@ setMethod("topInteracters",
               t = c(t1,t2)
               
               
-              if(length(notSame) == 0){           df =rbind.data.frame(df,t,c(NA,NA, "inter", i),stringsAsFactors = F)
+              if(length(notSame) == 0){           
+                df =rbind.data.frame(df,t,c(NA,NA, "inter", i),stringsAsFactors = F)
               }else{
                 
                 t = as.data.frame(table(t),stringsAsFactors = F)
@@ -503,6 +507,7 @@ setMethod("topInteracters",
             
             
             df
+            }
           })
 
 
