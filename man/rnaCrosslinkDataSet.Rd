@@ -6,7 +6,13 @@
 \alias{rnaCrosslinkDataSet}
 \title{rnaCrosslinkDataSet}
 \usage{
-rnaCrosslinkDataSet(rnas, rnaSize = 0, sampleTable)
+rnaCrosslinkDataSet(
+  rnas,
+  rnaSize = 0,
+  sampleTable,
+  subset = "all",
+  sample = "all"
+)
 }
 \arguments{
 \item{rnas}{vector - The names of the RNA interest, these must be displayed
@@ -20,6 +26,10 @@ one numeric value.}
 must have 4 columns, fileName (the full path and file name of the input
 Input file for each sample ), group ("s" - sample or "c" - control),
 sample (1,2,3, etc), sampleName (must be unique).}
+
+\item{subset}{a vector of 4 values to subset based on structural read size. c(l-min,l-max,r-min,r-max)}
+
+\item{sample}{The number of reads to sample for each sample.}
 }
 \value{
 A rnaCrosslinkDataSet object.

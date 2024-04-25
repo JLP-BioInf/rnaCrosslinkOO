@@ -135,5 +135,4 @@ file2 = tempfile()
  colnames(sampleTable2) = c("file", "group", "sample", "sampleName")
 
 rnaCrosslinkQC(sampleTable2,tempdir())
-
 }
