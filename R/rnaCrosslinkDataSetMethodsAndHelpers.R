@@ -351,7 +351,9 @@ setMethod("topTranscripts",
               s$sample = i
               colnames(s) = c("RNA","reads","type","sample")
               
-              
+              if(length(notSame) == 0){
+                df =rbind.data.frame(df,s)
+              }else{
               
               t =   paste(InputFiles(cds)[["all"]][["all"]][[i]]$V4[notSame],
                           InputFiles(cds)[["all"]][["all"]][[i]]$V10[notSame], sep = "::")
@@ -367,6 +369,7 @@ setMethod("topTranscripts",
               colnames(t) = c("RNA","reads","type","sample")
               
               df =rbind.data.frame(df,t,s)
+              }
             }
             
             df = dcast(df,formula = RNA + type ~ sample,   value.var = "reads")
@@ -379,13 +382,11 @@ setMethod("topTranscripts",
             if(length(si) == 1){
               df$samples = df[,si]
               df$control = df[,ci]
-              df$enrichment = df$samples / df$control
               
             }else{
               
               df$samples = rowSums(df[,si],na.rm = TRUE)
               df$control = rowSums(df[,ci],na.rm = TRUE)
-              df$enrichment = df$samples / df$control
               
             }
             

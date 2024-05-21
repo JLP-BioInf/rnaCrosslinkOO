@@ -135,7 +135,7 @@ NULL
 rnaCrosslinkQC = function(sampleTable, 
                           directory,
                           topTranscripts = TRUE){
-  
+  if(topTranscripts == TRUE){
   message(" ******************************************** ")
   message(" *****            Collect Metrics      ****** ")
   message(" ******************************************** ")
@@ -334,7 +334,7 @@ rnaCrosslinkQC = function(sampleTable,
   
   # now get the transcript sin the dataset
   
-  if(topTranscripts == TRUE){
+
   
   ci = group[["c"]]
   si = group[["s"]]

@@ -6,6 +6,7 @@ The rnaCrosslinkOO R package is designed to analyse data from RNA crosslinking a
 
 A vignette is available at: [vignette](https://cran.r-project.org/package=rnaCrosslinkOO). It is recommended to install the package through CRAN. 
 
+Datasets can be found in the [paper](https://academic.oup.com/bioinformatics/article/40/4/btae193/7643507) but we often have unpublished in house datasets that we are willing to share. So please get in touch. 
 
 ```
 # CRANs

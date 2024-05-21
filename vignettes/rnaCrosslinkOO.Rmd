@@ -33,10 +33,9 @@ knitr::opts_chunk$set(
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# TL;DR
+# rnaCrosslinkOO
 
-
-
+Please check out the [publication](https://doi.org/10.1093/bioinformatics/btae193) if you interesting in this tool and the [github](https://github.com/JLP-BioInf/rnaCrosslinkNF). 
 
 # The COMRADES experiment
 \
@@ -56,7 +55,9 @@ After sequencing, short reads are produced similar to a spliced / chimeric RNA r
 There are other types of crosslinking data! 
 
 
-[Paris](https://www.nature.com/articles/s41467-021-22552-y)
+- [Paris](https://www.nature.com/articles/s41467-021-22552-y)
+
+
 
 
 ---
@@ -65,7 +66,7 @@ There are other types of crosslinking data!
 
 ## Nextflow pipeline 
 \
-Fastq files produced from the COMRADES experiment can be processed for input into rnaCrosslinkOO using the Nextflow pre-processing pipeline, to get more information visit here.. The pipeline  takes the reads through trimming alignment, QC and the production of the files necessary for input to rnaCrosslinkOO. Crosslinking experiments often have different library preparation protocols therefore it is not necessary to follow the prescribed pre-processing pipeline. The only requirement is that the input files for rnaCrosslinkOO have the correct format detailed below.
+Fastq files produced from the COMRADES experiment can be processed for input into rnaCrosslinkOO using the Nextflow pre-processing pipeline, to get more information visit [here](https://github.com/JLP-BioInf/rnaCrosslinkNF). The pipeline  takes the reads through trimming alignment, QC and the production of the files necessary for input to rnaCrosslinkOO. Crosslinking experiments often have different library preparation protocols therefore it is not necessary to follow the prescribed pre-processing pipeline. The only requirement is that the input files for rnaCrosslinkOO have the correct format detailed below.
 
 
 ## Nextflow pipeline output
@@ -74,19 +75,19 @@ The main output files are the files entitled *X_gapped.txt*. These are the input
 
 1. Read Name
 2. Read Sequence
-3. NA
+3. NA - Blank for now
 4. Side 1 transcript ID
 5. Side 1 Position start in read sequence
 6. Side 1 Position end in read sequence
 7. Side 1 Coordinate start in transcript
 8. Side 1 Coordinate end in transcript
-9. NA
+9. NA - Blank for now
 10. Side 2 transcript ID
 11. Side 2 Position start in read sequence
 12. Side 2 Position end in read sequence
 13. Side 2 Coordinate start in transcript
 14. Side 2 Coordinate end in transcript
-15. NA
+15. NA - Blank for now
 
 
 ![](inputFileSchematic.jpg)
@@ -115,7 +116,7 @@ Pre-requisites:
 
 ## Load the Library
 
-There is a development version available on github (https://github.com/JLP-BioInf/rnaCrosslinkOO). Issue reporting and collaboration welcome. 
+There is a development version available on [github](https://github.com/JLP-BioInf/rnaCrosslinkOO). Issue reporting and collaboration welcome. This version usually has development features not available on CRAN.
 
 ```{r, echo = T, results = 'hide',message=FALSE}
 #install.packages("rnaCrosslinkOO")
@@ -150,8 +151,8 @@ library(tidyverse)
 
 The metadata table has 4 columns and the column names are specific and case-sensitive. 
 
-+ **file**              -  The input file name and location of the sample
-+ **group**             -  "c" or "s" denoting wether the sample is a control or not
++ **file**              -  The input file name and location of the sample input file
++ **group**             -  "c" or "s" denoting whether the sample is a control or not
 + **sample**            -  Sample number 
 + **sampleName**        -  A unique sample name 
 
@@ -249,18 +250,16 @@ The package has 3 main processes; clustering, cluster trimming and folding. The 
 
 ## rnaCrosslinkQC
 
-Befor eyou make the object you can check the read sizes of the duplexes and the transcripts that exist within the dataset using the `rnaCrosslinkQC` method. 
-
-```{r}
+Before you make the object you can check the read sizes of the duplexes and the transcripts that exist within the dataset using the `rnaCrosslinkQC` method. This is the first port of call for the analysis.
+```{r, eval=FALSE}
 rnaCrosslinkQC(sampleTable2,
                directory = ".", 
                topTranscripts = F)
 
 ```
 
+Using the plot of read sizes you can choose the desired read size when creating the object. This affects the resolution of the data and the subsequent accuracy of the folding. The shorter the reads, the more accurate.It is highly recommended to choose a read size cutoff that is smaller than 60bp if you would like to do structural prediction.
 
-
-Using the plot of read sizes you can choose the desired read size when creating the object. This affects the resolution of the data and the subsequenct accuracy of the folding. The shorter the reads, the more accurate.
 
 Checking the output file `topTranscripts_all.txt` will allow you to see the top inter and intra RNA interactions in the dataset and grab the ID which you will need for creating the object. 
 
@@ -336,6 +335,8 @@ You can check on major parts of the object and return slots and other informatio
 
 #### Check Status of Instance
 
+In each slot the analysis stages available to you are shown next to the slot name. These can be used in getData to extract the data for that slot and analysis type. 
+
 ```{r}
 # Check status of instance 
 cds
@@ -346,7 +347,6 @@ cds
 #### Retreive RNA Size
 
 ```{r}
-
 # Returns the size of the RNA
 rnaSize(cds)
 ```
