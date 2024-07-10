@@ -224,7 +224,7 @@ known18S = read.table(path18SFata,
 
 If you also have reactivities from a chemical probing experiment they can be included here as a 1 column table with one value for each position in the transcript. This feature is not ready.
 
-```{r}
+```{r, eval = F}
 pathShape <- system.file("extdata",
                          "reactivities.txt", 
                          package="rnaCrosslinkOO")
@@ -434,7 +434,7 @@ The first step is to assess the species of RNA present in the dataset, the insta
 
 
 
-```{r}
+```{r, eval = F}
 # Returns the RNAs with highest number of assigned reads 
 # regardless of whether it is an Inter or Intra - RNA interaction. 
 topTranscripts(cds,
@@ -447,7 +447,7 @@ topTranscripts(cds,
 ### topInteractors
 
 
-```{r}
+```{r, eval = F}
 # Returns the RNAs that interact with the RNA of interest
 topInteracters(cds, # The rnaCrosslinkDataSet instance
                1)   # The number of entries to return
@@ -458,7 +458,7 @@ topInteracters(cds, # The rnaCrosslinkDataSet instance
 ### topInteractions
 
 
-```{r}
+```{r, eval = F}
 # Returns the Interacions with the highest number of assigned reads
 topInteractions(cds, # The rnaCrosslinkDataSet instance
                 2)   # The number of entries to return
@@ -546,7 +546,7 @@ readNumbers( clusteredCds)
 
 The cluster tables contain coordinates of the clusters in data.frame format. Each cluster has a unique ID and size.x corrasponds to the number of reads assigned to that cluster or supercluster. ls, le, rs and le give the coordinates of the interaction. 
 
-```{r}
+```{r,  eval=FALSE}
 getData(clusteredCds,        # The object             
         "clusterTableList",  # The Type of data to return     
         "original")[[1]]     # The stage of the analysis for the return data
@@ -568,24 +568,24 @@ getData(clusteredCds,         # The object
 
 Given the assumption that the reads within each cluster likely originate from the same structure in different molecules these clusters can be trimmed to contain the regions from L and R that have the most evidence the clustering and trimming is achieved with the clusterrnaCrosslink and trimClusters methods. 
 
-```{r}
+```{r, eval = F}
 # Trim the Clusters
 trimmedClusters = trimClusters(clusteredCds = clusteredCds, # The rnaCrosslinkDataSet instance 
                                trimFactor = 1,              # The cutoff for cluster trimming (see above)
                                clusterCutoff = 0)          # The minimum number of reads for a cluster to be considered
 ```
 
-```{r}
+```{r, eval = F}
 # Check status of instance 
 trimmedClusters
 ```
 
-```{r}
+```{r, eval = F}
 # Returns the number of clusters in each sample
 clusterNumbers(trimmedClusters)
 ```
 
-```{r}
+```{r, eval = F}
 # Returns the number reads in clusters
 readNumbers( trimmedClusters)
 ```
@@ -667,16 +667,16 @@ plotCombinedMatrix(cds,
 See which samples and analysis stages are available by checking the status of the object. 
 
 ```{r}
-trimmedClusters
+clusteredCds
 ```
 
 A plot for all samples can be made using the *plotMatricesAverage* function. The plot can display up to two chosen analysis stages on separate halves.
 
 ```{r}
 # Plot heatmaps for all samples combined and all controls combined
-plotMatricesAverage(cds = trimmedClusters, # The rnaCrosslinkDataSet instance 
-             type1 = "trimmedClusters", # The "analysis stage" to plot on the upper half of the heatmap
-             type2 = "original",        # The "analysis stage" to plot on the lower half of the heatmap
+plotMatricesAverage(cds = clusteredCds, # The rnaCrosslinkDataSet instance 
+             type1 = "originalClusters", # The "analysis stage" to plot on the upper half of the heatmap
+             type2 = "noHost",        # The "analysis stage" to plot on the lower half of the heatmap
              directory = 0,     # The directory for output (0 for standard out)
              a = 1,             # Start coord for x-axis
              b = rnaSize(cds),  # End coord for x-axis
@@ -806,7 +806,7 @@ plotStructure(foldedCds = foldedCds,
 
 Along with the RNA of interest the data also contains inter-RNA interactions with other RNAs from the transcriptome reference. After identifying abundant interactions using topInteractions you can find out where on each RNA these inetractions occur using *getInteractions* and *getReverseInteractions*.
 
-```{r}
+```{r,  eval=FALSE}
 
 getInteractions(cds,
                 "ENSG00000XXXXXX_NR003287-2_RN28S1_rRNA") %>%
@@ -825,7 +825,7 @@ getInteractions(cds,
 
 
 
-```{r}
+```{r,  eval=FALSE}
 getReverseInteractions(cds,
                        rna) %>%
     mutate(sample =sub("\\d$","",sample) )%>%
@@ -852,7 +852,7 @@ plotInteractions(cds,
 
 Plot heatmaps of interactions for all samples combined and all controls combined using *plotInteractionsAverage*
 
-```{r}
+```{r, eval = F}
 plotInteractionsAverage(cds,
                  rna = "ENSG000000XXXXX_NR003286-2_RN18S1_rRNA",
                  interactor = "ENSG00000XXXXXX_NR003287-2_RN28S1_rRNA",
@@ -874,7 +874,7 @@ The clusters can be compared to set of interactions to see which clusters share 
 
 To compare to set of know interactions you need a contact matrix these interactions, for plotting it is sometimes useful to expand the interactions so they can be seen easily. 
 
-```{r}
+```{r, eval = F}
 expansionSize = 5
 knownMat = matrix(0, nrow = rnaSize(cds), ncol = rnaSize(cds))
 for(i in 1:nrow(known18S)){
@@ -894,7 +894,7 @@ knownMat = knownMat + t(knownMat)
 
 Using *compareKnown* you can check which clusters agree with the set of interactions. This functions adds analysis stages "known", "novel" and "knownAndNovel" to the objects data attributes. 
 
-```{r}
+```{r, eval = F}
 # use compare known to gett he known and not know clusters
 knowClusteredCds = compareKnown(trimmedClusters, # The rnaCrosslinkDataSet instance 
                                 knownMat, # A contact matrix of know interactions
@@ -910,7 +910,7 @@ knowClusteredCds
 
 You can plot these using the *plotMatrices* function
 
-```{r}
+```{r, eval = F}
 # Plot heatmaps for all samples combined and all controls combined
 plotMatricesAverage(cds = knowClusteredCds, # The rnaCrosslinkDataSet instance 
              type1 = "KnownAndNovel", # The "analysis stage"
@@ -929,7 +929,7 @@ plotMatricesAverage(cds = knowClusteredCds, # The rnaCrosslinkDataSet instance
 
 
 
-```{r}
+```{r, eval = F}
 # Get the number of clusters for each analysis Stage
 clusterNumbers(knowClusteredCds)
 ```
@@ -939,7 +939,7 @@ clusterNumbers(knowClusteredCds)
 ### Read numbers in clusters
 
 
-```{r}
+```{r, eval = F}
 # Get the number of reads in each cluster for each analysis stage
 readNumbers(knowClusteredCds)
 ```
@@ -947,7 +947,7 @@ readNumbers(knowClusteredCds)
 
 \
 
-### Compare structures with known
+### Compare structures with a set of contacts 
 
 
 To compare predicted structures with the know stucture use "compareKnownStructures". This will give you the number of base pairs that agree between the ensembl of predicted structures and the structure imputted for comparison. This can be for better viewing. 
