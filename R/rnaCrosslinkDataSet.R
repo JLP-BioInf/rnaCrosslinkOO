@@ -273,7 +273,10 @@ rnaCrosslinkDataSet <- function(rnas,
                   subset[4],"  ***** "))
     
     inputs <- lapply(inputs, function(x){
+
       
+      
+      #subset just the rna of interest ad a clause that check if it over the maximum
       x = x[which( (c(x$V6 - x$V5) > subset[1] &  c(x$V6 - x$V5) < subset[2]) & 
                      (c(x$V14 - x$V13) > subset[3] &  c(x$V14 - x$V13) < subset[4]) ),]
       
@@ -309,8 +312,20 @@ rnaCrosslinkDataSet <- function(rnas,
     
     inputs <- lapply(inputs, function(x){
       
+      
+      
+      if(!(rnas %in% c(x$V4,x$V10))){stop("Chosen RNA does not appear in Dataset")}
+      
+      x = x[x$V4 == rnas & x$V10 ==rnas,]
+      yx = x[!(x$V4 == rnas & x$V10 ==rnas),]
+      if(nrow(x) < sample){ 
+        sample = nrow(x)
+        message(paste("sampling is too large max = ",nrow(x), "continuing with this value"))
+        }
       x = x[sample(1:nrow(x),size = sample,replace = F),]
       
+      
+      x = rbind.data.frame(x,yx)
       colnames(x) =       c(
         "V1",
         "V2",
