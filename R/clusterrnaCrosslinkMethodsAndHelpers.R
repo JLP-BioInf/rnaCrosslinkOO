@@ -575,6 +575,8 @@ setMethod("compareKnown", "rnaCrosslinkDataSet", function(trimmedClusters,
     cannonicalClusters = list()
     cannonicalClustersMat = list()
     cannonicalClustersMat2 = list()
+    cp = list()
+    cn = list()
     
     
     clusterPositionsListTrimmed = clusterTableList(trimmedClusters)[[rna]][[type]]
@@ -601,6 +603,25 @@ setMethod("compareKnown", "rnaCrosslinkDataSet", function(trimmedClusters,
             # find those when the two annotations overlap.
             tf = c(tf, all(k18Smat2 < 11))
         }
+        
+        ###################################
+        # try and gte the cyrstal that is over also 
+        k18Smat3 = k18Smat
+        clusterMat = matrix(0, nrow = rnaSize, ncol = rnaSize)
+        for(j in 1:nrow(clusters)){
+          #For each cluster, make a individual matrix
+   
+          # add 10 to the positions of this cluster
+          clusterMat[ clusters$ls[j]:clusters$le[j] ,  clusters$rs[j]:clusters$re[j] ] =
+            clusterMat[  clusters$ls[j]:clusters$le[j] ,  clusters$rs[j]:clusters$re[j] ] + 10
+          
+
+        }
+        clusterMat[clusterMat>10] = 10
+        k18Smat3 = k18Smat3 +clusterMat
+        
+        cp[[i]] = which(k18Smat3 >10, arr.ind = T)
+        cn[[i]] = which(k18Smat3 ==1, arr.ind = T)
         
         ###################################
         # Get novel and cannonical tables and matrices
@@ -652,6 +673,8 @@ setMethod("compareKnown", "rnaCrosslinkDataSet", function(trimmedClusters,
     
     ctl[[rna]][["novel"]] = novelClusters
     ctl[[rna]][["known"]] = cannonicalClusters
+    ctl[[rna]][["cp"]] = cp
+    ctl[[rna]][["cn"]] = cn
     cgl = clusterGrangesList(trimmedClusters)
     
     
