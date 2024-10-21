@@ -79,7 +79,6 @@ setMethod("clusterrnaCrosslink",
                 }else{
                   
                   
-          
                   foreach (k=1:length( chimeraListSampled[[i]][["gap"]])) %do% {
                     adjacancyMat = getAdjacancyMat(chimeraListSampled[[i]][["gap"]][[k]],
                                                    "nucleotide",
