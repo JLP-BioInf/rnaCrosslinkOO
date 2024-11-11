@@ -606,6 +606,7 @@ setMethod("getReverseInteractions",
           "rnaCrosslinkDataSet",
           function(cds,
                    interactor)  {
+             
             seq2 <- Vectorize(seq.default, vectorize.args = c("from", "to"))
             
             # subset the Input files based on the interacter of choice
