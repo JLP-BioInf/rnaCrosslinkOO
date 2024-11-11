@@ -591,7 +591,7 @@ setMethod("getInteractions",
 #' @docType methods
 #' @rdname getReverseInteractions
 #' @aliases getReverseInteractions,rnaCrosslinkDataSet-method
-#' @return A long format table shoing the read coverage of chosen RNA
+#' @return A long format table showing the read coverage of chosen RNA
 #' @examples
 #' cds = makeExamplernaCrosslinkDataSet()
 #' getReverseInteractions(cds, 'transcript2')
@@ -611,6 +611,8 @@ setMethod("getReverseInteractions",
             
             # subset the Input files based on the interacter of choice
             table = data.frame()
+            
+            
             for (i in names(InputFiles(cds)[[rnas(cds)]][["host"]])) {
               x = InputFiles(cds)[[rnas(cds)]][["host"]][[i]]
               x = x[x$V10 == interactor, ]
@@ -619,15 +621,13 @@ setMethod("getReverseInteractions",
                 v$rna = interactor
                 v$sample = i
                 colnames(v) = c("Position", "rna", "sample")
-                print(v)
                 table = rbind.data.frame(table, v)
               } else {
                 starts = x$V13
                 ends = x$V14
-                v = as.data.frame(unlist(seq2(from = starts, to = ends)))
+                v = as.data.frame(unlist(as.vector(seq2(from = starts, to = ends))))
                 v$rna = interactor
                 v$sample = i
-                print(v)
                 colnames(v) = c("Position", "rna", "sample")
                 table = rbind.data.frame(table, v)
               }
