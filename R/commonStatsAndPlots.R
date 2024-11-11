@@ -338,15 +338,15 @@ setMethod("plotMatricesAverage", "rnaCrosslinkDataSet", function(cds,
           type = type2
         }
         if (type != "blank"){
-          c = 1
+          count = 1
           for (j in group(cds)[[i]]) {
-            if (length(group(cds)[[i]]) < 2 | c == 1) {
+            if (length(group(cds)[[i]]) < 2 | count == 1) {
               sum(InputMatList[[rna]][[type]][[j]])
               InputMatList2[[rna]][[type]][[i]] = InputMatList[[rna]][[type]][[j]]
             } else{
               InputMatList2[[rna]][[type]][[i]] = InputMatList2[[rna]][[type]][[i]] + InputMatList[[rna]][[type]][[j]]
             }
-            c = c + 1
+            count = count + 1
           }
         }
       }
@@ -360,8 +360,11 @@ setMethod("plotMatricesAverage", "rnaCrosslinkDataSet", function(cds,
         }
       }
     }
+
+    
     sampleNames = c("s", "c")
     for (sample in  sampleNames) {
+      print(dim(InputMatList2[[rna]][[typeCombinationName]][[sample]]))
       matrixToPlot = InputMatList2[[rna]][[typeCombinationName]][[sample]][a:b, c:d]
       cols = log2(max(matrixToPlot + 1))
       
@@ -467,23 +470,26 @@ setMethod("plotCombinedMatrix", "rnaCrosslinkDataSet", function(cds,
                                                             returnData = FALSE)  {
   InputMatList = matrixList(cds)
   rnaS = rnas(cds)
-  sampleNames = names(InputMatList[[1]][[type1]])
-  if (is.null(sampleNames)) {
-    sampleNames = 1:length(InputMatList[[1]][[type1]])
-  }
+  #sampleNames = names(InputMatList[[1]][[type1]])
+  
+  #if (is.null(sampleNames)) {
+  #  sampleNames = 1:length(InputMatList[[1]][[type1]])
+  #}
+  matrixToPlot = matrix()
   #sample1 = which(sampleTable(cds)[sampleTable(cds)$sampleName == sample1])
   for (rna in c(rnaS)) {
     if(sample1 == "blank"){
-      sumOfUpper = getData(cds, data = "matrixList", type = type1)[[sample2]]
-    matrixToPlot =sumOfUpper  
+      sumOfUpper = getData(cds, data = "matrixList", type = type2)[[sample2]]
+      matrixToPlot =sumOfUpper  
     }else if(sample2 == "blank"){
-      sumOfLower = getData(cds, data = "matrixList", type = type2)[[sample1]]
+      sumOfLower = getData(cds, data = "matrixList", type = type1)[[sample1]]
       matrixToPlot =sumOfLower  
       }else{
       sumOfUpper = getData(cds, data = "matrixList", type = type1)[[sample1]]
       sumOfLower = getData(cds, data = "matrixList", type = type2)[[sample2]]
       matrixToPlot = sumOfUpper + t(sumOfLower)
     }
+    print(matrixToPlot)
     
     matrixToPlot = matrixToPlot[a:b, c:d]
   

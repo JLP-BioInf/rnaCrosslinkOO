@@ -618,6 +618,7 @@ setMethod("getReverseInteractions",
                 v$rna = interactor
                 v$sample = i
                 colnames(v) = c("Position", "rna", "sample")
+                print(v)
                 table = rbind.data.frame(table, v)
               } else {
                 starts = x$V13
@@ -625,6 +626,7 @@ setMethod("getReverseInteractions",
                 v = as.data.frame(unlist(seq2(from = starts, to = ends)))
                 v$rna = interactor
                 v$sample = i
+                print(v)
                 colnames(v) = c("Position", "rna", "sample")
                 table = rbind.data.frame(table, v)
               }
