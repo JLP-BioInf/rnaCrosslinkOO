@@ -11,7 +11,7 @@ NULL
 
 #' featureInfo
 #'
-#' Produces a list list of 2 elemnts 'transcript' and 'family'
+#' Produces a list of 2 elements 'transcript' and 'family'
 #' Each element contains a table with the counts for each RNA in each sample that 
 #' interact with the target RNA
 #'
