@@ -594,7 +594,6 @@ setMethod("plotInteractions", "rnaCrosslinkDataSet", function(cds,
       yData = seq(data$V14, data$V13)
       matrixToPlot[xData,yData] = matrixToPlot[xData,yData] + 1
     }
-
     bActual = b
     if (b == "max"){
       bActual = maxX
@@ -622,9 +621,10 @@ setMethod("plotInteractions", "rnaCrosslinkDataSet", function(cds,
       scale = "none" ,
       Rowv = NA,
       Colv = NA,
-      hExp = dActual/bActual
+      hExp = ifelse((dActual-c)/(bActual-a) <0.2, 0.2, (dActual-c)/(bActual-a))
       )
     } else{
+
       pdf(
         paste(directory, "/", rna, "_", i, "-", interactor, ".pdf", sep = ""),
         height = h,
@@ -637,7 +637,7 @@ setMethod("plotInteractions", "rnaCrosslinkDataSet", function(cds,
       scale = "none" ,
       Rowv = NA,
       Colv = NA,
-      hExp = dActual/bActual
+      hExp = ifelse((dActual-c)/(bActual-a) <0.2, 0.2, (dActual-c)/(bActual-a))
       )
       dev.off()
     }
