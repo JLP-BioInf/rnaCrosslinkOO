@@ -692,7 +692,7 @@ swapInputs = function(InputList,
 #'
 #' Swap the table to ensure that 3 prime most duplex side is on the left of the table
 #' used to make one sides heatmaps and other reasons where having the left of the table
-#' coming after the right side is a problem. Different from swapInputs as it
+#' coming after the right side is a problem. Different from swapInputs  as it
 #' ensure that BOTH duplex sides originate from the RNA of interest.
 #' @param InputList the original InputList created with readInputFiles or subsetInputList
 #' @param rna The rna of interest
