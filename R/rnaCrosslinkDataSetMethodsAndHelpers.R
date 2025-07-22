@@ -725,6 +725,7 @@ swapInputs2 = function(InputList,
       "V8",
       "V9"
     )]
+    
     colnames(tmp2) = colnames(tmp1)
     comb = rbind.data.frame(tmp1, tmp2)
     InputList[[Input]] = comb
