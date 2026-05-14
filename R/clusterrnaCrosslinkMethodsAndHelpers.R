@@ -957,7 +957,7 @@ setMethod("plotClusterAgreement",
             
             # get the cluster agreement 
             clusterDF = data.frame()
-            for(sample in samples){
+            for(sample in which(sampleNames(cds) %in% samples)){
               
               clusters = cds@clusterTableList[[rnas(cds)]][[analysisStage]][[sample]]
               numberOfClusters = nrow(clusters)
