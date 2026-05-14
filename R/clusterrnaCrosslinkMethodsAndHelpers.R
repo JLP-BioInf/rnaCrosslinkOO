@@ -682,10 +682,10 @@ setMethod("compareKnown", "rnaCrosslinkDataSet", function(trimmedClusters,
     ###################################
     # create object
     object  = new("rnaCrosslinkDataSet",
-                  rnas = rnas(clusteredCds),
-                  rnaSize = rnaSize(clusteredCds),
-                  sampleTable = sampleTable(clusteredCds),
-                  InputFiles = InputFiles(clusteredCds),
+                  rnas = rnas(trimmedClusters),
+                  rnaSize = rnaSize(trimmedClusters),
+                  sampleTable = sampleTable(trimmedClusters),
+                  InputFiles = InputFiles(trimmedClusters),
                   matrixList = ml,
                   clusterTableList = ctl,
                   clusterGrangesList = cgl,   
@@ -813,6 +813,7 @@ subsetInputList2 = function(InputList,
 #'
 #' @param cds A rnaCrosslinkDataSet object 
 #' @param analysisStage The stage of the analysis to plot
+#' @param samples The samples to plot
 #' @name plotClusterAgreementHeat
 #' @docType methods
 #' @rdname plotClusterAgreementHeat
@@ -836,15 +837,16 @@ subsetInputList2 = function(InputList,
 #' @export
 setGeneric("plotClusterAgreementHeat", 
            function(cds,
-                    analysisStage = 'originalClusters')
+                    analysisStage = 'originalClusters',
+                     samples = sampleNames(cds))
              standardGeneric("plotClusterAgreementHeat") )
 
 setMethod("plotClusterAgreementHeat", 
           "rnaCrosslinkDataSet", function(cds,
-                                      analysisStage = 'originalClusters')  {
+                                      analysisStage = 'originalClusters', samples = sampleNames(cds))  {
             
             # Get the cluster matrices
-            samples= group(cds)$s
+            samples= samples
             if(length(samples) < 2){message("try using more than one replicate")
               }else{
             
@@ -887,6 +889,7 @@ setMethod("plotClusterAgreementHeat",
 #'
 #' @param cds A rnaCrosslinkDataSet object 
 #' @param analysisStage The stage of the analysis to plot
+#' @param samples The samples to plot
 #' @name plotClusterAgreement
 #' @docType methods
 #' @rdname plotClusterAgreement
@@ -909,16 +912,17 @@ setMethod("plotClusterAgreementHeat",
 #' @export
 setGeneric("plotClusterAgreement", 
            function(cds,
-                    analysisStage = 'originalClusters')
+                    analysisStage = 'originalClusters',
+                     samples = sampleNames(cds))
              standardGeneric("plotClusterAgreement") )
 
 setMethod("plotClusterAgreement", 
           "rnaCrosslinkDataSet", function(cds,
-                                      analysisStage = 'trimmedClusters')  {
+                                      analysisStage = 'trimmedClusters', 
+                                      samples = sampleNames(cds))  {
             
-            
-            samples= group(cds)$s
-            samples= group(cds)$s
+            # Get the cluster matrices
+            samples= samples
             if(length(samples) < 2){message("try using more than one replicate")
             }else{
             

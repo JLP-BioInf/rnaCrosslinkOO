@@ -215,6 +215,7 @@ setMethod("plotMatrices", "rnaCrosslinkDataSet", function(cds,
   
   for (sample in  1:length(sampleNames)) {
     for (rna in c(rnaS)) {
+      if(sum(InputMatList[[rna]][[type]][[sample]][a:b, c:d]) == 0){next}
       cols = log2(max(InputMatList[[rna]][[type]][[sample]][a:b, c:d] + 1))
       
       myCol = c("black", colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols -
@@ -367,7 +368,7 @@ setMethod("plotMatricesAverage", "rnaCrosslinkDataSet", function(cds,
       print(dim(InputMatList2[[rna]][[typeCombinationName]][[sample]]))
       matrixToPlot = InputMatList2[[rna]][[typeCombinationName]][[sample]][a:b, c:d]
       cols = log2(max(matrixToPlot + 1))
-      
+      if(sum(InputMatList2[[rna]][[typeCombinationName]][[sample]][a:b, c:d] ==0)){next}
       myCol = c("black", colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols -
                                                                         1))
       
@@ -494,6 +495,7 @@ setMethod("plotCombinedMatrix", "rnaCrosslinkDataSet", function(cds,
     matrixToPlot = matrixToPlot[a:b, c:d]
   
     # choose colour pallet
+    if(sum(matrixToPlot) == 0){next}
     cols = log2(max(matrixToPlot + 1))
     myCol = c("black", colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols - 1))
     if (cols > 14) {
@@ -603,7 +605,7 @@ setMethod("plotInteractions", "rnaCrosslinkDataSet", function(cds,
       dActual = maxY
     }
     matrixToPlot = matrixToPlot[a:bActual, c:dActual]
-    
+
     # choose colour pallet
     cols = log2(max(matrixToPlot + 1))
     myCol = c("black", colorRampPalette(c(brewer.pal(9, "YlOrRd")))(cols - 1))

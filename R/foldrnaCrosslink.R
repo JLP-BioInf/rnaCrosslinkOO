@@ -122,7 +122,7 @@ setMethod("foldrnaCrosslink",
             # add the sequences tot he table
             for (i in 1:nrow(clusterPositionsListTrimmedSarsCombined)) {
               x = getClusterClusterShortRangeWhole(clusterPositionsListTrimmedSarsCombined[i, ],
-                                                   rnaRefs[[rna]])
+                                                   rnaRefs[rna])
               clusterPositionsListTrimmedSarsCombined$type[i] = x[[1]]
               clusterPositionsListTrimmedSarsCombined$seq2[i] = x[[3]]
               clusterPositionsListTrimmedSarsCombined$seq1[i] = x[[2]]
@@ -397,7 +397,7 @@ setMethod("foldrnaCrosslink",
                       "echo \">",
                       rna,
                       "\n",
-                      paste(rnaRefs[[1]][[1]][start:end], collapse = ""),
+                      paste(rnaRefs[[1]][start:end], collapse = ""),
                       "\" | RNAfold  --noPS --constraint=",tmpFile,
                       sep = ""
                     )
@@ -421,7 +421,7 @@ setMethod("foldrnaCrosslink",
                       "echo \">",
                       rna,
                       "\n",
-                      paste(rnaRefs[[1]][[1]][start:end], collapse = ""),
+                      paste(rnaRefs[[1]][start:end], collapse = ""),
                       "\" | RNAfold  --noPS --constraint=",tmpFile," --shape=",tmpFile2,
                       sep = ""
                     )

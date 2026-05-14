@@ -96,6 +96,31 @@ setMethod("clusterrnaCrosslink",
                                         highest_clusters,
                                         chimeraListSampled[[i]][["left"]][[k]],
                                         chimeraListSampled[[i]][["right"]][[k]])
+                    
+                    orphans = names(chimeraListSampled[[i]][["left"]][[k]])[!(names(chimeraListSampled[[i]][["gap"]][[k]]) %in% names(plottingList[[i]][[k]]))]
+                    #orphansr = names(chimeraListSampled[[i]][["right"]][[k]])[!(names(chimeraListSampled[[i]][["gap"]][[k]]) %in% names(plottingList[[i]][[k]]))]
+                    
+                    indexes = which(names(chimeraListSampled[[i]][["gap"]][[k]]) %in% orphans)
+                    
+                    if(length(indexes) == 0 ){
+                      
+                    }else{
+                    
+                    orphansl = chimeraListSampled[[i]][["left"]][[k]][indexes]
+                    orphansr = chimeraListSampled[[i]][["right"]][[k]][indexes]
+                   # print(indexes)
+                    
+                    indexes = paste("o",k, 1:length(indexes), sep= "")
+                    orphansl$cluster = indexes
+                    orphansr$cluster = indexes
+                    
+                    orphansl$type = "left"
+                    orphansr$type = "right"
+                    if(clusterCutoff < 1 ){
+                      plottingList[[i]][[k]] = c(plottingList[[i]][[k]], orphansl,orphansr)
+                    }
+                    }
+                   # print(plottingList)
                   }
                 }
                 
@@ -124,15 +149,59 @@ setMethod("clusterrnaCrosslink",
                   foreach (k=1:length( chimeraListSampled[[i]][["gap"]])) %do% {
                     adjacancyMat = getAdjacancyMat(chimeraListSampled[[i]][["gap"]][[k]],"nucleotide", 15)
                     net = graph_from_adjacency_matrix(adjacancyMat, mode = "undirected", weighted = T)
-                    clustering = cluster_walktrap(net,steps = 2)
+                    clustering = cluster_walktrap(net,steps = stepCount)
+                    #test line below
+                    #print(names(membership(clustering)))
                     highest_clusters = names(table(membership(clustering))[table(membership(clustering)) > clusterCutoff])
                     plottingList[[i]][[k]]  = printClustersFast(dir,clustering, highest_clusters,
                                                                 chimeraListSampled[[i]][["left"]][[k]],
                                                                 chimeraListSampled[[i]][["right"]][[k]])
                     message(paste("*****        done ",sampleNames(cds)[i] , k, " /" , length( chimeraListSampled[[i]][["gap"]]), "          *****"))
+                    # test lines below 
+                    # get the orphans
+                    #print(k)
+                    #print(chimeraListSampled[[i]][["gap"]][[k]])
+                    #print(plottingList[[i]][[k]])
+                    #print(!(names(chimeraListSampled[[i]][["gap"]][[k]]) %in% names(plottingList[[i]][[k]])))
                     
+                    # need to add the clusters as orphans!!!!!
+                    #unmute lines below!
+                    #print(length(names(plottingList[[i]][[k]])))
+                    #print(length(names(chimeraListSampled[[i]][["gap"]][[k]])))
                     
-                  }
+                    #print(plottingList)
+                    
+                      # the following doesnt work because it needs to be in added to different lists. 
+                      orphans = names(chimeraListSampled[[i]][["left"]][[k]])[!(names(chimeraListSampled[[i]][["gap"]][[k]]) %in% names(plottingList[[i]][[k]]))]
+                      #orphansr = names(chimeraListSampled[[i]][["right"]][[k]])[!(names(chimeraListSampled[[i]][["gap"]][[k]]) %in% names(plottingList[[i]][[k]]))]
+                      
+                      indexes = which(names(chimeraListSampled[[i]][["gap"]][[k]]) %in% orphans)
+                      
+                      
+                      if(length(indexes) == 0 ){
+                        
+                      }else{
+                      orphansl = chimeraListSampled[[i]][["left"]][[k]][indexes]
+                      orphansr = chimeraListSampled[[i]][["right"]][[k]][indexes]
+                      #print(indexes)
+                      
+                      indexes = paste("o",k, 1:length(indexes), sep= "")
+                      orphansl$cluster = indexes
+                      orphansr$cluster = indexes
+                      
+                      orphansl$type = "left"
+                      orphansr$type = "right"
+                      if(clusterCutoff < 1 ){
+                        plottingList[[i]][[k]] = c(plottingList[[i]][[k]], orphansl,orphansr)
+                      }
+                      }
+                      #print(plottingList)
+                 #     plottingList[[i]][[pk]]  = printClustersFast(dir,clustering, highest_clusters,
+                  #                                                chimeraListSampled[[i]][["left"]][[k]],
+                  #                                                chimeraListSampled[[i]][["right"]][[k]])
+                  #    
+                  #    print(orphans)
+                      }
                 }
                 
               }
@@ -164,6 +233,16 @@ setMethod("clusterrnaCrosslink",
                 combinedPlotting[[i]] =  c(combinedPlotting[[i]],plotting)
                 }
               }
+              
+              print(combinedPlotting)
+              # flter the plotting list 
+            #  for(i in 1:length(combinedPlotting)){
+            #    for(j in 1:length(combinedPlotting)[[i]]){
+            #      x = table(combinedPlotting[[i]][[j]]$cluster)
+            #      highC = names(x[x > clusterCutoff])
+            #      combinedPlotting[[i]][[j]] = combinedPlotting[[i]][[j]][combinedPlotting[[i]][[j]]$cluster %in% highC,]
+            #    }
+            #  }
               
               
               clusters[[rna]][["original"]] = combinedPlotting
